@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "632455599970",
+    "firebase_url": "https://bartender-f843c.firebaseio.com",
+    "project_id": "bartender-f843c",
+    "storage_bucket": "bartender-f843c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632455599970:android:c8c43231cf72a5447a3e3b",
+        "android_client_info": {
+          "package_name": "com.ruben.remote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632455599970-iljuiqs256p1o64pst0toclkgm4gqlk5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ruben.remote",
+            "certificate_hash": "86631e8e819ed4c03021e27d4c0f6c7ea6cf9fa8"
+          }
+        },
+        {
+          "client_id": "632455599970-ofgdu87r8boupaf48jvb5huaotqbdip9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA_ClNwFGt0sPe4zDrcpKHoNq98h8zdJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632455599970-ofgdu87r8boupaf48jvb5huaotqbdip9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

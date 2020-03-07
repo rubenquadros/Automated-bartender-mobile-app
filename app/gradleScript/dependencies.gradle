@@ -1,0 +1,35 @@
+dependencies {
+    def daggerDependencies = rootProject.ext.daggerDependencies
+    def butterknifeDependencies = rootProject.ext.butterknifeDependencies
+    def androidxDependencies = rootProject.ext.androidxDependencies
+    def lifecycleDependencies = rootProject.ext.lifecycleDependencies
+    def coroutinesDependencies = rootProject.ext.coroutinesDependencies
+    def picassoDependencies = rootProject.ext.picassoDependencies
+
+    implementation project(":data")
+    implementation project(":domain")
+    implementation project(":cache")
+    implementation project(":remote")
+
+    implementation androidxDependencies.appCompat
+    implementation androidxDependencies.core
+    implementation androidxDependencies.constraintLayout
+
+    implementation lifecycleDependencies.viewmodel
+    implementation lifecycleDependencies.livedata
+    implementation lifecycleDependencies.lifecycle
+
+    implementation daggerDependencies.dagger2
+    implementation daggerDependencies.daggerAndroid
+    implementation daggerDependencies.daggerAndroidSupport
+    kapt daggerDependencies.compiler
+    kapt daggerDependencies.processor
+
+    implementation butterknifeDependencies.butterknife
+    kapt butterknifeDependencies.compiler
+
+    implementation picassoDependencies.picasso
+
+    implementation coroutinesDependencies.coroutines
+    implementation coroutinesDependencies.coroutinesAndroid
+}

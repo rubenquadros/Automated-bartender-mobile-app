@@ -1,0 +1,15 @@
+dependencies {
+
+    def retrofitDependencies = rootProject.ext.retrofitDependencies
+    def firebaseDependencies = rootProject.ext.firebaseDependencies
+    def coroutinesDependencies = rootProject.ext.coroutinesDependencies
+
+    implementation retrofitDependencies.retrofit
+    implementation retrofitDependencies.retrofitGson
+    implementation retrofitDependencies.retrofitCoroutines
+
+    implementation firebaseDependencies.firestore
+
+    implementation coroutinesDependencies.coroutines
+    implementation coroutinesDependencies.coroutinesAndroid
+}

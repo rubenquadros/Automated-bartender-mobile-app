@@ -1,0 +1,18 @@
+dependencies {
+    def daggerDependencies = rootProject.ext.daggerDependencies
+    def coroutinesDependencies = rootProject.ext.coroutinesDependencies
+
+    //Module
+    implementation project(":domain")
+    implementation project(":cache")
+    implementation project(":remote")
+
+    implementation daggerDependencies.dagger2
+    implementation daggerDependencies.daggerAndroid
+    implementation daggerDependencies.daggerAndroidSupport
+    kapt daggerDependencies.compiler
+    kapt daggerDependencies.processor
+
+    implementation coroutinesDependencies.coroutines
+    implementation coroutinesDependencies.coroutinesAndroid
+}

@@ -8,16 +8,9 @@
         android:layout_height="match_parent"
         tools:context=".presentation.home.HomeActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+    <include layout="@layout/all_appbar_layout" />
 
-        <include layout="@layout/all_toolbar_layout"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <include layout="@layout/content_home"/>
+    <include layout="@layout/content_home" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

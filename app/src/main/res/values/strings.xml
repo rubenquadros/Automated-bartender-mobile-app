@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">elBarman</string>
+    <string name="boarding_title">SIGN IN / SIGN UP</string>
+    <string name="boarding_enter_num">Please enter your mobile number</string>
+    <string name="all_country_code">+91</string>
+    <string name="boarding_num_hint">Phone Number *</string>
+    <string name="boarding_otp_hint">XXXXXX</string>
+    <string name="boarding_otp_desc">A 6 digit OTP will be sent via SMS to verify your mobile number</string>
+    <string name="boarding_enter_otp">Please enter the received OTP if it is not auto-detected</string>
+    <string name="all_resend">Resend</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
@@ -11,6 +19,7 @@
     <string name="all_unexpected_crash">OOPS! I crashed! Don\'t worry the developers have been notified</string>
     <string name="all_home">HOME</string>
     <string name="all_ok">OK</string>
+    <string name="all_continue">CONTINUE</string>
     <string name="all_generic_err">OOPS! Something went wrong, please try again later</string>
     <string name="all_drink_success">Your drink is prepared\n Please collect your drink</string>
 </resources>

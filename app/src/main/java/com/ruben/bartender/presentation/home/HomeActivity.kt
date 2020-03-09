@@ -30,7 +30,7 @@ import com.ruben.remote.model.response.basicMenuResponse.BasicMenuResponse
 import com.ruben.remote.model.response.makeDrinkResponse.MakeDrinkResponse
 import com.ruben.remote.model.response.menuCategoryResponse.CategoryResponse
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.all_toolbar_layout.*
+import kotlinx.android.synthetic.main.all_appbar_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 

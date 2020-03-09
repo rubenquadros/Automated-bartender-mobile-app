@@ -3,6 +3,7 @@ package com.ruben.bartender.injection.module
 import com.ruben.bartender.base.BaseActivity
 import com.ruben.bartender.injection.scopes.ActivityScoped
 import com.ruben.bartender.presentation.home.HomeActivity
+import com.ruben.bartender.presentation.onboarding.OnBoardingActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,4 +22,10 @@ abstract class ActivityBuilder {
   @ActivityScoped
   @ContributesAndroidInjector
   abstract fun homeActivity(): HomeActivity
+
+  @ActivityScoped
+  @ContributesAndroidInjector(
+    modules = [OnBoardingFragmentBuilder::class]
+  )
+  abstract fun boardingActivity(): OnBoardingActivity
 }

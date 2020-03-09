@@ -7,6 +7,7 @@ import com.ruben.bartender.injection.scopes.ApplicationScoped
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.support.AndroidSupportInjectionModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**

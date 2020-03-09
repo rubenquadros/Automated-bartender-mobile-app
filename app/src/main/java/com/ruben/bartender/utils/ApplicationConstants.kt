@@ -8,5 +8,6 @@ class ApplicationConstants {
     const val BASIC_MENU = "basicmenu"
     const val HTTP_OK = 200
     const val FILE_NOT_FOUND = 404
+    const val LOGIN_TAG = "login"
   }
 }

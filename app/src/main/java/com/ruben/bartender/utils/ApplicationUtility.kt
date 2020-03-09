@@ -4,16 +4,17 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.ruben.bartender.R
-import com.squareup.picasso.Picasso
 
 /**
  * Created by ruben.quadros on 01/03/20.
@@ -25,7 +26,7 @@ class ApplicationUtility {
       Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
-    fun showSnack(msg: String, view: View, action: String){
+    fun showSnack(msg: String, view: View, action: String) {
       val snackBar = Snackbar.make(view, msg, Snackbar.LENGTH_INDEFINITE)
       snackBar.setAction(action) {
         snackBar.dismiss()
@@ -49,12 +50,34 @@ class ApplicationUtility {
 
     fun showProgress(progressBar: ProgressBar, activity: Activity) {
       progressBar.visibility = View.VISIBLE
-      activity.window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+      activity.window.setFlags(
+        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+      )
     }
 
     fun stopProgress(progressBar: ProgressBar, activity: Activity) {
       progressBar.visibility = View.GONE
       activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    fun showFragment(
+      fragment: Fragment,
+      isAddToBackStack: Boolean,
+      tag: String?,
+      bundle: Bundle?,
+      fragmentManager: FragmentManager
+    ) {
+      val fragmentTransaction =
+        fragmentManager.beginTransaction()
+      fragmentTransaction.add(R.id.boarding_container, fragment, tag)
+      if (isAddToBackStack) {
+        fragmentTransaction.addToBackStack(null)
+      }
+      if (bundle != null) {
+        fragment.arguments = bundle
+      }
+      fragmentTransaction.commit()
     }
   }
 }

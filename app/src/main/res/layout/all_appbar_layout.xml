@@ -1,0 +1,27 @@
+<com.google.android.material.appbar.AppBarLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:theme="@style/AppTheme.ToolbarTheme"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/toolbarTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:layout_weight="0.6"
+                android:fontFamily="@font/baskerville_bold"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/all_font_29sp" />
+
+    </androidx.appcompat.widget.Toolbar>
+</com.google.android.material.appbar.AppBarLayout>

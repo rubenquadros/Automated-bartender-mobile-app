@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Automated-bartender-mobile-app.iml" filepath="$PROJECT_DIR$/Automated-bartender-mobile-app.iml" group="Automated-bartender-mobile-app" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Automated-bartender-mobile-app/app" />
+      <module fileurl="file://$PROJECT_DIR$/cache/cache.iml" filepath="$PROJECT_DIR$/cache/cache.iml" group="Automated-bartender-mobile-app/cache" />
+      <module fileurl="file://$PROJECT_DIR$/data/data.iml" filepath="$PROJECT_DIR$/data/data.iml" group="Automated-bartender-mobile-app/data" />
+      <module fileurl="file://$PROJECT_DIR$/domain/domain.iml" filepath="$PROJECT_DIR$/domain/domain.iml" group="Automated-bartender-mobile-app/domain" />
+      <module fileurl="file://$PROJECT_DIR$/remote/remote.iml" filepath="$PROJECT_DIR$/remote/remote.iml" group="Automated-bartender-mobile-app/remote" />
+    </modules>
+  </component>
+</project>

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ruben.bartender.injection.BartenderViewModelFactory
 import com.ruben.bartender.injection.ViewModelKey
 import com.ruben.bartender.presentation.home.HomeViewModel
+import com.ruben.bartender.presentation.onboarding.login.LoginViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -19,6 +20,11 @@ abstract class ViewModelModule {
 
   @Binds
   internal abstract fun bindViewModelFactory(factory: BartenderViewModelFactory): ViewModelProvider.Factory
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(LoginViewModel::class)
+  internal abstract fun loginViewModel(loginViewModel: LoginViewModel): ViewModel
 
   @Binds
   @IntoMap

@@ -12,7 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
  * Created by ruben.quadros on 29/02/20.
  **/
 @ExperimentalCoroutinesApi
-@Module(includes = [ViewModelModule::class, MenuModule::class, DrinkModule::class])
+@Module(includes = [ViewModelModule::class, OnBoardingModule::class, MenuModule::class, DrinkModule::class])
 abstract class ActivityBuilder {
 
   @ActivityScoped

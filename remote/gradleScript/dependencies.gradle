@@ -9,6 +9,7 @@ dependencies {
     implementation retrofitDependencies.retrofitCoroutines
 
     implementation firebaseDependencies.firestore
+    implementation firebaseDependencies.firebaseAuth
 
     implementation coroutinesDependencies.coroutines
     implementation coroutinesDependencies.coroutinesAndroid

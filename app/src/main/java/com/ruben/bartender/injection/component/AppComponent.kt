@@ -15,7 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
  **/
 @ExperimentalCoroutinesApi
 @ApplicationScoped
-@Component(modules = [AppModule::class, ActivityBuilder::class, AndroidInjectionModule::class])
+@Component(modules = [AppModule::class, ActivityBuilder::class, AndroidInjectionModule::class, AndroidSupportInjectionModule::class])
 interface AppComponent {
 
   fun inject(application: BaseApplication)

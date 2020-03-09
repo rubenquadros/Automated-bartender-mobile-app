@@ -1,0 +1,101 @@
+{
+  "project_info": {
+    "project_number": "632455599970",
+    "firebase_url": "https://bartender-f843c.firebaseio.com",
+    "project_id": "bartender-f843c",
+    "storage_bucket": "bartender-f843c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632455599970:android:3266896231b985e67a3e3b",
+        "android_client_info": {
+          "package_name": "com.ruben.bartender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632455599970-ruq3ikkoe4u9cb1vbtpue4gpragkqt91.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ruben.bartender",
+            "certificate_hash": "87b4fe280df9751e270d66ec9e8e9589a30b8f9c"
+          }
+        },
+        {
+          "client_id": "632455599970-d8i4o4f9iqt3sc8clm4v7rfde2888m11.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ruben.bartender",
+            "certificate_hash": "4df05aefbeedbc5204b191d5e05b74dd9a93c82c"
+          }
+        },
+        {
+          "client_id": "632455599970-ofgdu87r8boupaf48jvb5huaotqbdip9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA_ClNwFGt0sPe4zDrcpKHoNq98h8zdJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632455599970-ofgdu87r8boupaf48jvb5huaotqbdip9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632455599970:android:c8c43231cf72a5447a3e3b",
+        "android_client_info": {
+          "package_name": "com.ruben.remote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632455599970-rea5bvsfivmq42nau2rbo9410edtgi9o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ruben.remote",
+            "certificate_hash": "4df05aefbeedbc5204b191d5e05b74dd9a93c82c"
+          }
+        },
+        {
+          "client_id": "632455599970-echqn4p04r5c02j4fir1tle3rtdtj51e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ruben.remote",
+            "certificate_hash": "87b4fe280df9751e270d66ec9e8e9589a30b8f9c"
+          }
+        },
+        {
+          "client_id": "632455599970-ofgdu87r8boupaf48jvb5huaotqbdip9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA_ClNwFGt0sPe4zDrcpKHoNq98h8zdJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632455599970-ofgdu87r8boupaf48jvb5huaotqbdip9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

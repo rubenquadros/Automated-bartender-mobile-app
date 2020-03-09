@@ -3,8 +3,10 @@ dependencies {
     def butterknifeDependencies = rootProject.ext.butterknifeDependencies
     def androidxDependencies = rootProject.ext.androidxDependencies
     def lifecycleDependencies = rootProject.ext.lifecycleDependencies
+    def materialDesignDependencies = rootProject.ext.materialDesignDependencies
     def coroutinesDependencies = rootProject.ext.coroutinesDependencies
     def picassoDependencies = rootProject.ext.picassoDependencies
+    def firebaseDependencies = rootProject.ext.firebaseDependencies
 
     implementation project(":data")
     implementation project(":domain")
@@ -14,10 +16,16 @@ dependencies {
     implementation androidxDependencies.appCompat
     implementation androidxDependencies.core
     implementation androidxDependencies.constraintLayout
+    implementation androidxDependencies.legacySupport
+    implementation androidxDependencies.navigationFragment
+    implementation androidxDependencies.navigationFragmentKtx
+    implementation androidxDependencies.navigationUi
+    implementation androidxDependencies.navigationUiKtx
 
     implementation lifecycleDependencies.viewmodel
     implementation lifecycleDependencies.livedata
     implementation lifecycleDependencies.lifecycle
+    implementation lifecycleDependencies.lifecycleExtn
 
     implementation daggerDependencies.dagger2
     implementation daggerDependencies.daggerAndroid
@@ -28,7 +36,11 @@ dependencies {
     implementation butterknifeDependencies.butterknife
     kapt butterknifeDependencies.compiler
 
+    implementation materialDesignDependencies.materialDesign
+
     implementation picassoDependencies.picasso
+
+    implementation firebaseDependencies.firebaseAuth
 
     implementation coroutinesDependencies.coroutines
     implementation coroutinesDependencies.coroutinesAndroid

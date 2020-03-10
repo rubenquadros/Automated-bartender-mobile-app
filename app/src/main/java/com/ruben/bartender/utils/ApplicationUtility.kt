@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
@@ -59,6 +60,11 @@ class ApplicationUtility {
     fun stopProgress(progressBar: ProgressBar, activity: Activity) {
       progressBar.visibility = View.GONE
       activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    fun hideKeyboard(activity: Activity, view: View) {
+      val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+      imm?.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun showFragment(

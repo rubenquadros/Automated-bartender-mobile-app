@@ -1,7 +1,7 @@
 package com.ruben.bartender.injection.module
 
 import com.ruben.data.repository.OnBoardingRepositoryImpl
-import com.ruben.domain.interactor.OnBoardingUseCase
+import com.ruben.domain.interactor.boarding.OnBoardingUseCase
 import com.ruben.domain.repository.OnBoardingRepository
 import dagger.Module
 import dagger.Provides
@@ -16,5 +16,6 @@ class OnBoardingModule {
   fun onBoardingRepository(onBoardingRepositoryImpl: OnBoardingRepositoryImpl): OnBoardingRepository = onBoardingRepositoryImpl
 
   @Provides
-  fun login(onBoardingRepository: OnBoardingRepository) = OnBoardingUseCase(onBoardingRepository)
+  fun login(onBoardingRepository: OnBoardingRepository) =
+    OnBoardingUseCase(onBoardingRepository)
 }

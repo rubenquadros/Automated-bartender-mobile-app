@@ -10,8 +10,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.ruben.remote.model.request.SendOtpRequest
 import com.ruben.remote.model.request.SignInRequest
 import com.ruben.remote.model.response.basicMenuResponse.BasicMenuResponse
-import com.ruben.remote.model.response.basicMenuResponse.Document
-import com.ruben.remote.model.response.menuCategoryResponse.CategoryName
 import com.ruben.remote.model.response.menuCategoryResponse.CategoryResponse
 import com.ruben.remote.model.response.onBoardingResponse.SendOtpResponse
 import com.ruben.remote.model.response.onBoardingResponse.SignInResponse
@@ -20,7 +18,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import java.util.ArrayList
 import java.util.concurrent.*
 
 /**
@@ -34,23 +31,17 @@ class FirebaseApiImpl : FirebaseApi {
   private val TAG = javaClass.simpleName
 
   override  fun getBasicMenu(): Flow<BasicMenuResponse?> {
-    val basicMenuResponse = BasicMenuResponse(ArrayList())
     return channelFlow {
       firestoreDB.collection(ApiConstants.MENU_COLLECTION).document(ApiConstants.BASIC_MENU_DOC)
         .collection(ApiConstants.BASIC_MENU_COLLECTION)
         .get()
         .addOnSuccessListener { result ->
-          for(document in result) {
-            val menuDocument = Document("", "", "")
-            menuDocument.name = document.data["name"].toString()
-            menuDocument.description = document.data["description"].toString()
-            menuDocument.image = document.data["image"].toString()
-            basicMenuResponse.documents.add(menuDocument)
-          }
+          val basicMenuResponse = BasicMenuResponse(result.documents)
           channel.offer(basicMenuResponse)
         }
         .addOnFailureListener {
           Log.d(TAG, it.toString())
+          channel.offer(null)
           channel.close(it)
         }
       awaitClose()
@@ -58,20 +49,15 @@ class FirebaseApiImpl : FirebaseApi {
   }
 
   override fun getMenuCategories(): Flow<CategoryResponse?> {
-    val categoryResponse = CategoryResponse(ArrayList())
     return channelFlow {
       firestoreDB.collection(ApiConstants.MENU_COLLECTION).get()
         .addOnSuccessListener { result ->
-          for(document in result) {
-            val categoryName = CategoryName("")
-            categoryName.name = document.id
-            categoryResponse.categoryName?.add(categoryName)
-            Log.d(TAG, document.data.toString())
-          }
+          val categoryResponse = CategoryResponse(result.documents)
           channel.offer(categoryResponse)
         }
         .addOnFailureListener{
           Log.d(TAG, it.toString())
+          channel.offer(null)
           channel.close()
         }
       awaitClose()
@@ -88,9 +74,7 @@ class FirebaseApiImpl : FirebaseApi {
         TaskExecutors.MAIN_THREAD,
         object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
           override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-            val sendOtpResponse = SendOtpResponse(null, null, null, null, null)
-            sendOtpResponse.phoneAuthCredential = p0
-            channel.offer(sendOtpResponse)
+            signIn(SignInRequest(p0))
           }
 
           override fun onVerificationFailed(p0: FirebaseException) {
@@ -107,13 +91,6 @@ class FirebaseApiImpl : FirebaseApi {
             sendOtpResponse.token = p1
             channel.offer(sendOtpResponse)
           }
-
-          override fun onCodeAutoRetrievalTimeOut(p0: String) {
-            super.onCodeAutoRetrievalTimeOut(p0)
-            val sendOtpResponse = SendOtpResponse(null, null, null, null, null)
-            sendOtpResponse.timeOut = p0
-            channel.offer(sendOtpResponse)
-          }
         }
       )
       awaitClose()
@@ -124,22 +101,20 @@ class FirebaseApiImpl : FirebaseApi {
     return channelFlow {
       FirebaseAuth.getInstance().signInWithCredential(signInRequest.phoneAuthCredential)
         .addOnCompleteListener {
-          val signInResponse = SignInResponse(0, "")
+          val signInResponse = SignInResponse(0)
           if(it.isSuccessful) {
             signInResponse.status = 200
-            signInResponse.message = ApiConstants.SUCCESS
             channel.offer(signInResponse)
           }else {
             signInResponse.status = 401
-            signInResponse.message = ApiConstants.FAIL
             channel.offer(signInResponse)
           }
         }
         .addOnFailureListener{
-          val signInResponse = SignInResponse(0, "")
+          val signInResponse = SignInResponse(0)
           signInResponse.status = 500
-          signInResponse.message = it.message.toString()
           channel.offer(signInResponse)
+          channel.close(null)
         }
       awaitClose()
     }

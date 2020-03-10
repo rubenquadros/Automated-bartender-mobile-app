@@ -8,6 +8,7 @@ import butterknife.ButterKnife
 import com.ruben.bartender.R
 import com.ruben.bartender.base.BaseActivity
 import com.ruben.bartender.presentation.onboarding.login.LoginFragment
+import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.all_appbar_layout.*
@@ -36,7 +37,9 @@ class OnBoardingActivity : BaseActivity(), HasAndroidInjector {
     setContentView(R.layout.activity_on_boarding)
     ButterKnife.bind(this)
     setupToolBar()
-    ApplicationUtility.showFragment(LoginFragment.newInstance(), false, LOGIN_TAG, null, supportFragmentManager)
+    val bundle = Bundle()
+    bundle.putString(ApplicationConstants.EVENT, ApplicationConstants.REGISTRATION)
+    ApplicationUtility.showFragment(LoginFragment.newInstance(), false, LOGIN_TAG, bundle, supportFragmentManager)
   }
 
   private fun setupToolBar(){

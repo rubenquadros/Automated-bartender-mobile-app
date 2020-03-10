@@ -1,12 +1,15 @@
 package com.ruben.data.repository
 
+import com.google.firebase.auth.PhoneAuthCredential
 import com.ruben.data.DataSource
+import com.ruben.data.mapper.BoardingMapper
+import com.ruben.domain.model.OtpRecord
+import com.ruben.domain.model.SignInRecord
 import com.ruben.domain.repository.OnBoardingRepository
 import com.ruben.remote.model.request.SendOtpRequest
 import com.ruben.remote.model.request.SignInRequest
-import com.ruben.remote.model.response.onBoardingResponse.SendOtpResponse
-import com.ruben.remote.model.response.onBoardingResponse.SignInResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -15,12 +18,17 @@ import javax.inject.Inject
 class OnBoardingRepositoryImpl @Inject constructor(dataSource: DataSource) : OnBoardingRepository {
 
   private val firebaseApi = dataSource.api().firebaseApiHandler()
+  private val boardingMapper = BoardingMapper()
 
-  override fun sendOTP(sendOtpRequest: SendOtpRequest): Flow<SendOtpResponse?> {
-    return firebaseApi.sendOTP(sendOtpRequest)
+  override fun sendOTP(phoneNumber: String): Flow<OtpRecord?> {
+    return firebaseApi.sendOTP(SendOtpRequest(phoneNumber)).map {
+      boardingMapper.mapOtpResponse(it)
+    }
   }
 
-  override fun signIn(signInRequest: SignInRequest): Flow<SignInResponse?> {
-    return firebaseApi.signIn(signInRequest)
+  override fun signIn(phoneAuthCredential: PhoneAuthCredential): Flow<SignInRecord?> {
+    return firebaseApi.signIn(SignInRequest(phoneAuthCredential)).map {
+      boardingMapper.mapSignInResponse(it)
+    }
   }
 }

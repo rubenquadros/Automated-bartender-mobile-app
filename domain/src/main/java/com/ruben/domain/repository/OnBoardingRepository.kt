@@ -1,15 +1,14 @@
 package com.ruben.domain.repository
 
-import com.ruben.remote.model.request.SendOtpRequest
-import com.ruben.remote.model.request.SignInRequest
-import com.ruben.remote.model.response.onBoardingResponse.SendOtpResponse
-import com.ruben.remote.model.response.onBoardingResponse.SignInResponse
+import com.google.firebase.auth.PhoneAuthCredential
+import com.ruben.domain.model.OtpRecord
+import com.ruben.domain.model.SignInRecord
 import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by ruben.quadros on 09/03/20.
  **/
 interface OnBoardingRepository {
-  fun sendOTP(sendOtpRequest: SendOtpRequest): Flow<SendOtpResponse?>
-  fun signIn(signInRequest: SignInRequest): Flow<SignInResponse?>
+  fun sendOTP(phoneNumber: String): Flow<OtpRecord?>
+  fun signIn(phoneAuthCredential: PhoneAuthCredential): Flow<SignInRecord?>
 }

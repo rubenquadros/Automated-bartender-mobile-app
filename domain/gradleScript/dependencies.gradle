@@ -1,9 +1,7 @@
 dependencies {
     def daggerDependencies = rootProject.ext.daggerDependencies
     def coroutinesDependencies = rootProject.ext.coroutinesDependencies
-
-    //Modules
-    implementation project(":remote")
+    def firebaseDependencies = rootProject.ext.firebaseDependencies
 
     implementation daggerDependencies.dagger2
     implementation daggerDependencies.daggerAndroid
@@ -13,4 +11,6 @@ dependencies {
 
     implementation coroutinesDependencies.coroutines
     implementation coroutinesDependencies.coroutinesAndroid
+
+    implementation firebaseDependencies.firebaseAuth
 }

@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.PhoneAuthCredential
-import com.ruben.domain.interactor.OnBoardingUseCase
+import com.ruben.domain.interactor.boarding.OnBoardingUseCase
+import com.ruben.domain.model.OtpRecord
+import com.ruben.domain.model.SignInRecord
 import com.ruben.remote.model.request.SendOtpRequest
 import com.ruben.remote.model.request.SignInRequest
-import com.ruben.remote.model.response.onBoardingResponse.SendOtpResponse
-import com.ruben.remote.model.response.onBoardingResponse.SignInResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -24,12 +24,12 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class LoginViewModel @Inject constructor(private val onBoardingUseCase: OnBoardingUseCase): ViewModel(), LifecycleObserver {
 
-  private var sendOtpResponse: MutableLiveData<SendOtpResponse?> = MutableLiveData()
-  private var signInResponse: MutableLiveData<SignInResponse?> = MutableLiveData()
+  private var sendOtpResponse: MutableLiveData<OtpRecord?> = MutableLiveData()
+  private var signInResponse: MutableLiveData<SignInRecord?> = MutableLiveData()
 
   fun sendOTP(phoneNumber: String) {
     viewModelScope.launch {
-      onBoardingUseCase.sendOTP(SendOtpRequest(phoneNumber)).flowOn(Dispatchers.IO)
+      onBoardingUseCase.sendOTP(phoneNumber).flowOn(Dispatchers.IO)
         .collect {
           sendOtpResponse.postValue(it)
         }
@@ -38,18 +38,18 @@ class LoginViewModel @Inject constructor(private val onBoardingUseCase: OnBoardi
 
   fun signIn(phoneAuthCredential: PhoneAuthCredential) {
     viewModelScope.launch {
-      onBoardingUseCase.signIn(SignInRequest(phoneAuthCredential)).flowOn(Dispatchers.IO)
+      onBoardingUseCase.signIn(phoneAuthCredential).flowOn(Dispatchers.IO)
         .collect {
           signInResponse.postValue(it)
         }
     }
   }
 
-  fun getOtpResponse(): LiveData<SendOtpResponse?> {
+  fun getOtpResponse(): LiveData<OtpRecord?> {
     return sendOtpResponse
   }
 
-  fun getSignInResponse(): LiveData<SignInResponse?> {
+  fun getSignInResponse(): LiveData<SignInRecord?> {
     return signInResponse
   }
 

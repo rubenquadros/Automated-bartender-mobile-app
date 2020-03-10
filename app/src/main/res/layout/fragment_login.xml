@@ -3,6 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/boardingParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
@@ -19,6 +20,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/boardingInnerParent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/all_margin_16dp"
@@ -72,6 +74,9 @@
                     android:visibility="gone"
                     android:letterSpacing="1"
                     android:hint="@string/boarding_otp_hint"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:digits="0123456789"
                     android:fontFamily="@font/baskerville_regular"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/all_font_20sp"
@@ -83,6 +88,8 @@
                     android:id="@+id/boardingResendBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:clickable="false"
                     android:visibility="gone"
                     android:text="@string/all_resend"
                     android:textSize="@dimen/all_font_20sp"

@@ -1,5 +1,7 @@
 package com.ruben.remote.model.response.basicMenuResponse
 
+import com.google.firebase.firestore.DocumentSnapshot
+
 data class BasicMenuResponse(
-  var documents: ArrayList<Document>
+  var documents: MutableList<DocumentSnapshot>?
 )

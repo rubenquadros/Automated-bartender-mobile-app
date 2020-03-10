@@ -5,12 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ruben.domain.interactor.BasicMenuUseCase
-import com.ruben.domain.interactor.MakeDrinkUseCase
-import com.ruben.remote.model.request.MakeDrinkRequest
-import com.ruben.remote.model.response.basicMenuResponse.BasicMenuResponse
-import com.ruben.remote.model.response.makeDrinkResponse.MakeDrinkResponse
-import com.ruben.remote.model.response.menuCategoryResponse.CategoryResponse
+import com.ruben.domain.interactor.drink.MakeDrinkUseCase
+import com.ruben.domain.interactor.menu.BasicMenuUseCase
+import com.ruben.domain.model.BasicMenuRecord
+import com.ruben.domain.model.CategoryRecord
+import com.ruben.domain.model.MakeDrinkRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -28,9 +27,9 @@ class HomeViewModel @Inject constructor(
 ) :
   ViewModel(), LifecycleObserver {
 
-  private var basicMenuResponse: MutableLiveData<BasicMenuResponse?> = MutableLiveData()
-  private var menuCategories: MutableLiveData<CategoryResponse?> = MutableLiveData()
-  private var makeDrinkResponse: MutableLiveData<MakeDrinkResponse?> = MutableLiveData()
+  private var basicMenuResponse: MutableLiveData<BasicMenuRecord?> = MutableLiveData()
+  private var menuCategories: MutableLiveData<CategoryRecord?> = MutableLiveData()
+  private var makeDrinkResponse: MutableLiveData<MakeDrinkRecord?> = MutableLiveData()
 
   fun retrieveBasicMenu() {
     viewModelScope.launch {
@@ -52,20 +51,20 @@ class HomeViewModel @Inject constructor(
 
   fun makeDrink(name: String) {
     viewModelScope.launch {
-      val response = makeDrinkUseCase.makeDrink(MakeDrinkRequest(name)).await()
+      val response = makeDrinkUseCase.makeDrink(name)
       makeDrinkResponse.postValue(response)
     }
   }
 
-  fun getBasicMenu(): LiveData<BasicMenuResponse?> {
+  fun getBasicMenu(): LiveData<BasicMenuRecord?> {
     return basicMenuResponse
   }
 
-  fun getMenuCategories(): LiveData<CategoryResponse?> {
+  fun getMenuCategories(): LiveData<CategoryRecord?> {
     return menuCategories
   }
 
-  fun observeMakeDrink(): LiveData<MakeDrinkResponse?> {
+  fun observeMakeDrink(): LiveData<MakeDrinkRecord?> {
     return makeDrinkResponse
   }
 }

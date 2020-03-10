@@ -22,7 +22,7 @@ class SplashActivity : BaseActivity() {
   private fun startSplash() {
     window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     Handler().postDelayed({
-      startActivity(Intent(this, OnBoardingActivity::class.java))
+      startActivity(Intent(this, HomeActivity::class.java))
       finish()
     }, 2000)
   }

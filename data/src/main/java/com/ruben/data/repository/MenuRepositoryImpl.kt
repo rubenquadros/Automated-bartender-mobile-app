@@ -1,10 +1,12 @@
 package com.ruben.data.repository
 
 import com.ruben.data.DataSource
+import com.ruben.data.mapper.MenuMapper
+import com.ruben.domain.model.BasicMenuRecord
+import com.ruben.domain.model.CategoryRecord
 import com.ruben.domain.repository.MenuRepository
-import com.ruben.remote.model.response.basicMenuResponse.BasicMenuResponse
-import com.ruben.remote.model.response.menuCategoryResponse.CategoryResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -13,13 +15,18 @@ import javax.inject.Inject
 class MenuRepositoryImpl @Inject constructor(dataSource: DataSource): MenuRepository {
 
   private val firebaseApi = dataSource.api().firebaseApiHandler()
+  private val menuMapper = MenuMapper()
 
-  override fun getBasicMenu(): Flow<BasicMenuResponse?> {
-    return firebaseApi.getBasicMenu()
+  override fun getBasicMenu(): Flow<BasicMenuRecord?> {
+    return firebaseApi.getBasicMenu().map {
+      menuMapper.mapBasicMenu(it)
+    }
   }
 
-  override fun getMenuCategories(): Flow<CategoryResponse?> {
-    return firebaseApi.getMenuCategories()
+  override fun getMenuCategories(): Flow<CategoryRecord?> {
+    return firebaseApi.getMenuCategories().map {
+      menuMapper.mapCategories(it)
+    }
   }
 
 }

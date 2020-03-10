@@ -26,9 +26,9 @@ import com.ruben.bartender.R
 import com.ruben.bartender.base.BaseActivity
 import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
-import com.ruben.remote.model.response.basicMenuResponse.BasicMenuResponse
-import com.ruben.remote.model.response.makeDrinkResponse.MakeDrinkResponse
-import com.ruben.remote.model.response.menuCategoryResponse.CategoryResponse
+import com.ruben.domain.model.BasicMenuRecord
+import com.ruben.domain.model.CategoryRecord
+import com.ruben.domain.model.MakeDrinkRecord
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.all_appbar_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -104,13 +104,13 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
     homeRecyclerView.layoutManager = layoutManager
   }
 
-  private fun initPopupMenu(categoryResponse: CategoryResponse?) {
-    if(categoryResponse != null) {
+  private fun initPopupMenu(categoryRecord: CategoryRecord?) {
+    if (categoryRecord != null) {
       val wrapper = ContextThemeWrapper(this, R.style.BasePopupMenu)
       popupMenu = PopupMenu(wrapper, homeMenuBtn)
-      for(i in 0 until categoryResponse.categoryName!!.size) {
-        if(categoryResponse.categoryName!![i].name != ApplicationConstants.BASIC_MENU) {
-          val title = SpannableString(categoryResponse.categoryName!![i].name)
+      for (i in 0 until categoryRecord.categories!!.size) {
+        if (categoryRecord.categories!![i].name != ApplicationConstants.BASIC_MENU) {
+          val title = SpannableString(categoryRecord.categories!![i].name)
           popupMenu.menu.add(title)
         }
       }
@@ -118,33 +118,33 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
         Log.d("@@@", it.title.toString())
         return@setOnMenuItemClickListener false
       }
-    }else {
+    } else {
       homeMenuBtn.hide()
     }
   }
 
-  private fun updateUIWithMenu(menuResponse: BasicMenuResponse?) {
+  private fun updateUIWithMenu(menuRecord: BasicMenuRecord?) {
     ApplicationUtility.stopProgress(progressBar, this)
-    if(menuResponse != null) {
-      val homeAdapter = HomeAdapter(menuResponse, this)
+    if (menuRecord != null) {
+      val homeAdapter = HomeAdapter(menuRecord, this)
       homeRecyclerView.adapter = homeAdapter
-    }else {
+    } else {
       ApplicationUtility.showSnack(errorMessage, parentView, ok)
     }
   }
 
-  private fun parseMakeDrinkResponse(makeDrinkResponse: MakeDrinkResponse?) {
+  private fun parseMakeDrinkResponse(makeDrinkRecord: MakeDrinkRecord?) {
     ApplicationUtility.stopProgress(progressBar, this)
-    if(makeDrinkResponse != null) {
-      when(makeDrinkResponse.status) {
-        ApplicationConstants.HTTP_OK -> {
-          Log.d("@@@", makeDrinkResponse.message)
+    if (makeDrinkRecord != null) {
+      when (makeDrinkRecord.responseCode) {
+        ApplicationConstants.HTTP_OK        -> {
+          Log.d("@@@", makeDrinkRecord.responseMessage)
           ApplicationUtility.showDrinkSuccessDialog(this)
         }
         ApplicationConstants.FILE_NOT_FOUND -> {
-          ApplicationUtility.showSnack(makeDrinkResponse.message, parentView, ok)
+          ApplicationUtility.showSnack(makeDrinkRecord.responseMessage, parentView, ok)
         }
-        else -> {
+        else                                -> {
           ApplicationUtility.showSnack(errorMessage, parentView, ok)
         }
       }
@@ -154,12 +154,13 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
   private fun observeData() {
     homeViewModel.getMenuCategories().observe(this, Observer { it?.let { initPopupMenu(it) } })
     homeViewModel.getBasicMenu().observe(this, Observer { it?.let { updateUIWithMenu(it) } })
-    homeViewModel.observeMakeDrink().observe(this, Observer { it?.let { parseMakeDrinkResponse(it) } })
+    homeViewModel.observeMakeDrink()
+      .observe(this, Observer { it?.let { parseMakeDrinkResponse(it) } })
   }
 
   @OnClick(value = [R.id.home_menu])
   fun onClick(view: View) {
-    when(view.id) {
+    when (view.id) {
       R.id.home_menu -> {
         popupMenu.show()
       }
@@ -172,7 +173,7 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    when(item.itemId) {
+    when (item.itemId) {
       android.R.id.home -> {
         drawerLayout.openDrawer(GravityCompat.START)
         return true

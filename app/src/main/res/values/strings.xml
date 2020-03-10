@@ -5,9 +5,11 @@
     <string name="all_country_code">+91</string>
     <string name="boarding_num_hint">Phone Number *</string>
     <string name="boarding_otp_hint">XXXXXX</string>
-    <string name="boarding_otp_desc">A 6 digit OTP will be sent via SMS to verify your mobile number</string>
-    <string name="boarding_enter_otp">Please enter the received OTP if it is not auto-detected</string>
+    <string name="boarding_otp_desc">Your mobile number will be auto-verified. Please enter the received 6 digit OTP if it is not auto-detected and auto-verified</string>
     <string name="all_resend">Resend</string>
+    <string name="boarding_auth_fail">Authentication failed</string>
+    <string name="boarding_otp_send_fail">Couldn\'t send OTP. Please try again later</string>
+    <string name="all_verify">VERIFY</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>

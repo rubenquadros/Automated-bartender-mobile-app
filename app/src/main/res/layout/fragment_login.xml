@@ -34,7 +34,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/phone" />
+                    app:srcCompat="@drawable/signin_phone" />
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/appCompatTextView"
@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/all_margin_24dp"
-                    android:drawableStart="@drawable/ic_phone_android_black_24dp"
+                    android:drawableStart="@drawable/ic_phone_android"
                     android:drawablePadding="@dimen/all_padding_10dp"
                     android:maxLength="10"
                     android:inputType="number"

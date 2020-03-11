@@ -105,7 +105,12 @@ class FirebaseApiImpl : FirebaseApi {
         .addOnCompleteListener {
           val signInResponse = SignInResponse(0)
           if(it.isSuccessful) {
-            signInResponse.status = 200
+            val user = it.result.user
+            if(user.metadata.creationTimestamp == user.metadata.lastSignInTimestamp) {
+              signInResponse.status = 404
+            }else {
+              signInResponse.status = 200
+            }
             channel.offer(signInResponse)
           }else {
             signInResponse.status = 401

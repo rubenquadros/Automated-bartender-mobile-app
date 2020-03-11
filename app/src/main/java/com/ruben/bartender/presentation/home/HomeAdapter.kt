@@ -27,7 +27,7 @@ class HomeAdapter(private val menuList: BasicMenuRecord, private val listener: I
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.menuTitle.text = menuList.menuRecord!![position].name
     holder.menuTitle.setOnClickListener { listener.onDrinkClicked(menuList.menuRecord!![position].name!!) }
-    Picasso.get().load(menuList.menuRecord!![position].image).placeholder(R.drawable.placeholder).fit().into(holder.menuImage)
+    Picasso.get().load(menuList.menuRecord!![position].image).placeholder(R.drawable.drink_menu_placeholder).fit().into(holder.menuImage)
     holder.menuImage.setOnClickListener { listener.onDrinkClicked(menuList.menuRecord!![position].name!!) }
     holder.menuDesc.text = menuList.menuRecord!![position].description
     holder.menuDesc.setOnClickListener { listener.onDrinkClicked(menuList.menuRecord!![position].name!!) }

@@ -132,6 +132,12 @@ class LoginFragment : Fragment() {
     }.start()
   }
 
+  private fun stopCounter() {
+    if(counterStarted) {
+      counter.cancel()
+    }
+  }
+
   private fun parseOtpResponse(otpRecord: OtpRecord?) {
     if (otpRecord != null) {
       when {
@@ -168,22 +174,20 @@ class LoginFragment : Fragment() {
     if (signInRecord != null) {
       when (signInRecord.responseCode) {
         ApplicationConstants.HTTP_OK   -> {
-          if(counterStarted) {
-            counter.cancel()
-          }
-          if (userHandler.isRegistered()) {
-            val intent = Intent(activity, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-          } else {
-            ApplicationUtility.showFragment(
-              SignUpFragment.newInstance(phoneNumber),
-              false,
-              ApplicationConstants.SIGN_UP_TAG,
-              null,
-              activity!!.supportFragmentManager
-            )
-          }
+          stopCounter()
+          val intent = Intent(activity, HomeActivity::class.java)
+          intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+          startActivity(intent)
+        }
+        ApplicationConstants.FILE_NOT_FOUND -> {
+          stopCounter()
+          ApplicationUtility.showFragment(
+            SignUpFragment.newInstance(phoneNumber),
+            false,
+            ApplicationConstants.SIGN_UP_TAG,
+            null,
+            activity!!.supportFragmentManager
+          )
         }
         ApplicationConstants.AUTH_FAIL -> {
           ApplicationUtility.showSnack(

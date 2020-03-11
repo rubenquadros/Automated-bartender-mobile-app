@@ -33,7 +33,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/profile" />
+                    app:srcCompat="@drawable/signup_profile" />
 
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/signupFnTil"
@@ -48,7 +48,7 @@
                         android:id="@+id/signupFirstNameEt"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:drawableStart="@drawable/ic_person_black_24dp"
+                        android:drawableStart="@drawable/ic_person"
                         android:drawablePadding="@dimen/all_padding_10dp"
                         android:fontFamily="@font/baskerville_regular"
                         android:hint="@string/signup_first_name_hint"
@@ -70,7 +70,7 @@
                         android:id="@+id/signupLastNameEt"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:drawableStart="@drawable/ic_person_black_24dp"
+                        android:drawableStart="@drawable/ic_person"
                         android:drawablePadding="@dimen/all_padding_10dp"
                         android:fontFamily="@font/baskerville_regular"
                         android:hint="@string/signup_last_name_hint"

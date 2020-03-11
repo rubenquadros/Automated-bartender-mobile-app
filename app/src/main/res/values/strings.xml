@@ -2,7 +2,7 @@
     <string name="app_name">elBarman</string>
     <string name="all_digits">0123456789</string>
     <string name="all_alphabets">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
-    <string name="all_signup">SIGN UP</string>
+    <string name="all_signup">SIGN IN / SIGN UP</string>
     <string name="all_signin">SIGN IN</string>
     <string name="boarding_enter_num">Please enter your mobile number</string>
     <string name="all_country_code">+91</string>

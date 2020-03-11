@@ -37,7 +37,7 @@
             app:backgroundTint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_local_bar_black_24dp"
+            app:srcCompat="@drawable/ic_bar_menu_button"
             android:focusable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

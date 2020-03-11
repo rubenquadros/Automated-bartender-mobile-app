@@ -8,12 +8,19 @@ import com.ruben.bartender.R
 import com.ruben.bartender.base.BaseActivity
 import com.ruben.bartender.presentation.home.HomeActivity
 import com.ruben.bartender.presentation.onboarding.OnBoardingActivity
+import com.ruben.domain.interactor.user.UserHandler
+import dagger.android.AndroidInjection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class SplashActivity : BaseActivity() {
 
+  @Inject
+  lateinit var userHandler: UserHandler
+
   override fun onCreate(savedInstanceState: Bundle?) {
+    AndroidInjection.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     this.startSplash()
@@ -22,7 +29,11 @@ class SplashActivity : BaseActivity() {
   private fun startSplash() {
     window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     Handler().postDelayed({
-      startActivity(Intent(this, HomeActivity::class.java))
+      if(userHandler.isLoggedIn()) {
+        startActivity(Intent(this, HomeActivity::class.java))
+      }else {
+        startActivity(Intent(this, OnBoardingActivity::class.java))
+      }
       finish()
     }, 2000)
   }

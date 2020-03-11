@@ -2,6 +2,7 @@ package com.ruben.bartender.injection.module
 
 import com.ruben.bartender.injection.scopes.FragmentScoped
 import com.ruben.bartender.presentation.onboarding.login.LoginFragment
+import com.ruben.bartender.presentation.onboarding.signup.SignUpFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,4 +18,7 @@ interface OnBoardingFragmentBuilder {
   @ContributesAndroidInjector
   fun bindLoginFragment(): LoginFragment
 
+  @FragmentScoped
+  @ContributesAndroidInjector
+  fun bindSignUpFragment(): SignUpFragment
 }

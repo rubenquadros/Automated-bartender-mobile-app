@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">elBarman</string>
-    <string name="boarding_title">SIGN IN / SIGN UP</string>
+    <string name="all_digits">0123456789</string>
+    <string name="all_alphabets">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="all_signup">SIGN UP</string>
+    <string name="all_signin">SIGN IN</string>
     <string name="boarding_enter_num">Please enter your mobile number</string>
     <string name="all_country_code">+91</string>
     <string name="boarding_num_hint">Phone Number *</string>
@@ -10,6 +13,9 @@
     <string name="boarding_auth_fail">Authentication failed</string>
     <string name="boarding_otp_send_fail">Couldn\'t send OTP. Please try again later</string>
     <string name="all_verify">VERIFY</string>
+    <string name="signup_first_name_hint">First Name *</string>
+    <string name="signup_last_name_hint">Last Name *</string>
+    <string name="all_get_started">GET STARTED</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>

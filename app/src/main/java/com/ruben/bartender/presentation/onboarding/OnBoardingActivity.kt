@@ -8,14 +8,14 @@ import butterknife.ButterKnife
 import com.ruben.bartender.R
 import com.ruben.bartender.base.BaseActivity
 import com.ruben.bartender.presentation.onboarding.login.LoginFragment
-import com.ruben.bartender.utils.ApplicationConstants
+import com.ruben.bartender.utils.ApplicationConstants.LOGIN_TAG
 import com.ruben.bartender.utils.ApplicationUtility
+import com.ruben.domain.interactor.user.UserHandler
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.all_appbar_layout.*
-import com.ruben.bartender.utils.ApplicationConstants.Companion.LOGIN_TAG
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import kotlinx.android.synthetic.main.all_appbar_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
@@ -25,11 +25,17 @@ class OnBoardingActivity : BaseActivity(), HasAndroidInjector {
   @Inject
   lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
+  @Inject
+  lateinit var userHandler: UserHandler
+
   @BindView(R.id.toolbarTitle)
   lateinit var toolBarTitle: AppCompatTextView
 
-  @BindString(R.string.boarding_title)
-  lateinit var boardingTitle: String
+  @BindString(R.string.all_signup)
+  lateinit var signUp: String
+
+  @BindString(R.string.all_signin)
+  lateinit var signIn: String
 
   override fun onCreate(savedInstanceState: Bundle?) {
     AndroidInjection.inject(this)
@@ -37,16 +43,18 @@ class OnBoardingActivity : BaseActivity(), HasAndroidInjector {
     setContentView(R.layout.activity_on_boarding)
     ButterKnife.bind(this)
     setupToolBar()
-    val bundle = Bundle()
-    bundle.putString(ApplicationConstants.EVENT, ApplicationConstants.REGISTRATION)
-    ApplicationUtility.showFragment(LoginFragment.newInstance(), false, LOGIN_TAG, bundle, supportFragmentManager)
+    ApplicationUtility.showFragment(LoginFragment.newInstance(), false, LOGIN_TAG, null, supportFragmentManager)
   }
 
   private fun setupToolBar(){
     setSupportActionBar(toolbar)
     supportActionBar?.setDisplayShowHomeEnabled(false)
     supportActionBar?.setDisplayHomeAsUpEnabled(false)
-    toolBarTitle.text = boardingTitle
+    if(userHandler.isRegistered()) {
+      toolBarTitle.text = signIn
+    }else {
+      toolBarTitle.text = signUp
+    }
   }
 
   override fun androidInjector(): AndroidInjector<Any> {

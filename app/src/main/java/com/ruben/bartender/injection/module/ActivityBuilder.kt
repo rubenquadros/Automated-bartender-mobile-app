@@ -4,6 +4,7 @@ import com.ruben.bartender.base.BaseActivity
 import com.ruben.bartender.injection.scopes.ActivityScoped
 import com.ruben.bartender.presentation.home.HomeActivity
 import com.ruben.bartender.presentation.onboarding.OnBoardingActivity
+import com.ruben.bartender.presentation.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,12 +13,20 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
  * Created by ruben.quadros on 29/02/20.
  **/
 @ExperimentalCoroutinesApi
-@Module(includes = [ViewModelModule::class, OnBoardingModule::class, MenuModule::class, DrinkModule::class])
+@Module(includes = [ViewModelModule::class,
+  OnBoardingModule::class,
+  UserModule::class,
+  MenuModule::class,
+  DrinkModule::class])
 abstract class ActivityBuilder {
 
   @ActivityScoped
   @ContributesAndroidInjector
   abstract fun baseActivity(): BaseActivity
+
+  @ActivityScoped
+  @ContributesAndroidInjector
+  abstract fun splashActivity(): SplashActivity
 
   @ActivityScoped
   @ContributesAndroidInjector

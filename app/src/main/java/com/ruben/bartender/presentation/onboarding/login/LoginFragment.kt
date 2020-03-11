@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,22 +25,28 @@ import butterknife.OnClick
 import com.google.firebase.auth.PhoneAuthProvider
 import com.ruben.bartender.R
 import com.ruben.bartender.presentation.home.HomeActivity
+import com.ruben.bartender.presentation.onboarding.signup.SignUpFragment
 import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
+import com.ruben.domain.interactor.user.UserHandler
 import com.ruben.domain.model.OtpRecord
 import com.ruben.domain.model.SignInRecord
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
-private const val EVENT = "event"
-
-@Suppress("PrivatePropertyName")
+/**
+ * Created by ruben.quadros on 09/03/20.
+ **/
+@Suppress("PrivatePropertyName", "DEPRECATION")
 @ExperimentalCoroutinesApi
 class LoginFragment : Fragment() {
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
+
+  @Inject
+  lateinit var userHandler: UserHandler
 
   @BindView(R.id.boardingParent)
   lateinit var parentView: ConstraintLayout
@@ -64,19 +72,13 @@ class LoginFragment : Fragment() {
   @BindView(R.id.boardingPb)
   lateinit var progressBar: ProgressBar
 
-  private var event: String? = null
   private lateinit var loginViewModel: LoginViewModel
   private lateinit var counter: CountDownTimer
   private val TAG = javaClass.simpleName
   private var otpSent = false
+  private var counterStarted = false
   private var verificationID = ""
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    arguments?.let {
-      event = it.getString(EVENT)
-    }
-  }
+  private var phoneNumber = ""
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -96,13 +98,16 @@ class LoginFragment : Fragment() {
     super.onActivityCreated(savedInstanceState)
     loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
     subscribeOtpResponse()
+    observeInputs()
   }
 
   private fun showOtpField() {
     otpSent = true
     boardingOtp.visibility = View.VISIBLE
     resendBtn.visibility = View.VISIBLE
-    continueButton.text = activity!!.resources.getString(R.string.all_verify)
+    continueButton.text = resources.getString(R.string.all_verify)
+    continueButton.isEnabled = false
+    continueButton.setBackgroundColor(resources.getColor(R.color.disabledColor))
     startCounter()
   }
 
@@ -112,6 +117,7 @@ class LoginFragment : Fragment() {
   }
 
   private fun startCounter() {
+    counterStarted = true
     counter = object : CountDownTimer((ApplicationConstants.OTP_TIMER * 1000).toLong(), 1000) {
       override fun onTick(millisUntilFinished: Long) {
         val seconds = millisUntilFinished / 1000
@@ -119,7 +125,7 @@ class LoginFragment : Fragment() {
       }
 
       override fun onFinish() {
-        resendBtn.text = activity!!.resources.getString(R.string.all_resend)
+        resendBtn.text = resources.getString(R.string.all_resend)
         resendBtn.isClickable = true
         resendBtn.isEnabled = true
       }
@@ -127,26 +133,30 @@ class LoginFragment : Fragment() {
   }
 
   private fun parseOtpResponse(otpRecord: OtpRecord?) {
-    ApplicationUtility.stopProgress(progressBar, activity!!)
     if (otpRecord != null) {
       when {
         otpRecord.errorMessage != null   -> {
+          ApplicationUtility.stopProgress(progressBar, activity!!)
           Log.d(TAG, otpRecord.errorMessage!!)
           ApplicationUtility.showSnack(
-            activity!!.resources.getString(R.string.boarding_otp_send_fail),
+            resources.getString(R.string.boarding_otp_send_fail),
             parentView,
-            activity!!.resources.getString(R.string.all_ok)
+            resources.getString(R.string.all_ok)
           )
         }
         otpRecord.verificationID != null -> {
           verificationID = otpRecord.verificationID!!
           showOtpField()
         }
+        otpRecord.credential != null     -> {
+          loginViewModel.signIn(otpRecord.credential!!)
+        }
         else                             -> {
+          ApplicationUtility.stopProgress(progressBar, activity!!)
           ApplicationUtility.showSnack(
-            activity!!.resources.getString(R.string.all_generic_err),
+            resources.getString(R.string.all_generic_err),
             parentView,
-            activity!!.resources.getString(R.string.all_ok)
+            resources.getString(R.string.all_ok)
           )
         }
       }
@@ -154,43 +164,56 @@ class LoginFragment : Fragment() {
   }
 
   private fun parseSignInResponse(signInRecord: SignInRecord?) {
+    ApplicationUtility.stopProgress(progressBar, activity!!)
     if (signInRecord != null) {
       when (signInRecord.responseCode) {
         ApplicationConstants.HTTP_OK   -> {
-          counter.cancel()
-          if (event == ApplicationConstants.REGISTRATION) {
+          if(counterStarted) {
+            counter.cancel()
+          }
+          if (userHandler.isRegistered()) {
             val intent = Intent(activity, HomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
           } else {
-            val intent = Intent(activity, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+            ApplicationUtility.showFragment(
+              SignUpFragment.newInstance(phoneNumber),
+              false,
+              ApplicationConstants.SIGN_UP_TAG,
+              null,
+              activity!!.supportFragmentManager
+            )
           }
         }
         ApplicationConstants.AUTH_FAIL -> {
           ApplicationUtility.showSnack(
-            activity!!.resources.getString(R.string.boarding_auth_fail),
+            resources.getString(R.string.boarding_auth_fail),
             parentView,
-            activity!!.resources.getString(R.string.all_ok)
+            resources.getString(R.string.all_ok)
           )
         }
         ApplicationConstants.API_FAIL  -> {
           ApplicationUtility.showSnack(
-            activity!!.resources.getString(R.string.all_generic_err),
+            resources.getString(R.string.all_generic_err),
             parentView,
-            activity!!.resources.getString(R.string.all_ok)
+            resources.getString(R.string.all_ok)
           )
         }
         else                           -> {
           ApplicationUtility.showSnack(
-            activity!!.resources.getString(R.string.all_generic_err),
+            resources.getString(R.string.all_generic_err),
             parentView,
-            activity!!.resources.getString(R.string.all_ok)
+            resources.getString(R.string.all_ok)
           )
         }
       }
       Log.d(TAG, signInRecord.message!!)
+    } else {
+      ApplicationUtility.showSnack(
+        resources.getString(R.string.all_generic_err),
+        parentView,
+        resources.getString(R.string.all_ok)
+      )
     }
   }
 
@@ -198,16 +221,17 @@ class LoginFragment : Fragment() {
   fun onClick(view: View) {
     when (view.id) {
       R.id.boardingContinueBtn   -> {
+        ApplicationUtility.showProgress(progressBar, activity!!)
+        ApplicationUtility.hideKeyboard(activity!!, parentView)
         if (otpSent) {
           signIn(boardingOtp.text.toString())
         } else {
-          ApplicationUtility.showProgress(progressBar, activity!!)
-          ApplicationUtility.hideKeyboard(activity!!, parentView)
-          loginViewModel.sendOTP(activity!!.resources.getString(R.string.all_country_code) + boardingPhoneNum.text.toString())
+          phoneNumber = boardingPhoneNum.text.toString()
+          loginViewModel.sendOTP(resources.getString(R.string.all_country_code) + phoneNumber)
         }
       }
       R.id.boardingResendBtn     -> {
-        loginViewModel.sendOTP(activity!!.resources.getString(R.string.all_country_code) + boardingPhoneNum.text.toString())
+        loginViewModel.sendOTP(resources.getString(R.string.all_country_code) + boardingPhoneNum.text.toString())
       }
       R.id.boardingDescriptionTv -> {
         ApplicationUtility.hideKeyboard(activity!!, parentView)
@@ -218,6 +242,44 @@ class LoginFragment : Fragment() {
     }
   }
 
+  private fun observeInputs() {
+    boardingPhoneNum.addTextChangedListener(object : TextWatcher {
+      override fun afterTextChanged(s: Editable?) {
+        if (s?.length == ApplicationConstants.MAX_MOBILE_NUMBER_LENGTH) {
+          continueButton.isEnabled = true
+          continueButton.setBackgroundColor(resources.getColor(R.color.colorPrimaryDark))
+        } else if (s == null || s.length == ApplicationConstants.NO_LENGTH || s.length < ApplicationConstants.MAX_MOBILE_NUMBER_LENGTH) {
+          continueButton.isEnabled = false
+          continueButton.setBackgroundColor(resources.getColor(R.color.disabledColor))
+        }
+      }
+
+      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+      }
+
+      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+      }
+    })
+
+    boardingOtp.addTextChangedListener(object : TextWatcher {
+      override fun afterTextChanged(s: Editable?) {
+        if (s?.length == ApplicationConstants.MAX_OTP_LENGTH) {
+          continueButton.isEnabled = true
+          continueButton.setBackgroundColor(resources.getColor(R.color.colorPrimaryDark))
+        } else if (s == null || s.length == ApplicationConstants.NO_LENGTH || s.length < ApplicationConstants.MAX_OTP_LENGTH) {
+          continueButton.isEnabled = false
+          continueButton.setBackgroundColor(resources.getColor(R.color.disabledColor))
+        }
+      }
+
+      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+      }
+
+      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+      }
+    })
+  }
+
   private fun subscribeOtpResponse() {
     loginViewModel.getOtpResponse().observe(this, Observer { it?.let { parseOtpResponse(it) } })
     loginViewModel.getSignInResponse()
@@ -226,11 +288,6 @@ class LoginFragment : Fragment() {
 
   companion object {
     @JvmStatic
-    fun newInstance(): LoginFragment {
-      val args = Bundle()
-      val loginFragment = LoginFragment()
-      loginFragment.arguments = args
-      return loginFragment
-    }
+    fun newInstance() = LoginFragment()
   }
 }

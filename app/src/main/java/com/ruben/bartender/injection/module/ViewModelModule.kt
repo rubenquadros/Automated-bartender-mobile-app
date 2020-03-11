@@ -6,6 +6,7 @@ import com.ruben.bartender.injection.BartenderViewModelFactory
 import com.ruben.bartender.injection.ViewModelKey
 import com.ruben.bartender.presentation.home.HomeViewModel
 import com.ruben.bartender.presentation.onboarding.login.LoginViewModel
+import com.ruben.bartender.presentation.onboarding.signup.SignUpViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -25,6 +26,11 @@ abstract class ViewModelModule {
   @IntoMap
   @ViewModelKey(LoginViewModel::class)
   internal abstract fun loginViewModel(loginViewModel: LoginViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(SignUpViewModel::class)
+  internal abstract fun signUpViewModel(signUpViewModel: SignUpViewModel): ViewModel
 
   @Binds
   @IntoMap

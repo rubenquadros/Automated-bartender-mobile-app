@@ -49,15 +49,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/appCompatImageView2" />
 
+
             <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/boardingMobileEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/all_margin_24dp"
+                    android:drawableStart="@drawable/ic_phone_android_black_24dp"
+                    android:drawablePadding="@dimen/all_padding_10dp"
                     android:maxLength="10"
                     android:inputType="number"
                     android:importantForAutofill="no"
-                    android:digits="0123456789"
+                    android:digits="@string/all_digits"
                     android:fontFamily="@font/baskerville_regular"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/all_font_20sp"
@@ -76,7 +79,7 @@
                     android:hint="@string/boarding_otp_hint"
                     android:inputType="number"
                     android:maxLength="6"
-                    android:digits="0123456789"
+                    android:digits="@string/all_digits"
                     android:fontFamily="@font/baskerville_regular"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/all_font_20sp"
@@ -120,28 +123,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/all_margin_24dp"
                     android:layout_marginBottom="@dimen/all_margin_24dp"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@color/disabledColor"
                     android:fontFamily="@font/baskerville_bold"
                     android:text="@string/all_continue"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/all_font_22sp"
+                    android:enabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/boardingDescriptionTv" />
 
+            <ProgressBar
+                    android:id="@+id/boardingPb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
-
-    <ProgressBar
-            android:id="@+id/boardingPb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

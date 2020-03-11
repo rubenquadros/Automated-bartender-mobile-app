@@ -13,13 +13,16 @@ class BoardingMapper {
 
   fun mapOtpResponse(sendOtpResponse: SendOtpResponse?): OtpRecord? {
     return if(sendOtpResponse != null) {
-      val otpRecord = OtpRecord(null, null)
+      val otpRecord = OtpRecord(null, null, null)
       when {
         sendOtpResponse.verificationID != null      -> {
           otpRecord.verificationID = sendOtpResponse.verificationID
         }
         sendOtpResponse.errorMessage != null        -> {
           otpRecord.errorMessage = sendOtpResponse.errorMessage
+        }
+        sendOtpResponse.phoneAuthCredential != null -> {
+          otpRecord.credential = sendOtpResponse.phoneAuthCredential
         }
       }
       otpRecord

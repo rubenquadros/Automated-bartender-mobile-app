@@ -74,7 +74,9 @@ class FirebaseApiImpl : FirebaseApi {
         TaskExecutors.MAIN_THREAD,
         object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
           override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-            signIn(SignInRequest(p0))
+            val sendOtpResponse = SendOtpResponse(null, null, null, null, null)
+            sendOtpResponse.phoneAuthCredential = p0
+            channel.offer(sendOtpResponse)
           }
 
           override fun onVerificationFailed(p0: FirebaseException) {

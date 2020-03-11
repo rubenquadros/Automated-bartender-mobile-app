@@ -9,8 +9,6 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.ruben.domain.interactor.boarding.OnBoardingUseCase
 import com.ruben.domain.model.OtpRecord
 import com.ruben.domain.model.SignInRecord
-import com.ruben.remote.model.request.SendOtpRequest
-import com.ruben.remote.model.request.SignInRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect

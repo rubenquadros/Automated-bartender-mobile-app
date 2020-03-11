@@ -10,6 +10,7 @@
     <dimen name="all_margin_16dp">16dp</dimen>
     <dimen name="all_margin_24dp">24dp</dimen>
     <dimen name="all_margin_40dp">40dp</dimen>
+    <dimen name="all_padding_10dp">10dp</dimen>
     <dimen name="all_font_29sp">29sp</dimen>
     <dimen name="all_font_24sp">24sp</dimen>
     <dimen name="all_font_20sp">20sp</dimen>

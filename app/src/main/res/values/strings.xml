@@ -13,10 +13,9 @@
     <string name="nav_drawer_favourites">Favourites</string>
     <string name="nav_drawer_history">History</string>
     <string name="nav_drawer_logout">Logout</string>
-    <string name="nav_header_title">Hello</string>
+    <string name="nav_header_title">Hello,</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="all_signup">SIGN IN / SIGN UP</string>
-    <string name="all_signin">SIGN IN</string>
+    <string name="all_boarding">SIGN IN / SIGN UP</string>
     <string name="all_digits">0123456789</string>
     <string name="all_alphabets">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="all_country_code">+91</string>

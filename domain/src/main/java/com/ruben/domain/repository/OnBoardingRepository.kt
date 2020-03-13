@@ -10,5 +10,5 @@ import kotlinx.coroutines.flow.Flow
  **/
 interface OnBoardingRepository {
   fun sendOTP(phoneNumber: String): Flow<OtpRecord?>
-  fun signIn(phoneAuthCredential: PhoneAuthCredential): Flow<SignInRecord?>
+  fun signIn(phoneAuthCredential: PhoneAuthCredential, phoneNumber: String): Flow<SignInRecord?>
 }

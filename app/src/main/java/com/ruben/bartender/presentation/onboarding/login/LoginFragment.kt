@@ -110,7 +110,7 @@ class LoginFragment : Fragment() {
 
   private fun signIn(code: String) {
     val credential = PhoneAuthProvider.getCredential(verificationID, code)
-    loginViewModel.signIn(credential)
+    loginViewModel.signIn(credential, phoneNumber)
   }
 
   private fun startCounter() {
@@ -152,7 +152,7 @@ class LoginFragment : Fragment() {
           showOtpField()
         }
         otpRecord.credential != null     -> {
-          loginViewModel.signIn(otpRecord.credential!!)
+          loginViewModel.signIn(otpRecord.credential!!, phoneNumber)
         }
         else                             -> {
           ApplicationUtility.stopProgress(progressBar, activity!!)

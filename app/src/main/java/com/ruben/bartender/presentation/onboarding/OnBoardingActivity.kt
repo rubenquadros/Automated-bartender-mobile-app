@@ -31,11 +31,8 @@ class OnBoardingActivity : BaseActivity(), HasAndroidInjector {
   @BindView(R.id.toolbarTitle)
   lateinit var toolBarTitle: AppCompatTextView
 
-  @BindString(R.string.all_signup)
+  @BindString(R.string.all_boarding)
   lateinit var signUp: String
-
-  @BindString(R.string.all_signin)
-  lateinit var signIn: String
 
   override fun onCreate(savedInstanceState: Bundle?) {
     AndroidInjection.inject(this)
@@ -43,18 +40,20 @@ class OnBoardingActivity : BaseActivity(), HasAndroidInjector {
     setContentView(R.layout.activity_on_boarding)
     ButterKnife.bind(this)
     setupToolBar()
-    ApplicationUtility.showFragment(LoginFragment.newInstance(), false, LOGIN_TAG, null, supportFragmentManager)
+    ApplicationUtility.showFragment(
+      LoginFragment.newInstance(),
+      false,
+      LOGIN_TAG,
+      null,
+      supportFragmentManager
+    )
   }
 
-  private fun setupToolBar(){
+  private fun setupToolBar() {
     setSupportActionBar(toolbar)
     supportActionBar?.setDisplayShowHomeEnabled(false)
     supportActionBar?.setDisplayHomeAsUpEnabled(false)
-    if(userHandler.isRegistered()) {
-      toolBarTitle.text = signIn
-    }else {
-      toolBarTitle.text = signUp
-    }
+    toolBarTitle.text = signUp
   }
 
   override fun androidInjector(): AndroidInjector<Any> {

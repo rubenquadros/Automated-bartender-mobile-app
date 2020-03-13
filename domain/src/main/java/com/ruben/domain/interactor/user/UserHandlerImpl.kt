@@ -11,7 +11,7 @@ class UserHandlerImpl @Inject constructor(private val userRepository: UserReposi
     return userRepository.isLoggedIn()
   }
 
-  override fun isRegistered(): Boolean {
-    return userRepository.isRegistered()
+  override fun phoneNumber(): String? {
+    return userRepository.phoneNumber()
   }
 }

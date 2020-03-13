@@ -34,9 +34,9 @@ class LoginViewModel @Inject constructor(private val onBoardingUseCase: OnBoardi
     }
   }
 
-  fun signIn(phoneAuthCredential: PhoneAuthCredential) {
+  fun signIn(phoneAuthCredential: PhoneAuthCredential, phoneNumber: String) {
     viewModelScope.launch {
-      onBoardingUseCase.signIn(phoneAuthCredential).flowOn(Dispatchers.IO)
+      onBoardingUseCase.signIn(phoneAuthCredential, phoneNumber).flowOn(Dispatchers.IO)
         .collect {
           signInResponse.postValue(it)
         }

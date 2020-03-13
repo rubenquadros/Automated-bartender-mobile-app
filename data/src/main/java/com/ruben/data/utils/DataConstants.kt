@@ -8,5 +8,5 @@ object DataConstants {
   const val HTTP_OK = 200
   const val HTTP_NEW_USER = 404
   const val IS_LOGGED_IN = "is_logged_in"
-  const val IS_REGISTERED = "is_registered"
+  const val PHONE_NUMBER = "phone_number"
 }

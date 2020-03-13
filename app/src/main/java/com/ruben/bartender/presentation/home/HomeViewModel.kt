@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ruben.domain.interactor.drink.MakeDrinkUseCase
 import com.ruben.domain.interactor.menu.BasicMenuUseCase
+import com.ruben.domain.interactor.user.GetUserDataUseCase
 import com.ruben.domain.model.BasicMenuRecord
 import com.ruben.domain.model.CategoryRecord
 import com.ruben.domain.model.MakeDrinkRecord
+import com.ruben.domain.model.UserRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -23,13 +25,15 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class HomeViewModel @Inject constructor(
   private val basicMenuUseCase: BasicMenuUseCase,
-  private val makeDrinkUseCase: MakeDrinkUseCase
+  private val makeDrinkUseCase: MakeDrinkUseCase,
+  private val getUserDataUseCase: GetUserDataUseCase
 ) :
   ViewModel(), LifecycleObserver {
 
   private var basicMenuResponse: MutableLiveData<BasicMenuRecord?> = MutableLiveData()
   private var menuCategories: MutableLiveData<CategoryRecord?> = MutableLiveData()
   private var makeDrinkResponse: MutableLiveData<MakeDrinkRecord?> = MutableLiveData()
+  private var userDataResponse: MutableLiveData<UserRecord?> = MutableLiveData()
 
   fun retrieveBasicMenu() {
     viewModelScope.launch {
@@ -49,6 +53,15 @@ class HomeViewModel @Inject constructor(
     }
   }
 
+  fun retrieveUserData(phoneNumber: String) {
+    viewModelScope.launch {
+      getUserDataUseCase.getUserData(phoneNumber).flowOn(Dispatchers.IO)
+        .collect{
+          userDataResponse.postValue(it)
+        }
+    }
+  }
+
   fun makeDrink(name: String) {
     viewModelScope.launch {
       val response = makeDrinkUseCase.makeDrink(name)
@@ -62,6 +75,10 @@ class HomeViewModel @Inject constructor(
 
   fun getMenuCategories(): LiveData<CategoryRecord?> {
     return menuCategories
+  }
+
+  fun getUserDataResponse(): LiveData<UserRecord?> {
+    return userDataResponse
   }
 
   fun observeMakeDrink(): LiveData<MakeDrinkRecord?> {

@@ -1,5 +1,6 @@
 package com.ruben.bartender.presentation.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.SpannableString
 import android.util.Log
@@ -22,15 +23,19 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.ruben.bartender.R
 import com.ruben.bartender.base.BaseActivity
 import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
+import com.ruben.domain.interactor.user.UserHandler
 import com.ruben.domain.model.BasicMenuRecord
 import com.ruben.domain.model.CategoryRecord
 import com.ruben.domain.model.MakeDrinkRecord
+import com.ruben.domain.model.UserRecord
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.all_appbar_layout.*
+import kotlinx.android.synthetic.main.nav_header_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
@@ -39,6 +44,9 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
+
+  @Inject
+  lateinit var userHandler: UserHandler
 
   @BindView(R.id.home_parent)
   lateinit var parentView: CoordinatorLayout
@@ -57,6 +65,12 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
 
   @BindView(R.id.home_menu)
   lateinit var homeMenuBtn: FloatingActionButton
+
+  @BindView(R.id.nav_view)
+  lateinit var navigationView: NavigationView
+
+  @BindString(R.string.nav_header_title)
+  lateinit var hello: String
 
   @BindString(R.string.all_home)
   lateinit var home: String
@@ -79,6 +93,7 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
     setupViewModel()
     observeData()
     retrieveMenu()
+    retrieveUserData()
     initRecyclerView()
   }
 
@@ -97,6 +112,12 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
     ApplicationUtility.showProgress(progressBar, this)
     homeViewModel.retrieveCategories()
     homeViewModel.retrieveBasicMenu()
+  }
+
+  private fun retrieveUserData() {
+    if(userHandler.phoneNumber() != null) {
+      homeViewModel.retrieveUserData(userHandler.phoneNumber()!!)
+    }
   }
 
   private fun initRecyclerView() {
@@ -133,6 +154,14 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
     }
   }
 
+  @SuppressLint("SetTextI18n")
+  private fun updateUIWithUser(userRecord: UserRecord?) {
+    if(userRecord != null) {
+      homeNameTv.text = hello + " " + userRecord.firstName
+      homePhoneTv.text = userRecord.phoneNumber
+    }
+  }
+
   private fun parseMakeDrinkResponse(makeDrinkRecord: MakeDrinkRecord?) {
     ApplicationUtility.stopProgress(progressBar, this)
     if (makeDrinkRecord != null) {
@@ -154,6 +183,7 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
   private fun observeData() {
     homeViewModel.getMenuCategories().observe(this, Observer { it?.let { initPopupMenu(it) } })
     homeViewModel.getBasicMenu().observe(this, Observer { it?.let { updateUIWithMenu(it) } })
+    homeViewModel.getUserDataResponse().observe(this, Observer { it?.let { updateUIWithUser(it) } })
     homeViewModel.observeMakeDrink()
       .observe(this, Observer { it?.let { parseMakeDrinkResponse(it) } })
   }

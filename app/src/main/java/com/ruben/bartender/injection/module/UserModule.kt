@@ -1,6 +1,7 @@
 package com.ruben.bartender.injection.module
 
 import com.ruben.data.repository.UserRepositoryImpl
+import com.ruben.domain.interactor.user.GetUserDataUseCase
 import com.ruben.domain.interactor.user.UserHandler
 import com.ruben.domain.interactor.user.UserHandlerImpl
 import com.ruben.domain.repository.UserRepository
@@ -18,4 +19,7 @@ class UserModule {
 
   @Provides
   fun userHandler(userHandlerImpl: UserHandlerImpl): UserHandler = userHandlerImpl
+
+  @Provides
+  fun userData(userRepository: UserRepository): GetUserDataUseCase = GetUserDataUseCase(userRepository)
 }

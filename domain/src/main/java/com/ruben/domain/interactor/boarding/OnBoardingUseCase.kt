@@ -16,8 +16,8 @@ class OnBoardingUseCase @Inject constructor(private val onBoardingRepository: On
     return onBoardingRepository.sendOTP(phoneNumber)
   }
 
-  fun signIn(phoneAuthCredential: PhoneAuthCredential): Flow<SignInRecord?> {
-    return onBoardingRepository.signIn(phoneAuthCredential)
+  fun signIn(phoneAuthCredential: PhoneAuthCredential, phoneNumber: String): Flow<SignInRecord?> {
+    return onBoardingRepository.signIn(phoneAuthCredential, phoneNumber)
   }
 
 }

@@ -13,19 +13,18 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/homeNameTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:text="@string/nav_header_title"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/all_font_18sp"
             android:fontFamily="@font/baskerville_bold"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textView"
+            android:id="@+id/homePhoneTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/nav_header_subtitle"
             android:textSize="@dimen/all_font_18sp"
             android:textColor="@color/colorWhite"
             android:fontFamily="@font/baskerville_bold"/>

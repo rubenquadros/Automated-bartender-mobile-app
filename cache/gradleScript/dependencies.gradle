@@ -3,5 +3,5 @@ dependencies {
 
     implementation roomDependencies.room
     implementation roomDependencies.roomCoroutines
-    annotationProcessor roomDependencies.annotationProcessor
+    kapt roomDependencies.annotationProcessor
 }

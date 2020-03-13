@@ -30,7 +30,7 @@ class OnBoardingRepositoryImpl @Inject constructor(dataSource: DataSource) : OnB
 
   override fun signIn(phoneAuthCredential: PhoneAuthCredential): Flow<SignInRecord?> {
     return firebaseApi.signIn(SignInRequest(phoneAuthCredential)).map {
-      if(it?.status == DataConstants.HTTP_OK) {
+      if(it?.status == DataConstants.HTTP_OK || it?.status == DataConstants.HTTP_NEW_USER) {
         preferences.isLoggedIn = true
       }
       boardingMapper.mapSignInResponse(it)

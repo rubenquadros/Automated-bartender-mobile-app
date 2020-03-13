@@ -27,8 +27,14 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textSize">@dimen/all_font_20sp</item>
+        <item name="android:textSize">@dimen/all_font_18sp</item>
         <item name="android:fontFamily">@font/baskerville_light</item>
+    </style>
+
+    <style name="NavDrawerStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/all_font_20sp</item>
+        <item name="android:fontFamily">@font/baskerville_regular</item>
     </style>
 
 </resources>

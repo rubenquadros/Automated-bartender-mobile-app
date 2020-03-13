@@ -51,9 +51,6 @@ class LoginFragment : Fragment() {
   @BindView(R.id.boardingParent)
   lateinit var parentView: ConstraintLayout
 
-  @BindView(R.id.boardingInnerParent)
-  lateinit var innerParentView: ConstraintLayout
-
   @BindView(R.id.boardingMobileEt)
   lateinit var boardingPhoneNum: AppCompatEditText
 
@@ -133,7 +130,7 @@ class LoginFragment : Fragment() {
   }
 
   private fun stopCounter() {
-    if(counterStarted) {
+    if (counterStarted) {
       counter.cancel()
     }
   }
@@ -166,6 +163,12 @@ class LoginFragment : Fragment() {
           )
         }
       }
+    } else {
+      ApplicationUtility.showSnack(
+        resources.getString(R.string.all_generic_err),
+        parentView,
+        resources.getString(R.string.all_ok)
+      )
     }
   }
 
@@ -173,7 +176,7 @@ class LoginFragment : Fragment() {
     ApplicationUtility.stopProgress(progressBar, activity!!)
     if (signInRecord != null) {
       when (signInRecord.responseCode) {
-        ApplicationConstants.HTTP_OK   -> {
+        ApplicationConstants.HTTP_OK        -> {
           stopCounter()
           val intent = Intent(activity, HomeActivity::class.java)
           intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -189,21 +192,21 @@ class LoginFragment : Fragment() {
             activity!!.supportFragmentManager
           )
         }
-        ApplicationConstants.AUTH_FAIL -> {
+        ApplicationConstants.AUTH_FAIL      -> {
           ApplicationUtility.showSnack(
             resources.getString(R.string.boarding_auth_fail),
             parentView,
             resources.getString(R.string.all_ok)
           )
         }
-        ApplicationConstants.API_FAIL  -> {
+        ApplicationConstants.API_FAIL       -> {
           ApplicationUtility.showSnack(
             resources.getString(R.string.all_generic_err),
             parentView,
             resources.getString(R.string.all_ok)
           )
         }
-        else                           -> {
+        else                                -> {
           ApplicationUtility.showSnack(
             resources.getString(R.string.all_generic_err),
             parentView,

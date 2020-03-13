@@ -1,29 +1,28 @@
 <resources>
     <string name="app_name">elBarman</string>
-    <string name="all_digits">0123456789</string>
-    <string name="all_alphabets">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
-    <string name="all_signup">SIGN IN / SIGN UP</string>
-    <string name="all_signin">SIGN IN</string>
     <string name="boarding_enter_num">Please enter your mobile number</string>
-    <string name="all_country_code">+91</string>
     <string name="boarding_num_hint">Phone Number *</string>
     <string name="boarding_otp_hint">XXXXXX</string>
     <string name="boarding_otp_desc">Your mobile number will be auto-verified. Please enter the received 6 digit OTP if it is not auto-detected and auto-verified</string>
-    <string name="all_resend">Resend</string>
     <string name="boarding_auth_fail">Authentication failed</string>
     <string name="boarding_otp_send_fail">Couldn\'t send OTP. Please try again later</string>
-    <string name="all_verify">VERIFY</string>
     <string name="signup_first_name_hint">First Name *</string>
     <string name="signup_last_name_hint">Last Name *</string>
-    <string name="all_get_started">GET STARTED</string>
+    <string name="signup_save_failed">Failed to save user data. Please try again later</string>
     <string name="title_activity_home">HomeActivity</string>
-    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_drawer_favourites">Favourites</string>
+    <string name="nav_drawer_history">History</string>
+    <string name="nav_drawer_logout">Logout</string>
+    <string name="nav_header_title">Hello</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-
+    <string name="all_signup">SIGN IN / SIGN UP</string>
+    <string name="all_signin">SIGN IN</string>
+    <string name="all_digits">0123456789</string>
+    <string name="all_alphabets">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="all_country_code">+91</string>
+    <string name="all_resend">Resend</string>
+    <string name="all_verify">VERIFY</string>
+    <string name="all_get_started">GET STARTED</string>
     <string name="all_unexpected_crash">OOPS! I crashed! Don\'t worry the developers have been notified</string>
     <string name="all_home">HOME</string>
     <string name="all_ok">OK</string>

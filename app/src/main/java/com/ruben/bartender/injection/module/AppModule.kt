@@ -23,7 +23,7 @@ open class AppModule {
   @ApplicationScoped
   @Provides
   fun provideDataSource(context: Context): DataSource {
-    return DataSourceImpl(context)
+    return DataSourceImpl.getInstance(context)
   }
 
 }

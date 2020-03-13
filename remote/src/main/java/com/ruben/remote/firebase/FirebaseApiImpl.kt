@@ -7,10 +7,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.ruben.remote.model.request.SaveUserDetailsRequest
 import com.ruben.remote.model.request.SendOtpRequest
 import com.ruben.remote.model.request.SignInRequest
 import com.ruben.remote.model.response.basicMenuResponse.BasicMenuResponse
 import com.ruben.remote.model.response.menuCategoryResponse.CategoryResponse
+import com.ruben.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
 import com.ruben.remote.model.response.onBoardingResponse.SendOtpResponse
 import com.ruben.remote.model.response.onBoardingResponse.SignInResponse
 import com.ruben.remote.utils.ApiConstants
@@ -103,16 +105,18 @@ class FirebaseApiImpl : FirebaseApi {
     return channelFlow {
       FirebaseAuth.getInstance().signInWithCredential(signInRequest.phoneAuthCredential)
         .addOnCompleteListener {
-          val signInResponse = SignInResponse(0)
           if(it.isSuccessful) {
-            val user = it.result.user
-            if(user.metadata.creationTimestamp == user.metadata.lastSignInTimestamp) {
+            val signInResponse = SignInResponse(0)
+            val user = it.result?.user
+            if(user?.metadata?.creationTimestamp == user?.metadata?.lastSignInTimestamp
+              || (user?.metadata?.lastSignInTimestamp!! - user.metadata?.creationTimestamp!! < 200)) {
               signInResponse.status = 404
             }else {
               signInResponse.status = 200
             }
             channel.offer(signInResponse)
           }else {
+            val signInResponse = SignInResponse(0)
             signInResponse.status = 401
             channel.offer(signInResponse)
           }
@@ -122,6 +126,25 @@ class FirebaseApiImpl : FirebaseApi {
           signInResponse.status = 500
           channel.offer(signInResponse)
           channel.close(null)
+        }
+      awaitClose()
+    }
+  }
+
+  override fun saveUser(saveUserDetailsRequest: SaveUserDetailsRequest): Flow<SaveUserDetailsResponse?> {
+    return channelFlow {
+      firestoreDB.collection(ApiConstants.USER_DETAILS_COLLECTION).document(saveUserDetailsRequest.phoneNumber)
+        .set(saveUserDetailsRequest)
+        .addOnSuccessListener {
+          val saveUserDetailsResponse = SaveUserDetailsResponse(0)
+          saveUserDetailsResponse.status = 200
+          channel.offer(saveUserDetailsResponse)
+        }
+        .addOnFailureListener {
+          val saveUserDetailsResponse = SaveUserDetailsResponse(0)
+          saveUserDetailsResponse.status = 500
+          channel.offer(saveUserDetailsResponse)
+          channel.close()
         }
       awaitClose()
     }

@@ -11,10 +11,12 @@ object ApiConstants {
   const val HTTP_OK = 200
   const val HTTP_AUTH_FAIL = 401
   const val HTTP_API_FAIL = 500
+  const val HTTP_NEW_USER = 404
   const val SUCCESS = "success"
   const val FAIL = "fail"
   const val AUTH_FAIL = "Auth fail"
   const val MENU_COLLECTION = "menu"
   const val BASIC_MENU_DOC = "basicmenu"
   const val BASIC_MENU_COLLECTION = "basicmenulist"
+  const val USER_DETAILS_COLLECTION = "users"
 }

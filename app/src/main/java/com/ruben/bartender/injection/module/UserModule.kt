@@ -2,6 +2,7 @@ package com.ruben.bartender.injection.module
 
 import com.ruben.data.repository.UserRepositoryImpl
 import com.ruben.domain.interactor.user.GetUserDataUseCase
+import com.ruben.domain.interactor.user.SignOutUseCase
 import com.ruben.domain.interactor.user.UserHandler
 import com.ruben.domain.interactor.user.UserHandlerImpl
 import com.ruben.domain.repository.UserRepository
@@ -22,4 +23,7 @@ class UserModule {
 
   @Provides
   fun userData(userRepository: UserRepository): GetUserDataUseCase = GetUserDataUseCase(userRepository)
+
+  @Provides
+  fun logout(userRepository: UserRepository): SignOutUseCase = SignOutUseCase(userRepository)
 }

@@ -16,6 +16,7 @@ import com.ruben.remote.model.response.menuCategoryResponse.CategoryResponse
 import com.ruben.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
 import com.ruben.remote.model.response.onBoardingResponse.SendOtpResponse
 import com.ruben.remote.model.response.onBoardingResponse.SignInResponse
+import com.ruben.remote.model.response.signoutResponse.SignoutResponse
 import com.ruben.remote.model.response.userDataResponse.UserDataResponse
 import com.ruben.remote.utils.ApiConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -168,6 +169,17 @@ class FirebaseApiImpl : FirebaseApi {
           channel.offer(null)
           channel.close(it)
         }
+      awaitClose()
+    }
+  }
+
+  override fun logout(): Flow<SignoutResponse?> {
+    return channelFlow {
+      val firebaseAuth = FirebaseAuth.getInstance()
+      firebaseAuth.signOut()
+      val signoutResponse = SignoutResponse(0)
+      signoutResponse.status = ApiConstants.HTTP_OK
+      channel.offer(signoutResponse)
       awaitClose()
     }
   }

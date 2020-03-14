@@ -19,4 +19,6 @@ object ApiConstants {
   const val BASIC_MENU_DOC = "basicmenu"
   const val BASIC_MENU_COLLECTION = "basicmenulist"
   const val USER_DETAILS_COLLECTION = "users"
+  const val IS_LOGGED_IN = "is_logged_in"
+  const val PHONE_NUMBER = "phone_number"
 }

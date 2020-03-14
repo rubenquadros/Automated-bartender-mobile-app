@@ -31,6 +31,7 @@ import com.ruben.bartender.utils.ApplicationUtility
 import com.ruben.domain.interactor.user.UserHandler
 import com.ruben.domain.model.OtpRecord
 import com.ruben.domain.model.SignInRecord
+import com.ruben.remote.utils.ApiConstants
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -176,13 +177,13 @@ class LoginFragment : Fragment() {
     ApplicationUtility.stopProgress(progressBar, activity!!)
     if (signInRecord != null) {
       when (signInRecord.responseCode) {
-        ApplicationConstants.HTTP_OK        -> {
+        ApiConstants.HTTP_OK           -> {
           stopCounter()
           val intent = Intent(activity, HomeActivity::class.java)
           intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
           startActivity(intent)
         }
-        ApplicationConstants.FILE_NOT_FOUND -> {
+        ApiConstants.HTTP_NEW_USER -> {
           stopCounter()
           ApplicationUtility.showFragment(
             SignUpFragment.newInstance(phoneNumber),
@@ -192,14 +193,14 @@ class LoginFragment : Fragment() {
             activity!!.supportFragmentManager
           )
         }
-        ApplicationConstants.AUTH_FAIL      -> {
+        ApiConstants.HTTP_AUTH_FAIL      -> {
           ApplicationUtility.showSnack(
             resources.getString(R.string.boarding_auth_fail),
             parentView,
             resources.getString(R.string.all_ok)
           )
         }
-        ApplicationConstants.API_FAIL       -> {
+        ApiConstants.HTTP_API_FAIL       -> {
           ApplicationUtility.showSnack(
             resources.getString(R.string.all_generic_err),
             parentView,

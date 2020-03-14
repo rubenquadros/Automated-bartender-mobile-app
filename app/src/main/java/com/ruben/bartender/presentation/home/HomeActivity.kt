@@ -1,6 +1,7 @@
 package com.ruben.bartender.presentation.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.util.Log
@@ -26,21 +27,26 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.ruben.bartender.R
 import com.ruben.bartender.base.BaseActivity
+import com.ruben.bartender.presentation.onboarding.OnBoardingActivity
 import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
 import com.ruben.domain.interactor.user.UserHandler
 import com.ruben.domain.model.BasicMenuRecord
 import com.ruben.domain.model.CategoryRecord
 import com.ruben.domain.model.MakeDrinkRecord
+import com.ruben.domain.model.SignOutRecord
 import com.ruben.domain.model.UserRecord
+import com.ruben.remote.utils.ApiConstants
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.all_appbar_layout.*
 import kotlinx.android.synthetic.main.nav_header_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@Suppress("PrivatePropertyName")
 @ExperimentalCoroutinesApi
-class HomeActivity : BaseActivity(), IDrinkClickListener {
+class HomeActivity : BaseActivity(), IDrinkClickListener,
+  NavigationView.OnNavigationItemSelectedListener {
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -83,12 +89,14 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
 
   private lateinit var homeViewModel: HomeViewModel
   private lateinit var popupMenu: PopupMenu
+  private val TAG = javaClass.simpleName
 
   override fun onCreate(savedInstanceState: Bundle?) {
     AndroidInjection.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_home)
     ButterKnife.bind(this)
+    navigationView.setNavigationItemSelectedListener(this)
     setupToolBar()
     setupViewModel()
     observeData()
@@ -115,7 +123,7 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
   }
 
   private fun retrieveUserData() {
-    if(userHandler.phoneNumber() != null) {
+    if (userHandler.phoneNumber() != null) {
       homeViewModel.retrieveUserData(userHandler.phoneNumber()!!)
     }
   }
@@ -136,7 +144,7 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
         }
       }
       popupMenu.setOnMenuItemClickListener {
-        Log.d("@@@", it.title.toString())
+        Log.d(TAG, it.title.toString())
         return@setOnMenuItemClickListener false
       }
     } else {
@@ -156,7 +164,7 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
 
   @SuppressLint("SetTextI18n")
   private fun updateUIWithUser(userRecord: UserRecord?) {
-    if(userRecord != null) {
+    if (userRecord != null) {
       homeNameTv.text = hello + " " + userRecord.firstName
       homePhoneTv.text = userRecord.phoneNumber
     }
@@ -166,17 +174,44 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
     ApplicationUtility.stopProgress(progressBar, this)
     if (makeDrinkRecord != null) {
       when (makeDrinkRecord.responseCode) {
-        ApplicationConstants.HTTP_OK        -> {
-          Log.d("@@@", makeDrinkRecord.responseMessage)
+        ApiConstants.HTTP_OK -> {
+          Log.d(TAG, makeDrinkRecord.responseMessage)
           ApplicationUtility.showDrinkSuccessDialog(this)
         }
-        ApplicationConstants.FILE_NOT_FOUND -> {
+        ApiConstants.HTTP_NEW_USER -> {
           ApplicationUtility.showSnack(makeDrinkRecord.responseMessage, parentView, ok)
         }
-        else                                -> {
+        else -> {
           ApplicationUtility.showSnack(errorMessage, parentView, ok)
         }
       }
+    }
+  }
+
+  private fun parseSignOutResponse(signOutRecord: SignOutRecord?) {
+    ApplicationUtility.stopProgress(progressBar, this)
+    if (signOutRecord != null) {
+      when (signOutRecord.responseCode) {
+        ApiConstants.HTTP_OK -> {
+          val intent = Intent(this, OnBoardingActivity::class.java)
+          intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+          startActivity(intent)
+        }
+        else                 -> {
+          ApplicationUtility.showSnack(
+            this.resources.getString(R.string.all_generic_err),
+            parentView,
+            this.resources.getString(R.string.all_ok)
+          )
+        }
+      }
+      Log.d(TAG, signOutRecord.message)
+    } else {
+      ApplicationUtility.showSnack(
+        this.resources.getString(R.string.all_generic_err),
+        parentView,
+        this.resources.getString(R.string.all_ok)
+      )
     }
   }
 
@@ -186,6 +221,8 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
     homeViewModel.getUserDataResponse().observe(this, Observer { it?.let { updateUIWithUser(it) } })
     homeViewModel.observeMakeDrink()
       .observe(this, Observer { it?.let { parseMakeDrinkResponse(it) } })
+    homeViewModel.getSignOutResponse()
+      .observe(this, Observer { it?.let { parseSignOutResponse(it) } })
   }
 
   @OnClick(value = [R.id.home_menu])
@@ -200,6 +237,23 @@ class HomeActivity : BaseActivity(), IDrinkClickListener {
   override fun onDrinkClicked(drinkName: String) {
     ApplicationUtility.showProgress(progressBar, this)
     homeViewModel.makeDrink(drinkName)
+  }
+
+  override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+    when (p0.itemId) {
+      R.id.nav_favourites -> {
+
+      }
+      R.id.nav_history    -> {
+
+      }
+      R.id.nav_logout     -> {
+        ApplicationUtility.showProgress(progressBar, this)
+        homeViewModel.logout()
+      }
+    }
+    drawerLayout.closeDrawer(GravityCompat.START)
+    return false
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {

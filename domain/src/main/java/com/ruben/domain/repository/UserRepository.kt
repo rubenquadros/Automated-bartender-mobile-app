@@ -1,5 +1,6 @@
 package com.ruben.domain.repository
 
+import com.ruben.domain.model.SignOutRecord
 import com.ruben.domain.model.UserRecord
 import kotlinx.coroutines.flow.Flow
 
@@ -10,4 +11,5 @@ interface UserRepository {
   fun isLoggedIn(): Boolean
   fun phoneNumber(): String?
   fun getUserData(phoneNumber: String): Flow<UserRecord?>
+  fun logout(): Flow<SignOutRecord?>
 }

@@ -2,6 +2,7 @@ package com.ruben.data.repository
 
 import com.ruben.data.DataSource
 import com.ruben.data.mapper.UserDataMapper
+import com.ruben.domain.model.SignOutRecord
 import com.ruben.domain.model.UserRecord
 import com.ruben.domain.repository.UserRepository
 import com.ruben.remote.model.request.GetUserDataRequest
@@ -29,6 +30,14 @@ class UserRepositoryImpl @Inject constructor(dataSource: DataSource): UserReposi
   override fun getUserData(phoneNumber: String): Flow<UserRecord?> {
     return firebaseApi.getUserData(GetUserDataRequest(phoneNumber)).map {
       userDataMapper.mapUserData(it)
+    }
+  }
+
+  override fun logout(): Flow<SignOutRecord?> {
+    return firebaseApi.logout().map {
+      preference.isLoggedIn =  false
+      preference.phone = ""
+      userDataMapper.mapSignOutResponse(it)
     }
   }
 }

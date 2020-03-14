@@ -3,12 +3,12 @@ package com.ruben.data.repository
 import com.google.firebase.auth.PhoneAuthCredential
 import com.ruben.data.DataSource
 import com.ruben.data.mapper.BoardingMapper
-import com.ruben.data.utils.DataConstants
 import com.ruben.domain.model.OtpRecord
 import com.ruben.domain.model.SignInRecord
 import com.ruben.domain.repository.OnBoardingRepository
 import com.ruben.remote.model.request.SendOtpRequest
 import com.ruben.remote.model.request.SignInRequest
+import com.ruben.remote.utils.ApiConstants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -30,8 +30,10 @@ class OnBoardingRepositoryImpl @Inject constructor(dataSource: DataSource) : OnB
 
   override fun signIn(phoneAuthCredential: PhoneAuthCredential, phoneNumber: String): Flow<SignInRecord?> {
     return firebaseApi.signIn(SignInRequest(phoneAuthCredential)).map {
-      if(it?.status == DataConstants.HTTP_OK || it?.status == DataConstants.HTTP_NEW_USER) {
+      if(it?.status == ApiConstants.HTTP_OK) {
         preferences.isLoggedIn = true
+        preferences.phone = phoneNumber
+      }else if(it?.status == ApiConstants.HTTP_NEW_USER) {
         preferences.phone = phoneNumber
       }
       boardingMapper.mapSignInResponse(it)

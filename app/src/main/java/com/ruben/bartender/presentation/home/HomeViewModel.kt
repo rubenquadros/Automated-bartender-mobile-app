@@ -8,9 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.ruben.domain.interactor.drink.MakeDrinkUseCase
 import com.ruben.domain.interactor.menu.BasicMenuUseCase
 import com.ruben.domain.interactor.user.GetUserDataUseCase
+import com.ruben.domain.interactor.user.SignOutUseCase
 import com.ruben.domain.model.BasicMenuRecord
 import com.ruben.domain.model.CategoryRecord
 import com.ruben.domain.model.MakeDrinkRecord
+import com.ruben.domain.model.SignOutRecord
 import com.ruben.domain.model.UserRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +28,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
   private val basicMenuUseCase: BasicMenuUseCase,
   private val makeDrinkUseCase: MakeDrinkUseCase,
-  private val getUserDataUseCase: GetUserDataUseCase
+  private val getUserDataUseCase: GetUserDataUseCase,
+  private val signOutUseCase: SignOutUseCase
 ) :
   ViewModel(), LifecycleObserver {
 
@@ -34,6 +37,7 @@ class HomeViewModel @Inject constructor(
   private var menuCategories: MutableLiveData<CategoryRecord?> = MutableLiveData()
   private var makeDrinkResponse: MutableLiveData<MakeDrinkRecord?> = MutableLiveData()
   private var userDataResponse: MutableLiveData<UserRecord?> = MutableLiveData()
+  private var signoutResponse: MutableLiveData<SignOutRecord?> = MutableLiveData()
 
   fun retrieveBasicMenu() {
     viewModelScope.launch {
@@ -62,6 +66,15 @@ class HomeViewModel @Inject constructor(
     }
   }
 
+  fun logout() {
+    viewModelScope.launch {
+      signOutUseCase.logout().flowOn(Dispatchers.IO)
+        .collect {
+          signoutResponse.postValue(it)
+        }
+    }
+  }
+
   fun makeDrink(name: String) {
     viewModelScope.launch {
       val response = makeDrinkUseCase.makeDrink(name)
@@ -83,5 +96,9 @@ class HomeViewModel @Inject constructor(
 
   fun observeMakeDrink(): LiveData<MakeDrinkRecord?> {
     return makeDrinkResponse
+  }
+
+  fun getSignOutResponse(): LiveData<SignOutRecord?> {
+    return signoutResponse
   }
 }

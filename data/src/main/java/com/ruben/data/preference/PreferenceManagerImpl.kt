@@ -2,7 +2,7 @@ package com.ruben.data.preference
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.ruben.data.utils.DataConstants
+import com.ruben.remote.utils.ApiConstants
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -15,12 +15,12 @@ class PreferenceManagerImpl(context: Context) : PreferenceManager {
 
   override var isLoggedIn: Boolean by BooleanPreference(
     sharedPreferences,
-    DataConstants.IS_LOGGED_IN,
+    ApiConstants.IS_LOGGED_IN,
     false
   )
   override var phone: String? by StringPreference(
     sharedPreferences,
-    DataConstants.PHONE_NUMBER,
+    ApiConstants.PHONE_NUMBER,
     null
   )
 }

@@ -3,10 +3,10 @@ package com.ruben.data.repository
 import com.ruben.cache.entity.User
 import com.ruben.data.DataSource
 import com.ruben.data.mapper.BoardingMapper
-import com.ruben.data.utils.DataConstants
 import com.ruben.domain.model.SaveUserRecord
 import com.ruben.domain.repository.SignUpRepository
 import com.ruben.remote.model.request.SaveUserDetailsRequest
+import com.ruben.remote.utils.ApiConstants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -17,6 +17,7 @@ import javax.inject.Inject
 class SignUpRepositoryImpl @Inject constructor(dataSource: DataSource): SignUpRepository {
 
   private val firebaseApi = dataSource.api().firebaseApiHandler()
+  private val preferences = dataSource.preference()
   private val db = dataSource.db()
   private val boardingMapper = BoardingMapper()
 
@@ -27,7 +28,8 @@ class SignUpRepositoryImpl @Inject constructor(dataSource: DataSource): SignUpRe
   ): Flow<SaveUserRecord?> {
     return firebaseApi.saveUser(SaveUserDetailsRequest(firstName, lastName, phoneNumber))
       .map {
-        if(it?.status == DataConstants.HTTP_OK) {
+        if(it?.status == ApiConstants.HTTP_OK) {
+          preferences.isLoggedIn = true
           db.user().saveUser(User(firstName, lastName, phoneNumber))
         }
         boardingMapper.mapSaveUserResponse(it)

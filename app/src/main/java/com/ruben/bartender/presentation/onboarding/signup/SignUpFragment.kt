@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -23,9 +23,9 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.ruben.bartender.R
 import com.ruben.bartender.presentation.home.HomeActivity
-import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
 import com.ruben.domain.model.SaveUserRecord
+import com.ruben.remote.utils.ApiConstants
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -94,12 +94,12 @@ class SignUpFragment : Fragment() {
     ApplicationUtility.stopProgress(progressBar, activity!!)
     if (saveUserRecord != null) {
       when (saveUserRecord.responseCode) {
-        ApplicationConstants.HTTP_OK  -> {
+        ApiConstants.HTTP_OK     -> {
           val intent = Intent(activity, HomeActivity::class.java)
           intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
           startActivity(intent)
         }
-        ApplicationConstants.API_FAIL -> {
+        ApiConstants.HTTP_API_FAIL -> {
           ApplicationUtility.showSnack(
             resources.getString(R.string.signup_save_failed),
             signUpParent,

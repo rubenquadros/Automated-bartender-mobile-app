@@ -82,25 +82,27 @@ class BoardingMapper {
   }
 
   fun mapCheckUserResponse(phoneNumber: String, checkUserResponse: CheckUserResponse?): CheckUserRecord? {
-    return if(checkUserResponse != null) {
+    if(checkUserResponse != null) {
       val checkUserRecord = CheckUserRecord(0, "")
       if(checkUserResponse.users!!.size == 0) {
         checkUserRecord.status = ApiConstants.HTTP_NEW_USER
         checkUserRecord.message = ApiConstants.NEW_USER
+        return checkUserRecord
       }else {
         for (user in checkUserResponse.users!!) {
           if (user.id == phoneNumber) {
             checkUserRecord.status = ApiConstants.HTTP_OK
             checkUserRecord.message = ApiConstants.SUCCESS
+            return checkUserRecord
           } else {
             checkUserRecord.status = ApiConstants.HTTP_NEW_USER
             checkUserRecord.message = ApiConstants.NEW_USER
           }
         }
+        return checkUserRecord
       }
-      return checkUserRecord
     }else {
-      null
+      return null
     }
   }
 }

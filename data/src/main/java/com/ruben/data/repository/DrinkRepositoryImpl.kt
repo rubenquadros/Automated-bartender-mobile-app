@@ -5,6 +5,7 @@ import com.ruben.data.mapper.DrinkMapper
 import com.ruben.domain.model.MakeDrinkRecord
 import com.ruben.domain.repository.DrinkRepository
 import com.ruben.remote.model.request.MakeDrinkRequest
+import com.ruben.remote.utils.ApiConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.lang.Exception
 import java.net.ConnectException
@@ -26,13 +27,13 @@ class DrinkRepositoryImpl @Inject constructor(dataSource: DataSource) : DrinkRep
       )
     }catch (e: ConnectException) {
       val makeDrinkRecord = MakeDrinkRecord(0, "")
-      makeDrinkRecord.responseCode = 0
-      makeDrinkRecord.responseMessage = ""
+      makeDrinkRecord.responseCode = ApiConstants.HTTP_CON_ERROR
+      makeDrinkRecord.responseMessage = ApiConstants.CON_ERROR
       makeDrinkRecord
     }catch (e: Exception) {
       val makeDrinkRecord = MakeDrinkRecord(0, "")
-      makeDrinkRecord.responseCode = 0
-      makeDrinkRecord.responseMessage = ""
+      makeDrinkRecord.responseCode = ApiConstants.HTTP_API_FAIL
+      makeDrinkRecord.responseMessage = ApiConstants.FAIL
       makeDrinkRecord
     }
   }

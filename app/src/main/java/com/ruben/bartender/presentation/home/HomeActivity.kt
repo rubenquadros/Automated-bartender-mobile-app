@@ -176,17 +176,37 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
     ApplicationUtility.stopProgress(progressBar, this)
     if (makeDrinkRecord != null) {
       when (makeDrinkRecord.responseCode) {
-        ApiConstants.HTTP_OK -> {
-          Log.d(TAG, makeDrinkRecord.responseMessage)
+        ApiConstants.HTTP_OK        -> {
           ApplicationUtility.showDrinkSuccessDialog(this)
         }
-        ApiConstants.HTTP_NEW_USER -> {
+        ApiConstants.HTTP_NEW_USER  -> {
           ApplicationUtility.showSnack(makeDrinkRecord.responseMessage, parentView, ok)
         }
-        else -> {
+        ApiConstants.HTTP_API_FAIL  -> {
+          ApplicationUtility.showSnack(
+            this.resources.getString(R.string.all_generic_err),
+            parentView,
+            this.resources.getString(R.string.all_ok)
+          )
+        }
+        ApiConstants.HTTP_CON_ERROR -> {
+          ApplicationUtility.showSnack(
+            this.resources.getString(R.string.all_cannot_make_drink),
+            parentView,
+            this.resources.getString(R.string.all_ok)
+          )
+        }
+        else                        -> {
           ApplicationUtility.showSnack(errorMessage, parentView, ok)
         }
       }
+      Log.d(TAG, makeDrinkRecord.responseMessage)
+    } else {
+      ApplicationUtility.showSnack(
+        this.resources.getString(R.string.all_generic_err),
+        parentView,
+        this.resources.getString(R.string.all_ok)
+      )
     }
   }
 
@@ -238,23 +258,7 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
 
   override fun onDrinkClicked(drinkName: String) {
     ApplicationUtility.showProgress(progressBar, this)
-    try {
-      homeViewModel.makeDrink(drinkName)
-    } catch (e: ConnectException) {
-      ApplicationUtility.stopProgress(progressBar, this)
-      ApplicationUtility.showSnack(
-        this.resources.getString(R.string.all_cannot_make_drink),
-        parentView,
-        this.resources.getString(R.string.all_ok)
-      )
-    } catch (e: Exception) {
-      ApplicationUtility.stopProgress(progressBar, this)
-      ApplicationUtility.showSnack(
-        this.resources.getString(R.string.all_generic_err),
-        parentView,
-        this.resources.getString(R.string.all_ok)
-      )
-    }
+    homeViewModel.makeDrink(drinkName)
   }
 
   override fun onNavigationItemSelected(p0: MenuItem): Boolean {

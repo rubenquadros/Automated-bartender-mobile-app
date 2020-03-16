@@ -175,15 +175,14 @@ class LoginFragment : Fragment() {
   }
 
   private fun parseSignInResponse(signInRecord: SignInRecord?) {
-    ApplicationUtility.stopProgress(progressBar, activity!!)
     if (signInRecord != null) {
       when (signInRecord.responseCode) {
         ApiConstants.HTTP_OK        -> {
           stopCounter()
-          ApplicationUtility.showProgress(progressBar, activity!!)
           loginViewModel.checkIfUserExists(phoneNumber)
         }
         ApiConstants.HTTP_NEW_USER  -> {
+          ApplicationUtility.stopProgress(progressBar, activity!!)
           stopCounter()
           ApplicationUtility.showFragment(
             SignUpFragment.newInstance(phoneNumber),
@@ -194,6 +193,7 @@ class LoginFragment : Fragment() {
           )
         }
         ApiConstants.HTTP_AUTH_FAIL -> {
+          ApplicationUtility.stopProgress(progressBar, activity!!)
           ApplicationUtility.showSnack(
             resources.getString(R.string.boarding_auth_fail),
             parentView,
@@ -201,6 +201,7 @@ class LoginFragment : Fragment() {
           )
         }
         ApiConstants.HTTP_API_FAIL  -> {
+          ApplicationUtility.stopProgress(progressBar, activity!!)
           ApplicationUtility.showSnack(
             resources.getString(R.string.all_generic_err),
             parentView,
@@ -208,6 +209,7 @@ class LoginFragment : Fragment() {
           )
         }
         else                        -> {
+          ApplicationUtility.stopProgress(progressBar, activity!!)
           ApplicationUtility.showSnack(
             resources.getString(R.string.all_generic_err),
             parentView,

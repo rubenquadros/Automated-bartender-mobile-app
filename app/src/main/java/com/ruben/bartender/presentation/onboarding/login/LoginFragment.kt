@@ -29,6 +29,7 @@ import com.ruben.bartender.presentation.onboarding.signup.SignUpFragment
 import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
 import com.ruben.domain.interactor.user.UserHandler
+import com.ruben.domain.model.CheckUserRecord
 import com.ruben.domain.model.OtpRecord
 import com.ruben.domain.model.SignInRecord
 import com.ruben.remote.utils.ApiConstants
@@ -95,7 +96,7 @@ class LoginFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
-    subscribeOtpResponse()
+    observeResponses()
     observeInputs()
   }
 
@@ -177,13 +178,12 @@ class LoginFragment : Fragment() {
     ApplicationUtility.stopProgress(progressBar, activity!!)
     if (signInRecord != null) {
       when (signInRecord.responseCode) {
-        ApiConstants.HTTP_OK           -> {
+        ApiConstants.HTTP_OK        -> {
           stopCounter()
-          val intent = Intent(activity, HomeActivity::class.java)
-          intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-          startActivity(intent)
+          ApplicationUtility.showProgress(progressBar, activity!!)
+          loginViewModel.checkIfUserExists(phoneNumber)
         }
-        ApiConstants.HTTP_NEW_USER -> {
+        ApiConstants.HTTP_NEW_USER  -> {
           stopCounter()
           ApplicationUtility.showFragment(
             SignUpFragment.newInstance(phoneNumber),
@@ -193,21 +193,21 @@ class LoginFragment : Fragment() {
             activity!!.supportFragmentManager
           )
         }
-        ApiConstants.HTTP_AUTH_FAIL      -> {
+        ApiConstants.HTTP_AUTH_FAIL -> {
           ApplicationUtility.showSnack(
             resources.getString(R.string.boarding_auth_fail),
             parentView,
             resources.getString(R.string.all_ok)
           )
         }
-        ApiConstants.HTTP_API_FAIL       -> {
+        ApiConstants.HTTP_API_FAIL  -> {
           ApplicationUtility.showSnack(
             resources.getString(R.string.all_generic_err),
             parentView,
             resources.getString(R.string.all_ok)
           )
         }
-        else                                -> {
+        else                        -> {
           ApplicationUtility.showSnack(
             resources.getString(R.string.all_generic_err),
             parentView,
@@ -222,6 +222,27 @@ class LoginFragment : Fragment() {
         parentView,
         resources.getString(R.string.all_ok)
       )
+    }
+  }
+
+  private fun parseCheckUserResponse(checkUserRecord: CheckUserRecord?) {
+    ApplicationUtility.stopProgress(progressBar, activity!!)
+    if(checkUserRecord != null) {
+      when(checkUserRecord.status) {
+        ApiConstants.HTTP_OK -> {
+          val intent = Intent(activity!!, HomeActivity::class.java)
+          intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+          startActivity(intent)
+        }
+        ApiConstants.HTTP_NEW_USER -> {
+          ApplicationUtility.showFragment(SignUpFragment.newInstance(phoneNumber), false, ApplicationConstants.SIGN_UP_TAG, null, activity!!.supportFragmentManager)
+        }
+        else -> {
+          ApplicationUtility.showSnack(resources.getString(R.string.all_generic_err), parentView, resources.getString(R.string.all_ok))
+        }
+      }
+    }else {
+      ApplicationUtility.showSnack(resources.getString(R.string.all_generic_err), parentView, resources.getString(R.string.all_ok))
     }
   }
 
@@ -288,10 +309,12 @@ class LoginFragment : Fragment() {
     })
   }
 
-  private fun subscribeOtpResponse() {
+  private fun observeResponses() {
     loginViewModel.getOtpResponse().observe(this, Observer { it?.let { parseOtpResponse(it) } })
     loginViewModel.getSignInResponse()
       .observe(this, Observer { it?.let { parseSignInResponse(it) } })
+    loginViewModel.getCheckUserResponse()
+      .observe(this, Observer { it?.let { parseCheckUserResponse(it) } })
   }
 
   companion object {

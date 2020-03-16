@@ -1,11 +1,13 @@
 package com.ruben.remote.firebase
 
+import com.google.firebase.firestore.DocumentSnapshot
 import com.ruben.remote.model.request.GetUserDataRequest
 import com.ruben.remote.model.request.SendOtpRequest
 import com.ruben.remote.model.request.SignInRequest
 import com.ruben.remote.model.request.SaveUserDetailsRequest
 import com.ruben.remote.model.response.basicMenuResponse.BasicMenuResponse
 import com.ruben.remote.model.response.menuCategoryResponse.CategoryResponse
+import com.ruben.remote.model.response.onBoardingResponse.CheckUserResponse
 import com.ruben.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
 import com.ruben.remote.model.response.onBoardingResponse.SendOtpResponse
 import com.ruben.remote.model.response.onBoardingResponse.SignInResponse
@@ -20,6 +22,7 @@ interface FirebaseApi {
   fun sendOTP(sendOtpRequest: SendOtpRequest): Flow<SendOtpResponse?>
   fun signIn(signInRequest: SignInRequest): Flow<SignInResponse?>
   fun saveUser(saveUserDetailsRequest: SaveUserDetailsRequest): Flow<SaveUserDetailsResponse?>
+  fun checkIfUserExists(): Flow<CheckUserResponse?>
   fun getUserData(getUserDataRequest: GetUserDataRequest): Flow<UserDataResponse?>
   fun getBasicMenu(): Flow<BasicMenuResponse?>
   fun getMenuCategories(): Flow<CategoryResponse?>

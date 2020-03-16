@@ -28,4 +28,5 @@
     <string name="all_continue">CONTINUE</string>
     <string name="all_generic_err">OOPS! Something went wrong, please try again later</string>
     <string name="all_drink_success">Your drink is prepared\n Please collect your drink</string>
+    <string name="all_cannot_make_drink">Sorry, unable to make your drink. Please try again later</string>
 </resources>

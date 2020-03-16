@@ -29,7 +29,7 @@ class SplashActivity : BaseActivity() {
   private fun startSplash() {
     window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     Handler().postDelayed({
-      if(userHandler.isLoggedIn()) {
+      if(userHandler.isLoggedIn() && userHandler.isRegistered()) {
         startActivity(Intent(this, HomeActivity::class.java))
       }else {
         startActivity(Intent(this, OnBoardingActivity::class.java))

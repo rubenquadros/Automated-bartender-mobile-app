@@ -41,6 +41,8 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.all_appbar_layout.*
 import kotlinx.android.synthetic.main.nav_header_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.lang.Exception
+import java.net.ConnectException
 import javax.inject.Inject
 
 @Suppress("PrivatePropertyName")
@@ -236,7 +238,23 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
 
   override fun onDrinkClicked(drinkName: String) {
     ApplicationUtility.showProgress(progressBar, this)
-    homeViewModel.makeDrink(drinkName)
+    try {
+      homeViewModel.makeDrink(drinkName)
+    } catch (e: ConnectException) {
+      ApplicationUtility.stopProgress(progressBar, this)
+      ApplicationUtility.showSnack(
+        this.resources.getString(R.string.all_cannot_make_drink),
+        parentView,
+        this.resources.getString(R.string.all_ok)
+      )
+    } catch (e: Exception) {
+      ApplicationUtility.stopProgress(progressBar, this)
+      ApplicationUtility.showSnack(
+        this.resources.getString(R.string.all_generic_err),
+        parentView,
+        this.resources.getString(R.string.all_ok)
+      )
+    }
   }
 
   override fun onNavigationItemSelected(p0: MenuItem): Boolean {

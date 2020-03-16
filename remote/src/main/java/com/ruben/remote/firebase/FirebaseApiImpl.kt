@@ -6,6 +6,7 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ruben.remote.model.request.GetUserDataRequest
 import com.ruben.remote.model.request.SaveUserDetailsRequest
@@ -13,6 +14,7 @@ import com.ruben.remote.model.request.SendOtpRequest
 import com.ruben.remote.model.request.SignInRequest
 import com.ruben.remote.model.response.basicMenuResponse.BasicMenuResponse
 import com.ruben.remote.model.response.menuCategoryResponse.CategoryResponse
+import com.ruben.remote.model.response.onBoardingResponse.CheckUserResponse
 import com.ruben.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
 import com.ruben.remote.model.response.onBoardingResponse.SendOtpResponse
 import com.ruben.remote.model.response.onBoardingResponse.SignInResponse
@@ -149,6 +151,22 @@ class FirebaseApiImpl : FirebaseApi {
           val saveUserDetailsResponse = SaveUserDetailsResponse(0)
           saveUserDetailsResponse.status = 500
           channel.offer(saveUserDetailsResponse)
+          channel.close()
+        }
+      awaitClose()
+    }
+  }
+
+  override fun checkIfUserExists(): Flow<CheckUserResponse?> {
+    return channelFlow {
+      val checkUserResponse = CheckUserResponse(null)
+      firestoreDB.collection(ApiConstants.USER_DETAILS_COLLECTION).get()
+        .addOnSuccessListener {
+          checkUserResponse.users = it.documents
+          channel.offer(checkUserResponse)
+        }
+        .addOnFailureListener {
+          channel.offer(null)
           channel.close()
         }
       awaitClose()

@@ -2,6 +2,7 @@ package com.ruben.bartender.injection.module
 
 import com.ruben.data.repository.OnBoardingRepositoryImpl
 import com.ruben.data.repository.SignUpRepositoryImpl
+import com.ruben.domain.interactor.boarding.CheckUserUseCase
 import com.ruben.domain.interactor.boarding.OnBoardingUseCase
 import com.ruben.domain.interactor.boarding.SignUpUseCase
 import com.ruben.domain.repository.OnBoardingRepository
@@ -28,4 +29,7 @@ class OnBoardingModule {
 
   @Provides
   fun signUp(signUpRepository: SignUpRepository) = SignUpUseCase(signUpRepository)
+
+  @Provides
+  fun checkUser(onBoardingRepository: OnBoardingRepository) = CheckUserUseCase(onBoardingRepository)
 }

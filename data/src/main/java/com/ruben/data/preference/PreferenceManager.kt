@@ -5,5 +5,6 @@ package com.ruben.data.preference
  **/
 interface PreferenceManager {
   var isLoggedIn: Boolean
+  var isRegistered: Boolean
   var phone: String?
 }

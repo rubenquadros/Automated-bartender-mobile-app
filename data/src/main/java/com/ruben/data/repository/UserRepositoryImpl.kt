@@ -23,6 +23,10 @@ class UserRepositoryImpl @Inject constructor(dataSource: DataSource): UserReposi
     return preference.isLoggedIn
   }
 
+  override fun isRegistered(): Boolean {
+    return preference.isRegistered
+  }
+
   override fun phoneNumber(): String? {
     return preference.phone
   }

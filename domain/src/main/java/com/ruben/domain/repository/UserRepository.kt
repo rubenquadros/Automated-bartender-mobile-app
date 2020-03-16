@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
  **/
 interface UserRepository {
   fun isLoggedIn(): Boolean
+  fun isRegistered(): Boolean
   fun phoneNumber(): String?
   fun getUserData(phoneNumber: String): Flow<UserRecord?>
   fun logout(): Flow<SignOutRecord?>

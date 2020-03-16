@@ -1,8 +1,10 @@
 package com.ruben.data.mapper
 
+import com.ruben.domain.model.CheckUserRecord
 import com.ruben.domain.model.OtpRecord
 import com.ruben.domain.model.SaveUserRecord
 import com.ruben.domain.model.SignInRecord
+import com.ruben.remote.model.response.onBoardingResponse.CheckUserResponse
 import com.ruben.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
 import com.ruben.remote.model.response.onBoardingResponse.SendOtpResponse
 import com.ruben.remote.model.response.onBoardingResponse.SignInResponse
@@ -74,6 +76,29 @@ class BoardingMapper {
         }
       }
       saveUserRecord
+    }else {
+      null
+    }
+  }
+
+  fun mapCheckUserResponse(phoneNumber: String, checkUserResponse: CheckUserResponse?): CheckUserRecord? {
+    return if(checkUserResponse != null) {
+      val checkUserRecord = CheckUserRecord(0, "")
+      if(checkUserResponse.users!!.size == 0) {
+        checkUserRecord.status = ApiConstants.HTTP_NEW_USER
+        checkUserRecord.message = ApiConstants.NEW_USER
+      }else {
+        for (user in checkUserResponse.users!!) {
+          if (user.id == phoneNumber) {
+            checkUserRecord.status = ApiConstants.HTTP_OK
+            checkUserRecord.message = ApiConstants.SUCCESS
+          } else {
+            checkUserRecord.status = ApiConstants.HTTP_NEW_USER
+            checkUserRecord.message = ApiConstants.NEW_USER
+          }
+        }
+      }
+      return checkUserRecord
     }else {
       null
     }

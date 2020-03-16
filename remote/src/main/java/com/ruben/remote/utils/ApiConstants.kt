@@ -14,11 +14,13 @@ object ApiConstants {
   const val HTTP_NEW_USER = 404
   const val SUCCESS = "success"
   const val FAIL = "fail"
+  const val NEW_USER = "new_user"
   const val AUTH_FAIL = "Auth fail"
   const val MENU_COLLECTION = "menu"
   const val BASIC_MENU_DOC = "basicmenu"
   const val BASIC_MENU_COLLECTION = "basicmenulist"
   const val USER_DETAILS_COLLECTION = "users"
   const val IS_LOGGED_IN = "is_logged_in"
+  const val IS_REGISTERED = "is_registered"
   const val PHONE_NUMBER = "phone_number"
 }

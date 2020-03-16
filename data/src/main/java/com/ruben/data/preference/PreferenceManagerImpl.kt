@@ -18,6 +18,12 @@ class PreferenceManagerImpl(context: Context) : PreferenceManager {
     ApiConstants.IS_LOGGED_IN,
     false
   )
+  override var isRegistered: Boolean by BooleanPreference(
+    sharedPreferences,
+    ApiConstants.IS_REGISTERED,
+    false
+  )
+
   override var phone: String? by StringPreference(
     sharedPreferences,
     ApiConstants.PHONE_NUMBER,

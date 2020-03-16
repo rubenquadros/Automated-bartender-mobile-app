@@ -3,6 +3,7 @@ package com.ruben.data.repository
 import com.google.firebase.auth.PhoneAuthCredential
 import com.ruben.data.DataSource
 import com.ruben.data.mapper.BoardingMapper
+import com.ruben.domain.model.CheckUserRecord
 import com.ruben.domain.model.OtpRecord
 import com.ruben.domain.model.SignInRecord
 import com.ruben.domain.repository.OnBoardingRepository
@@ -37,6 +38,16 @@ class OnBoardingRepositoryImpl @Inject constructor(dataSource: DataSource) : OnB
         preferences.phone = phoneNumber
       }
       boardingMapper.mapSignInResponse(it)
+    }
+  }
+
+  override fun checkIfUserExists(phoneNumber: String): Flow<CheckUserRecord?> {
+    return firebaseApi.checkIfUserExists().map {users->
+      boardingMapper.mapCheckUserResponse(phoneNumber, users).also {
+        if(it?.status == 200) {
+          preferences.isRegistered = true
+        }
+      }
     }
   }
 }

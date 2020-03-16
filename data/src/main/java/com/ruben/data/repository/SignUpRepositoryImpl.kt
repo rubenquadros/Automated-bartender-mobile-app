@@ -30,6 +30,7 @@ class SignUpRepositoryImpl @Inject constructor(dataSource: DataSource): SignUpRe
       .map {
         if(it?.status == ApiConstants.HTTP_OK) {
           preferences.isLoggedIn = true
+          preferences.isRegistered = true
           db.user().saveUser(User(firstName, lastName, phoneNumber))
         }
         boardingMapper.mapSaveUserResponse(it)

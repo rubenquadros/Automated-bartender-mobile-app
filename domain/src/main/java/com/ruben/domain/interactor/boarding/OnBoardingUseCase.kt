@@ -19,5 +19,4 @@ class OnBoardingUseCase @Inject constructor(private val onBoardingRepository: On
   fun signIn(phoneAuthCredential: PhoneAuthCredential, phoneNumber: String): Flow<SignInRecord?> {
     return onBoardingRepository.signIn(phoneAuthCredential, phoneNumber)
   }
-
 }

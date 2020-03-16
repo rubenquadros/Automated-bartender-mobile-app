@@ -5,5 +5,6 @@ package com.ruben.domain.interactor.user
  **/
 interface UserHandler {
   fun isLoggedIn(): Boolean
+  fun isRegistered(): Boolean
   fun phoneNumber(): String?
 }

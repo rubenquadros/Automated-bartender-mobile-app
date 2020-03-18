@@ -27,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.ruben.bartender.R
 import com.ruben.bartender.base.BaseActivity
+import com.ruben.bartender.presentation.checkout.PaymentActivity
 import com.ruben.bartender.presentation.onboarding.OnBoardingActivity
 import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
@@ -256,9 +257,9 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
     }
   }
 
-  override fun onDrinkClicked(drinkName: String) {
-    ApplicationUtility.showProgress(progressBar, this)
-    homeViewModel.makeDrink(drinkName)
+  override fun onDrinkClicked(drinkName: String, price: String) {
+    //ApplicationUtility.showProgress(progressBar, this)
+    startActivity(Intent(this, PaymentActivity::class.java))
   }
 
   override fun onNavigationItemSelected(p0: MenuItem): Boolean {

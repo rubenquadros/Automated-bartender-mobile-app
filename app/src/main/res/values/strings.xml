@@ -9,6 +9,12 @@
     <string name="signup_first_name_hint">First Name *</string>
     <string name="signup_last_name_hint">Last Name *</string>
     <string name="signup_save_failed">Failed to save user data. Please try again later</string>
+    <string name="payment_card_holder_name">Name on card *</string>
+    <string name="payment_card_number">Card number *</string>
+    <string name="payment_expiry_date">Expiry (MM/YY) *</string>
+    <string name="payment_cvv">CVV *</string>
+    <string name="payment_upi">UPI Payments</string>
+    <string name="payment_online">Online Payments</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="nav_drawer_favourites">Favourites</string>
     <string name="nav_drawer_history">History</string>
@@ -19,6 +25,7 @@
     <string name="all_digits">0123456789</string>
     <string name="all_alphabets">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="all_country_code">+91</string>
+    <string name="all_rupee_symbol">\u20B9</string>
     <string name="all_resend">Resend</string>
     <string name="all_verify">VERIFY</string>
     <string name="all_get_started">GET STARTED</string>
@@ -29,4 +36,9 @@
     <string name="all_generic_err">OOPS! Something went wrong, please try again later</string>
     <string name="all_drink_success">Your drink is prepared\n Please collect your drink</string>
     <string name="all_cannot_make_drink">Sorry, unable to make your drink. Please try again later</string>
+    <string name="all_gpay">Google Pay</string>
+    <string name="all_phone_pe">PhonePe</string>
+    <string name="all_cards_payment">Credit, Debit &amp; ATM Cards</string>
+    <string name="all_next">NEXT</string>
+    <string name="all_payments">PAYMENTS</string>
 </resources>

@@ -5,6 +5,6 @@ package com.ruben.bartender.presentation.home
  **/
 interface IDrinkClickListener {
 
-  fun onDrinkClicked(drinkName: String)
+  fun onDrinkClicked(drinkName: String, price: String)
 
 }

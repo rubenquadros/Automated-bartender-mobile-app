@@ -2,6 +2,7 @@ package com.ruben.bartender.injection.module
 
 import com.ruben.bartender.base.BaseActivity
 import com.ruben.bartender.injection.scopes.ActivityScoped
+import com.ruben.bartender.presentation.checkout.PaymentActivity
 import com.ruben.bartender.presentation.home.HomeActivity
 import com.ruben.bartender.presentation.onboarding.OnBoardingActivity
 import com.ruben.bartender.presentation.splash.SplashActivity
@@ -37,4 +38,8 @@ abstract class ActivityBuilder {
     modules = [OnBoardingFragmentBuilder::class]
   )
   abstract fun boardingActivity(): OnBoardingActivity
+
+  @ActivityScoped
+  @ContributesAndroidInjector
+  abstract fun paymentActivity(): PaymentActivity
 }

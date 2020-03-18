@@ -26,6 +26,7 @@ ext {
         firestore = "21.4.0"
         picasso = "2.71828"
         firebaseAuth = "19.2.0"
+        googlePay = "18.0.0"
 
         //dependencies
 
@@ -103,6 +104,11 @@ ext {
         //Picasso
         picassoDependencies = [
                 picasso : "com.squareup.picasso:picasso:$picasso"
+        ]
+
+        //Google Pay
+        googlepayDependencies = [
+                googlePay : "com.google.android.gms:play-services-wallet:$googlePay"
         ]
 
         //Test

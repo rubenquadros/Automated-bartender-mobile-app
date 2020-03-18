@@ -16,10 +16,11 @@ class MenuMapper {
     return if(basicMenuResponse != null) {
       val basicMenuRecord = BasicMenuRecord(ArrayList())
       for(document in basicMenuResponse.documents!!) {
-        val menuDocument = Document("", "", "")
+        val menuDocument = Document("", "", "", "")
         menuDocument.name = document.data!!["name"].toString()
         menuDocument.description = document.data!!["description"].toString()
         menuDocument.image = document.data!!["image"].toString()
+        menuDocument.price = document.data!!["price"].toString()
         basicMenuRecord.menuRecord!!.add(menuDocument)
       }
       basicMenuRecord

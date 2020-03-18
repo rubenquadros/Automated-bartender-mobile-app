@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         package="com.ruben.bartender">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,19 +14,32 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".presentation.onboarding.OnBoardingActivity"></activity>
+        <activity android:name=".presentation.checkout.PaymentActivity"></activity>
+        <activity
+                android:name=".presentation.onboarding.OnBoardingActivity"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity" />
         <activity
                 android:name=".presentation.home.HomeActivity"
                 android:label="@string/title_activity_home"
-                android:theme="@style/AppTheme.NoActionBar" />
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar"
+                tools:ignore="LockedOrientationActivity" />
         <activity android:name=".base.BaseActivity" />
-        <activity android:name=".presentation.splash.SplashActivity">
+        <activity
+                android:name=".presentation.splash.SplashActivity"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+                android:name="com.google.android.gms.wallet.api.enabled"
+                android:value="true" />
     </application>
 
 </manifest>

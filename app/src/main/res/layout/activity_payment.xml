@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/payment_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.checkout.PaymentActivity">
+
+    <include
+            android:id="@+id/app_bar"
+            layout="@layout/all_appbar_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+            android:id="@+id/payment_nested_scrollView"
+            android:layout_width="@dimen/all_width_0dp"
+            android:layout_height="@dimen/all_height_0dp"
+            android:layout_marginTop="@dimen/all_margin_16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/all_margin_16dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/upiTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/baskerville_bold"
+                    android:text="@string/payment_upi"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/all_font_20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                    android:id="@+id/upiView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/all_height_1dp"
+                    android:layout_marginTop="@dimen/all_margin_8dp"
+                    android:background="@color/dividerColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/upiTv" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/gpayIv"
+                    android:layout_width="@dimen/all_width_40dp"
+                    android:layout_height="@dimen/all_height_40dp"
+                    android:layout_marginTop="@dimen/all_margin_8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/upiView1"
+                    app:srcCompat="@drawable/googlepay_button_content" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/gpayTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/all_margin_16dp"
+                    android:fontFamily="@font/baskerville_regular"
+                    android:text="@string/all_gpay"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/all_font_20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/gpayIv"
+                    app:layout_constraintStart_toEndOf="@+id/gpayIv"
+                    app:layout_constraintTop_toTopOf="@+id/gpayIv" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/gpayNextIv"
+                    android:layout_width="@dimen/all_width_40dp"
+                    android:layout_height="@dimen/all_height_40dp"
+                    android:layout_marginTop="@dimen/all_margin_8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/upiView1"
+                    app:srcCompat="@drawable/ic_arrow_right" />
+
+            <View
+                    android:id="@+id/upiView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/all_height_1dp"
+                    android:layout_marginTop="@dimen/all_margin_8dp"
+                    android:background="@color/dividerColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/gpayIv" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/phonePeIv"
+                    android:layout_width="@dimen/all_width_40dp"
+                    android:layout_height="@dimen/all_height_40dp"
+                    android:layout_marginTop="@dimen/all_margin_8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/upiView2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/phonePeTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/all_margin_16dp"
+                    android:fontFamily="@font/baskerville_regular"
+                    android:text="@string/all_phone_pe"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/all_font_20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/phonePeIv"
+                    app:layout_constraintStart_toEndOf="@+id/phonePeIv"
+                    app:layout_constraintTop_toTopOf="@+id/phonePeIv" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/phonePeNextIv"
+                    android:layout_width="@dimen/all_width_40dp"
+                    android:layout_height="@dimen/all_height_40dp"
+                    android:layout_marginTop="@dimen/all_margin_8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/upiView2"
+                    app:srcCompat="@drawable/ic_arrow_right" />
+
+            <View
+                    android:id="@+id/upiView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/all_height_1dp"
+                    android:layout_marginTop="@dimen/all_margin_8dp"
+                    android:background="@color/dividerColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/phonePeIv" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/onlinePaymentTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/all_margin_24dp"
+                    android:fontFamily="@font/baskerville_bold"
+                    android:text="@string/payment_online"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/all_font_20sp"
+                    app:layout_constraintTop_toBottomOf="@+id/upiView3" />
+
+            <View
+                    android:id="@+id/onlineView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/all_height_1dp"
+                    android:layout_marginTop="@dimen/all_margin_8dp"
+                    android:background="@color/dividerColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/onlinePaymentTv" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/cardIv"
+                    android:layout_width="@dimen/all_width_40dp"
+                    android:layout_height="@dimen/all_height_40dp"
+                    android:layout_marginTop="@dimen/all_margin_8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/onlineView1"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/ic_card" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/cardTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/all_margin_16dp"
+                    android:fontFamily="@font/baskerville_regular"
+                    android:text="@string/all_cards_payment"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/all_font_20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/cardIv"
+                    app:layout_constraintStart_toEndOf="@+id/cardIv"
+                    app:layout_constraintTop_toTopOf="@+id/cardIv" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/cardNextIv"
+                    android:layout_width="@dimen/all_width_40dp"
+                    android:layout_height="@dimen/all_height_40dp"
+                    android:layout_marginTop="@dimen/all_margin_8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/onlineView1"
+                    app:srcCompat="@drawable/ic_arrow_right" />
+
+            <View
+                    android:id="@+id/onlineView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/all_height_1dp"
+                    android:layout_marginTop="@dimen/all_margin_8dp"
+                    android:background="@color/dividerColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardIv" />
+
+            <include
+                    android:id="@+id/card_layout"
+                    layout="@layout/payment_card_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/all_margin_8dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/onlineView2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,5 +6,6 @@ package com.ruben.domain.model
 data class Document(
   var name: String?,
   var description: String?,
-  var image: String?
+  var image: String?,
+  var price: String?
 )

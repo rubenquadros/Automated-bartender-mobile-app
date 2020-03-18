@@ -11,4 +11,5 @@ object ApplicationConstants {
   const val NO_LENGTH = 0
   const val MAX_MOBILE_NUMBER_LENGTH = 10
   const val MAX_OTP_LENGTH = 6
+  const val RUPEE_SYMBOL = "₹"
 }

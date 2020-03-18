@@ -59,4 +59,9 @@ class OnBoardingActivity : BaseActivity(), HasAndroidInjector {
   override fun androidInjector(): AndroidInjector<Any> {
     return androidInjector
   }
+
+  override fun onBackPressed() {
+    super.onBackPressed()
+    finish()
+  }
 }

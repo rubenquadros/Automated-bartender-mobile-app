@@ -3,6 +3,7 @@ dependencies {
     def retrofitDependencies = rootProject.ext.retrofitDependencies
     def firebaseDependencies = rootProject.ext.firebaseDependencies
     def coroutinesDependencies = rootProject.ext.coroutinesDependencies
+    def googlePayDependencies = rootProject.ext.googlepayDependencies
 
     implementation retrofitDependencies.retrofit
     implementation retrofitDependencies.retrofitGson
@@ -13,4 +14,6 @@ dependencies {
 
     implementation coroutinesDependencies.coroutines
     implementation coroutinesDependencies.coroutinesAndroid
+
+    implementation googlePayDependencies.googlePay
 }

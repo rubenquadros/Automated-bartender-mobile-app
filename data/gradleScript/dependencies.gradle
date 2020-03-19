@@ -2,6 +2,7 @@ dependencies {
     def daggerDependencies = rootProject.ext.daggerDependencies
     def coroutinesDependencies = rootProject.ext.coroutinesDependencies
     def firebaseDependencies = rootProject.ext.firebaseDependencies
+    def googlePayDependencies = rootProject.ext.googlepayDependencies
 
     //Module
     implementation project(":domain")
@@ -19,4 +20,6 @@ dependencies {
 
     implementation firebaseDependencies.firestore
     implementation firebaseDependencies.firebaseAuth
+
+    implementation googlePayDependencies.googlePay
 }

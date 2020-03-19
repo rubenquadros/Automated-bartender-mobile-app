@@ -7,6 +7,17 @@
         android:layout_height="match_parent"
         tools:context=".presentation.checkout.PaymentActivity">
 
+    <ProgressBar
+            android:id="@+id/paymentProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     <include
             android:id="@+id/app_bar"
             layout="@layout/all_appbar_layout"
@@ -21,12 +32,16 @@
             android:layout_marginTop="@dimen/all_margin_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_bar">
+            app:layout_constraintTop_toBottomOf="@+id/app_bar"
+            app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/paymentsInnerParent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:layout_margin="@dimen/all_margin_16dp">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -62,14 +77,16 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/gpayTv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/all_margin_16dp"
+                    android:layout_marginStart="@dimen/all_margin_56dp"
+                    android:layout_marginEnd="@dimen/all_margin_56dp"
                     android:fontFamily="@font/baskerville_regular"
                     android:text="@string/all_gpay"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/all_font_20sp"
                     app:layout_constraintBottom_toBottomOf="@+id/gpayIv"
+                    app:layout_constraintEnd_toStartOf="@+id/gpayNextIv"
                     app:layout_constraintStart_toEndOf="@+id/gpayIv"
                     app:layout_constraintTop_toTopOf="@+id/gpayIv" />
 
@@ -102,14 +119,16 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/phonePeTv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/all_margin_16dp"
+                    android:layout_marginStart="@dimen/all_margin_56dp"
+                    android:layout_marginEnd="@dimen/all_margin_56dp"
                     android:fontFamily="@font/baskerville_regular"
                     android:text="@string/all_phone_pe"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/all_font_20sp"
                     app:layout_constraintBottom_toBottomOf="@+id/phonePeIv"
+                    app:layout_constraintEnd_toStartOf="@+id/phonePeNextIv"
                     app:layout_constraintStart_toEndOf="@+id/phonePeIv"
                     app:layout_constraintTop_toTopOf="@+id/phonePeIv" />
 
@@ -158,21 +177,23 @@
                     android:layout_width="@dimen/all_width_40dp"
                     android:layout_height="@dimen/all_height_40dp"
                     android:layout_marginTop="@dimen/all_margin_8dp"
+                    android:scaleType="centerInside"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/onlineView1"
-                    android:scaleType="centerInside"
                     app:srcCompat="@drawable/ic_card" />
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/cardTv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/all_margin_16dp"
                     android:fontFamily="@font/baskerville_regular"
                     android:text="@string/all_cards_payment"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/all_font_20sp"
+                    android:layout_marginStart="@dimen/all_margin_56dp"
+                    android:layout_marginEnd="@dimen/all_margin_56dp"
                     app:layout_constraintBottom_toBottomOf="@+id/cardIv"
+                    app:layout_constraintEnd_toStartOf="@+id/cardNextIv"
                     app:layout_constraintStart_toEndOf="@+id/cardIv"
                     app:layout_constraintTop_toTopOf="@+id/cardIv" />
 

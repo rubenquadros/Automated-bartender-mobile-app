@@ -14,7 +14,10 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".presentation.checkout.PaymentActivity"></activity>
+        <activity
+                android:name=".presentation.checkout.PaymentActivity"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity" />
         <activity
                 android:name=".presentation.onboarding.OnBoardingActivity"
                 android:screenOrientation="portrait"

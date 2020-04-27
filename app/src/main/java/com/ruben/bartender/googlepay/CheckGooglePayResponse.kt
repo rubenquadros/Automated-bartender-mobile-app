@@ -1,7 +1,7 @@
-package com.ruben.remote.model.response.paymentResponse
+package com.ruben.bartender.googlepay
 
 /**
- * Created by ruben.quadros on 19/03/20.
+ * Created by ruben.quadros on 23/03/20.
  **/
 data class CheckGooglePayResponse(
   var status: Int,

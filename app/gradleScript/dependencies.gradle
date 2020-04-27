@@ -7,6 +7,7 @@ dependencies {
     def coroutinesDependencies = rootProject.ext.coroutinesDependencies
     def picassoDependencies = rootProject.ext.picassoDependencies
     def firebaseDependencies = rootProject.ext.firebaseDependencies
+    def googlePayDependencies = rootProject.ext.googlepayDependencies
 
     implementation project(":data")
     implementation project(":domain")
@@ -36,12 +37,14 @@ dependencies {
     implementation butterknifeDependencies.butterknife
     kapt butterknifeDependencies.compiler
 
+    implementation coroutinesDependencies.coroutines
+    implementation coroutinesDependencies.coroutinesAndroid
+
     implementation materialDesignDependencies.materialDesign
 
     implementation picassoDependencies.picasso
 
     implementation firebaseDependencies.firebaseAuth
 
-    implementation coroutinesDependencies.coroutines
-    implementation coroutinesDependencies.coroutinesAndroid
+    implementation googlePayDependencies.googlePay
 }

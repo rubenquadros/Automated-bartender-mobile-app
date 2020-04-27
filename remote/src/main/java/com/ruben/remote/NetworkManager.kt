@@ -1,7 +1,6 @@
 package com.ruben.remote
 
 import com.ruben.remote.firebase.FirebaseApi
-import com.ruben.remote.payment.ExternalPayment
 import com.ruben.remote.rest.RestApi
 
 /**
@@ -10,5 +9,4 @@ import com.ruben.remote.rest.RestApi
 interface NetworkManager {
   fun apiHandler(): RestApi
   fun firebaseApiHandler(): FirebaseApi
-  fun paymentApi(): ExternalPayment
 }

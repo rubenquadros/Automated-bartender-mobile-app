@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.ruben.bartender.R
+import com.ruben.bartender.presentation.home.HomeActivity
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * Created by ruben.quadros on 01/03/20.
@@ -34,6 +37,7 @@ object ApplicationUtility {
     snackBar.show()
   }
 
+  @ExperimentalCoroutinesApi
   @SuppressLint("InflateParams")
   fun showDrinkSuccessDialog(context: Context) {
     val alertDialogBuilder = AlertDialog.Builder(context)
@@ -43,7 +47,9 @@ object ApplicationUtility {
     val alertDialog = alertDialogBuilder.create()
     val okButton = view.findViewById<AppCompatTextView>(R.id.successDialogBtn)
     okButton.setOnClickListener {
-      alertDialog.dismiss()
+      val intent = Intent(context, HomeActivity::class.java)
+      intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+      context.startActivity(intent)
     }
     alertDialog.show()
   }

@@ -18,8 +18,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
   OnBoardingModule::class,
   UserModule::class,
   MenuModule::class,
-  DrinkModule::class,
-  PaymentModule::class])
+  DrinkModule::class])
 abstract class ActivityBuilder {
 
   @ActivityScoped

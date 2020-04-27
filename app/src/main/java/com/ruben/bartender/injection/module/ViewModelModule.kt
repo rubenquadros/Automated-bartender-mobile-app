@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ruben.bartender.injection.BartenderViewModelFactory
 import com.ruben.bartender.injection.ViewModelKey
-import com.ruben.bartender.presentation.checkout.PaymentViewModel
 import com.ruben.bartender.presentation.home.HomeViewModel
 import com.ruben.bartender.presentation.onboarding.login.LoginViewModel
 import com.ruben.bartender.presentation.onboarding.signup.SignUpViewModel
@@ -37,9 +36,4 @@ abstract class ViewModelModule {
   @IntoMap
   @ViewModelKey(HomeViewModel::class)
   internal abstract fun homeViewModel(homeViewModel: HomeViewModel): ViewModel
-
-  @Binds
-  @IntoMap
-  @ViewModelKey(PaymentViewModel::class)
-  internal abstract fun paymentViewModel(paymentViewModel: PaymentViewModel): ViewModel
 }

@@ -42,8 +42,6 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.all_appbar_layout.*
 import kotlinx.android.synthetic.main.nav_header_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.lang.Exception
-import java.net.ConnectException
 import javax.inject.Inject
 
 @Suppress("PrivatePropertyName")
@@ -173,7 +171,7 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
     }
   }
 
-  private fun parseMakeDrinkResponse(makeDrinkRecord: MakeDrinkRecord?) {
+/*  private fun parseMakeDrinkResponse(makeDrinkRecord: MakeDrinkRecord?) {
     ApplicationUtility.stopProgress(progressBar, this)
     if (makeDrinkRecord != null) {
       when (makeDrinkRecord.responseCode) {
@@ -209,7 +207,7 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
         this.resources.getString(R.string.all_ok)
       )
     }
-  }
+  }*/
 
   private fun parseSignOutResponse(signOutRecord: SignOutRecord?) {
     ApplicationUtility.stopProgress(progressBar, this)
@@ -242,8 +240,8 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
     homeViewModel.getMenuCategories().observe(this, Observer { it?.let { initPopupMenu(it) } })
     homeViewModel.getBasicMenu().observe(this, Observer { it?.let { updateUIWithMenu(it) } })
     homeViewModel.getUserDataResponse().observe(this, Observer { it?.let { updateUIWithUser(it) } })
-    homeViewModel.observeMakeDrink()
-      .observe(this, Observer { it?.let { parseMakeDrinkResponse(it) } })
+/*    homeViewModel.observeMakeDrink()
+      .observe(this, Observer { it?.let { parseMakeDrinkResponse(it) } })*/
     homeViewModel.getSignOutResponse()
       .observe(this, Observer { it?.let { parseSignOutResponse(it) } })
   }
@@ -258,8 +256,7 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
   }
 
   override fun onDrinkClicked(drinkName: String, price: String) {
-    //ApplicationUtility.showProgress(progressBar, this)
-    startActivity(Intent(this, PaymentActivity::class.java))
+    startActivity(PaymentActivity.newIntent(drinkName, price, this))
   }
 
   override fun onNavigationItemSelected(p0: MenuItem): Boolean {

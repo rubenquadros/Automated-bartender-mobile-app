@@ -25,11 +25,4 @@ object ApiConstants {
   const val IS_LOGGED_IN = "is_logged_in"
   const val IS_REGISTERED = "is_registered"
   const val PHONE_NUMBER = "phone_number"
-  const val GOOGLE_PAY_TYPE = "type"
-  const val GOOGLE_PAY_PARAMETERS = "parameters"
-  const val GOOGLE_PAY_ALLOWED_CARD_NETWORKS = "allowedCardNetworks"
-  const val GOOGLE_PAY_ALLOWED_AUTH_METHODS = "allowedAuthMethods"
-  const val GOOGLE_PAY_API_VERSION = "apiVersion"
-  const val GOOGLE_PAY_API_MINOR_VERSION = "apiVersionMinor"
-  const val GOOGLE_PAY_ALLOWED_PAYMENT_METHODS = "allowedPaymentMethods"
 }

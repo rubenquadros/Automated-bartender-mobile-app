@@ -14,4 +14,11 @@ object ApplicationConstants {
   const val RUPEE_SYMBOL = "₹"
   const val DRINK_NAME = "drinkName"
   const val PRICE = "price"
+  const val GOOGLE_PAY_PACKAGE = "com.google.android.apps.nbu.paisa.user"
+  const val PHONE_PE_PACKAGE = "com.phonepe.app"
+  const val GOOGLE_PAY = "google_pay"
+  const val PHONE_PE = "phone_pe"
+  const val DRINK_SUCCESS = "drink_success"
+  const val GOOGLE_PAY_INSTALL = "google_pay_install"
+  const val PHONE_PE_INSTALL = "phone_pe_install"
 }

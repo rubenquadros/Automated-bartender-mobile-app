@@ -1,4 +1,4 @@
-package com.ruben.bartender.googlepay
+package com.ruben.bartender.payments
 
 /**
  * Created by ruben.quadros on 23/03/20.

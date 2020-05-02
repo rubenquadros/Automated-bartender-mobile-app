@@ -1,9 +1,9 @@
-package com.ruben.bartender.googlepay
+package com.ruben.bartender.payments
 
 /**
  * Created by ruben.quadros on 23/03/20.
  **/
-object GooglePayConstants {
+object PaymentConstants {
   const val GOOGLE_PAY_API_VERSION = 2
   const val GOOGLE_PAY_API_MINOR_VERSION = 0
   const val GOOGLE_PAY_TYPE = "CARD"
@@ -35,5 +35,6 @@ object GooglePayConstants {
   const val GOOGLE_PAY_TXN_REF = "txnRef"
   const val GOOGLE_PAY_TXN_ID = "txnId"
   const val GOOGLE_PAY_SUCCESS = "SUCCESS"
-  const val GOOGLE_PAY_FAIL = "FAILURE"
+  const val PHONE_PAY_PACKAGE_NAME = "com.phonepe.app"
+  const val PHONE_PE_REQUEST_CODE = 1002
 }

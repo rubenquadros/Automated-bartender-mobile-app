@@ -1,6 +1,7 @@
 package com.ruben.bartender.presentation.checkout
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -22,9 +23,9 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.ruben.bartender.R
 import com.ruben.bartender.base.BaseActivity
-import com.ruben.bartender.googlepay.CheckGooglePayResponse
-import com.ruben.bartender.googlepay.GooglePayClient
-import com.ruben.bartender.googlepay.GooglePayConstants
+import com.ruben.bartender.payments.CheckGooglePayResponse
+import com.ruben.bartender.payments.GooglePayClient
+import com.ruben.bartender.payments.PaymentConstants
 import com.ruben.bartender.presentation.home.HomeViewModel
 import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
@@ -148,7 +149,7 @@ class PaymentActivity : BaseActivity(), LifecycleObserver {
     if (makeDrinkRecord != null) {
       when (makeDrinkRecord.responseCode) {
         ApiConstants.HTTP_OK        -> {
-          ApplicationUtility.showDrinkSuccessDialog(this)
+          ApplicationUtility.showDialog(this, ApplicationConstants.DRINK_SUCCESS)
         }
         ApiConstants.HTTP_NEW_USER  -> {
           ApplicationUtility.showSnack(makeDrinkRecord.responseMessage, parentView, ok)
@@ -221,62 +222,86 @@ class PaymentActivity : BaseActivity(), LifecycleObserver {
     showCardView = false
   }
 
-  private fun payWithGooglePay() {
+  private fun payWithUPI(appName: String) {
     ApplicationUtility.showProgress(progressBar, this)
     val uri =
       Uri.Builder()
-        .scheme(GooglePayConstants.SCHEME)
-        .authority(GooglePayConstants.AUTHORITY)
-        .appendQueryParameter(GooglePayConstants.UPI_ID, GooglePayConstants.MERCHANT_UPI_ID)
+        .scheme(PaymentConstants.SCHEME)
+        .authority(PaymentConstants.AUTHORITY)
+        .appendQueryParameter(PaymentConstants.UPI_ID, PaymentConstants.MERCHANT_UPI_ID)
         .appendQueryParameter(
-          GooglePayConstants.GOOGLE_PAY_MERCHANT_NAME,
-          GooglePayConstants.MERCHANT_NAME
+          PaymentConstants.GOOGLE_PAY_MERCHANT_NAME,
+          PaymentConstants.MERCHANT_NAME
         )
         .appendQueryParameter(
-          GooglePayConstants.GOOGLE_PAY_TRANSACTION_NOTE,
-          GooglePayConstants.NOTE
+          PaymentConstants.GOOGLE_PAY_TRANSACTION_NOTE,
+          PaymentConstants.NOTE
         )
-        .appendQueryParameter(GooglePayConstants.GOOGLE_PAY_AMOUNT, price)
-        .appendQueryParameter(GooglePayConstants.GOOGLE_PAY_CURRENCY, GooglePayConstants.CURRENCY)
+        .appendQueryParameter(PaymentConstants.GOOGLE_PAY_AMOUNT, price)
+        .appendQueryParameter(PaymentConstants.GOOGLE_PAY_CURRENCY, PaymentConstants.CURRENCY)
         .build()
-    val intent = Intent(Intent.ACTION_VIEW)
-    intent.data = uri
-    intent.setPackage(GooglePayConstants.GOOGLE_PAY_PACKAGE_NAME)
-    startActivityForResult(intent, GooglePayConstants.LOAD_PAYMENT_DATA_REQUEST_CODE)
+    if (ApplicationConstants.GOOGLE_PAY == appName) {
+      try {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = uri
+        intent.setPackage(PaymentConstants.GOOGLE_PAY_PACKAGE_NAME)
+        startActivityForResult(intent, PaymentConstants.LOAD_PAYMENT_DATA_REQUEST_CODE)
+      } catch (e: ActivityNotFoundException) {
+        ApplicationUtility.showDialog(this, ApplicationConstants.GOOGLE_PAY_INSTALL)
+      }
+    } else {
+      try {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = uri
+        intent.setPackage(PaymentConstants.PHONE_PAY_PACKAGE_NAME)
+        startActivityForResult(intent, PaymentConstants.LOAD_PAYMENT_DATA_REQUEST_CODE)
+      } catch (e: ActivityNotFoundException) {
+        ApplicationUtility.showDialog(this, ApplicationConstants.PHONE_PE_INSTALL)
+      }
+    }
   }
 
-  @OnClick(value = [R.id.cardIv, R.id.cardTv, R.id.cardNextIv, R.id.gpayIv, R.id.gpayTv, R.id.gpayNextIv])
+  @OnClick(value = [R.id.cardIv, R.id.cardTv, R.id.cardNextIv, R.id.gpayIv, R.id.gpayTv, R.id.gpayNextIv, R.id.phonePeIv, R.id.phonePeTv, R.id.phonePeNextIv])
   fun onClick(view: View) {
     when (view.id) {
-      R.id.cardIv     -> {
+      R.id.cardIv        -> {
         if (!showCardView) {
           showCardView()
         } else {
           hideCardView()
         }
       }
-      R.id.cardTv     -> {
+      R.id.cardTv        -> {
         if (!showCardView) {
           showCardView()
         } else {
           hideCardView()
         }
       }
-      R.id.cardNextIv -> {
+      R.id.cardNextIv    -> {
         if (!showCardView) {
           showCardView()
         } else {
           hideCardView()
         }
       }
-      R.id.gpayIv     -> {
-        payWithGooglePay()
+      R.id.gpayIv        -> {
+        payWithUPI(ApplicationConstants.GOOGLE_PAY)
       }
-      R.id.gpayTv     -> {
-        payWithGooglePay()
+      R.id.gpayTv        -> {
+        payWithUPI(ApplicationConstants.GOOGLE_PAY)
       }
-      R.id.gpayNextIv -> {
-        payWithGooglePay()
+      R.id.gpayNextIv    -> {
+        payWithUPI(ApplicationConstants.GOOGLE_PAY)
+      }
+      R.id.phonePeIv     -> {
+        payWithUPI(ApplicationConstants.PHONE_PE)
+      }
+      R.id.phonePeTv     -> {
+        payWithUPI(ApplicationConstants.PHONE_PE)
+      }
+      R.id.phonePeNextIv -> {
+        payWithUPI(ApplicationConstants.PHONE_PE)
       }
     }
   }
@@ -285,16 +310,16 @@ class PaymentActivity : BaseActivity(), LifecycleObserver {
     super.onActivityResult(requestCode, resultCode, data)
     ApplicationUtility.stopProgress(progressBar, this)
     when (requestCode) {
-      GooglePayConstants.LOAD_PAYMENT_DATA_REQUEST_CODE -> {
+      PaymentConstants.LOAD_PAYMENT_DATA_REQUEST_CODE -> {
         when (resultCode) {
           Activity.RESULT_OK       -> {
             if (data != null && data.extras != null) {
-              if (data.getStringExtra(GooglePayConstants.GOOGLE_PAY_STATUS) != null && data.getStringExtra(
-                  GooglePayConstants.GOOGLE_PAY_STATUS
-                ) == GooglePayConstants.GOOGLE_PAY_SUCCESS
+              if (data.getStringExtra(PaymentConstants.GOOGLE_PAY_STATUS) != null && data.getStringExtra(
+                  PaymentConstants.GOOGLE_PAY_STATUS
+                ) == PaymentConstants.GOOGLE_PAY_SUCCESS
               ) {
-                Log.d(TAG, " " + data.getStringExtra(GooglePayConstants.GOOGLE_PAY_TXN_ID))
-                Log.d(TAG, " " + data.getStringExtra(GooglePayConstants.GOOGLE_PAY_TXN_REF))
+                Log.d(TAG, " " + data.getStringExtra(PaymentConstants.GOOGLE_PAY_TXN_ID))
+                Log.d(TAG, " " + data.getStringExtra(PaymentConstants.GOOGLE_PAY_TXN_REF))
                 homeViewModel.makeDrink(drinkName)
               }
             } else {

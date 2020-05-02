@@ -3,8 +3,10 @@ package com.ruben.bartender.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -39,17 +42,56 @@ object ApplicationUtility {
 
   @ExperimentalCoroutinesApi
   @SuppressLint("InflateParams")
-  fun showDrinkSuccessDialog(context: Context) {
+  fun showDialog(context: Context, dialogName: String) {
     val alertDialogBuilder = AlertDialog.Builder(context)
     alertDialogBuilder.setCancelable(false)
-    val view = LayoutInflater.from(context).inflate(R.layout.all_drink_success, null)
+    val view = LayoutInflater.from(context).inflate(R.layout.all_dialog_layout, null)
     alertDialogBuilder.setView(view)
     val alertDialog = alertDialogBuilder.create()
     val okButton = view.findViewById<AppCompatTextView>(R.id.successDialogBtn)
+    val label = view.findViewById<AppCompatTextView>(R.id.successDialogTv)
+    val image = view.findViewById<AppCompatImageView>(R.id.successDialogIv)
+    when(dialogName) {
+      ApplicationConstants.DRINK_SUCCESS -> {
+        label.text = context.resources.getString(R.string.all_drink_success)
+        image.setImageResource(R.drawable.drink_success)
+      }
+      ApplicationConstants.GOOGLE_PAY_INSTALL -> {
+        label.text = context.resources.getString(R.string.all_google_pay_install)
+        image.setImageResource(R.drawable.googlepay_button_content)
+      }
+      ApplicationConstants.PHONE_PE_INSTALL -> {
+        label.text = context.resources.getString(R.string.all_phone_pe_install)
+        image.setImageResource(R.drawable.phone_pe_button)
+      }
+    }
     okButton.setOnClickListener {
-      val intent = Intent(context, HomeActivity::class.java)
-      intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-      context.startActivity(intent)
+      when(dialogName) {
+        ApplicationConstants.DRINK_SUCCESS -> {
+          val intent = Intent(context, HomeActivity::class.java)
+          intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+          context.startActivity(intent)
+          alertDialog.dismiss()
+        }
+        ApplicationConstants.GOOGLE_PAY_INSTALL -> {
+          try {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + ApplicationConstants.GOOGLE_PAY_PACKAGE)))
+            alertDialog.dismiss()
+          }catch (e: ActivityNotFoundException) {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + ApplicationConstants.GOOGLE_PAY_PACKAGE)))
+            alertDialog.dismiss()
+          }
+        }
+        ApplicationConstants.PHONE_PE_INSTALL -> {
+          try {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + ApplicationConstants.PHONE_PE_PACKAGE)))
+            alertDialog.dismiss()
+          }catch (e: ActivityNotFoundException) {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + ApplicationConstants.PHONE_PE_PACKAGE)))
+            alertDialog.dismiss()
+          }
+        }
+      }
     }
     alertDialog.show()
   }

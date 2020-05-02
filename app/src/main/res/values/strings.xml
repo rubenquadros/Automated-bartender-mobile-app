@@ -41,4 +41,6 @@
     <string name="all_cards_payment">Credit, Debit &amp; ATM Cards</string>
     <string name="all_next">NEXT</string>
     <string name="all_payments">PAYMENTS</string>
+    <string name="all_phone_pe_install">You don\'t have PhonePe installed\n Please install the app to continue</string>
+    <string name="all_google_pay_install">You don\'t have Google Pay installed\n Please install the app to continue</string>
 </resources>

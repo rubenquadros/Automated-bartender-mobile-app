@@ -1,4 +1,4 @@
-package com.ruben.bartender.googlepay
+package com.ruben.bartender.payments
 
 import android.app.Activity
 import com.google.android.gms.common.api.ApiException
@@ -23,22 +23,22 @@ class GooglePayClient(private val activity: Activity) {
 
   private val paymentsClient = createPaymentsClient(activity)
   private val baseCardPaymentMethod = JSONObject().apply {
-    put(GooglePayConstants.TYPE, GooglePayConstants.GOOGLE_PAY_TYPE)
-    put(GooglePayConstants.GOOGLE_PAY_PARAMETERS, JSONObject().apply {
+    put(PaymentConstants.TYPE, PaymentConstants.GOOGLE_PAY_TYPE)
+    put(PaymentConstants.GOOGLE_PAY_PARAMETERS, JSONObject().apply {
       put(
-        GooglePayConstants.GOOGLE_PAY_ALLOWED_CARD_NETWORKS,
-        JSONArray(listOf(GooglePayConstants.VISA, GooglePayConstants.MASTERCARD))
+        PaymentConstants.GOOGLE_PAY_ALLOWED_CARD_NETWORKS,
+        JSONArray(listOf(PaymentConstants.VISA, PaymentConstants.MASTERCARD))
       )
       put(
-        GooglePayConstants.GOOGLE_PAY_ALLOWED_AUTH_METHODS,
-        JSONArray(listOf(GooglePayConstants.AUTH_PAN, GooglePayConstants.AUTH_CRYPTOGRAM))
+        PaymentConstants.GOOGLE_PAY_ALLOWED_AUTH_METHODS,
+        JSONArray(listOf(PaymentConstants.AUTH_PAN, PaymentConstants.AUTH_CRYPTOGRAM))
       )
     })
   }
   private val googlePayBaseConfiguration = JSONObject().apply {
-    put(GooglePayConstants.API_VERSION, GooglePayConstants.GOOGLE_PAY_API_VERSION)
-    put(GooglePayConstants.API_MINOR_VERSION, GooglePayConstants.GOOGLE_PAY_API_MINOR_VERSION)
-    put(GooglePayConstants.GOOGLE_PAY_ALLOWED_PAYMENT_METHODS, JSONArray().put(baseCardPaymentMethod))
+    put(PaymentConstants.API_VERSION, PaymentConstants.GOOGLE_PAY_API_VERSION)
+    put(PaymentConstants.API_MINOR_VERSION, PaymentConstants.GOOGLE_PAY_API_MINOR_VERSION)
+    put(PaymentConstants.GOOGLE_PAY_ALLOWED_PAYMENT_METHODS, JSONArray().put(baseCardPaymentMethod))
   }
 
   private fun createPaymentsClient(activity: Activity): PaymentsClient {

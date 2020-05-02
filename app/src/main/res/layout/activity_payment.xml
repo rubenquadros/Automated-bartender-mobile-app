@@ -41,7 +41,7 @@
                 android:id="@+id/paymentsInnerParent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_margin="@dimen/all_margin_16dp">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -115,7 +115,8 @@
                     android:layout_height="@dimen/all_height_40dp"
                     android:layout_marginTop="@dimen/all_margin_8dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/upiView2" />
+                    app:layout_constraintTop_toBottomOf="@id/upiView2"
+                    app:srcCompat="@drawable/phone_pe_button"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/phonePeTv"

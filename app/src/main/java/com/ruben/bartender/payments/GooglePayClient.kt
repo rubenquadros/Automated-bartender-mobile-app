@@ -7,7 +7,7 @@ import com.google.android.gms.wallet.PaymentsClient
 import com.google.android.gms.wallet.Wallet
 import com.google.android.gms.wallet.WalletConstants
 import com.google.android.gms.wallet.WalletConstants.THEME_LIGHT
-import com.ruben.remote.utils.ApiConstants
+import com.ruben.bartender.data.remote.utils.ApiConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

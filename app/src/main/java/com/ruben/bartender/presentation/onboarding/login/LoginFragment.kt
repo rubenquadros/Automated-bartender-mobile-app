@@ -28,11 +28,11 @@ import com.ruben.bartender.presentation.home.HomeActivity
 import com.ruben.bartender.presentation.onboarding.signup.SignUpFragment
 import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
-import com.ruben.domain.interactor.user.UserHandler
-import com.ruben.domain.model.CheckUserRecord
-import com.ruben.domain.model.OtpRecord
-import com.ruben.domain.model.SignInRecord
-import com.ruben.remote.utils.ApiConstants
+import com.ruben.bartender.data.remote.utils.ApiConstants
+import com.ruben.bartender.domain.interactor.user.UserHandler
+import com.ruben.bartender.domain.model.CheckUserRecord
+import com.ruben.bartender.domain.model.OtpRecord
+import com.ruben.bartender.domain.model.SignInRecord
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject

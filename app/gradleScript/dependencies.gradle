@@ -8,11 +8,8 @@ dependencies {
     def picassoDependencies = rootProject.ext.picassoDependencies
     def firebaseDependencies = rootProject.ext.firebaseDependencies
     def googlePayDependencies = rootProject.ext.googlepayDependencies
-
-    implementation project(":data")
-    implementation project(":domain")
-    implementation project(":cache")
-    implementation project(":remote")
+    def retrofitDependencies = rootProject.ext.retrofitDependencies
+    def roomDependencies = rootProject.ext.roomDependencies
 
     implementation androidxDependencies.appCompat
     implementation androidxDependencies.core
@@ -33,6 +30,7 @@ dependencies {
     implementation daggerDependencies.daggerAndroidSupport
     kapt daggerDependencies.compiler
     kapt daggerDependencies.processor
+    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.4.2"
 
     implementation butterknifeDependencies.butterknife
     kapt butterknifeDependencies.compiler
@@ -45,6 +43,15 @@ dependencies {
     implementation picassoDependencies.picasso
 
     implementation firebaseDependencies.firebaseAuth
+    implementation firebaseDependencies.firestore
 
     implementation googlePayDependencies.googlePay
+
+    implementation retrofitDependencies.retrofit
+    implementation retrofitDependencies.retrofitGson
+    implementation retrofitDependencies.retrofitCoroutines
+
+    implementation roomDependencies.room
+    implementation roomDependencies.roomCoroutines
+    kapt roomDependencies.annotationProcessor
 }

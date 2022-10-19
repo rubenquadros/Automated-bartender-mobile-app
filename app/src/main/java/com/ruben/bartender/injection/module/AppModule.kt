@@ -3,8 +3,8 @@ package com.ruben.bartender.injection.module
 import android.content.Context
 import com.ruben.bartender.base.BaseApplication
 import com.ruben.bartender.injection.scopes.ApplicationScoped
-import com.ruben.data.DataSource
-import com.ruben.data.DataSourceImpl
+import com.ruben.bartender.data.DataSource
+import com.ruben.bartender.data.DataSourceImpl
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.ExperimentalCoroutinesApi

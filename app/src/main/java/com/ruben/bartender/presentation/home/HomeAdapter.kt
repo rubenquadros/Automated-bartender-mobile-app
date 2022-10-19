@@ -8,8 +8,8 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ruben.bartender.R
+import com.ruben.bartender.domain.model.BasicMenuRecord
 import com.ruben.bartender.utils.ApplicationConstants
-import com.ruben.domain.model.BasicMenuRecord
 import com.squareup.picasso.Picasso
 
 /**

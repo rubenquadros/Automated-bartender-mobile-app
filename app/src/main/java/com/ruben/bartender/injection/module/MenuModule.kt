@@ -1,8 +1,8 @@
 package com.ruben.bartender.injection.module
 
-import com.ruben.data.repository.MenuRepositoryImpl
-import com.ruben.domain.interactor.menu.BasicMenuUseCase
-import com.ruben.domain.repository.MenuRepository
+import com.ruben.bartender.data.repository.MenuRepositoryImpl
+import com.ruben.bartender.domain.interactor.menu.BasicMenuUseCase
+import com.ruben.bartender.domain.repository.MenuRepository
 import dagger.Module
 import dagger.Provides
 

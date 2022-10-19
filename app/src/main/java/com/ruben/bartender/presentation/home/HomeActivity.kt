@@ -31,13 +31,13 @@ import com.ruben.bartender.presentation.checkout.PaymentActivity
 import com.ruben.bartender.presentation.onboarding.OnBoardingActivity
 import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
-import com.ruben.domain.interactor.user.UserHandler
-import com.ruben.domain.model.BasicMenuRecord
-import com.ruben.domain.model.CategoryRecord
-import com.ruben.domain.model.MakeDrinkRecord
-import com.ruben.domain.model.SignOutRecord
-import com.ruben.domain.model.UserRecord
-import com.ruben.remote.utils.ApiConstants
+import com.ruben.bartender.data.remote.utils.ApiConstants
+import com.ruben.bartender.domain.interactor.user.UserHandler
+import com.ruben.bartender.domain.model.BasicMenuRecord
+import com.ruben.bartender.domain.model.CategoryRecord
+import com.ruben.bartender.domain.model.MakeDrinkRecord
+import com.ruben.bartender.domain.model.SignOutRecord
+import com.ruben.bartender.domain.model.UserRecord
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.all_appbar_layout.*
 import kotlinx.android.synthetic.main.nav_header_home.*
@@ -171,12 +171,12 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
     }
   }
 
-/*  private fun parseMakeDrinkResponse(makeDrinkRecord: MakeDrinkRecord?) {
+  private fun parseMakeDrinkResponse(makeDrinkRecord: MakeDrinkRecord?) {
     ApplicationUtility.stopProgress(progressBar, this)
     if (makeDrinkRecord != null) {
       when (makeDrinkRecord.responseCode) {
         ApiConstants.HTTP_OK        -> {
-          ApplicationUtility.showDrinkSuccessDialog(this)
+          ApplicationUtility.showDialog(this, ApplicationConstants.DRINK_SUCCESS)
         }
         ApiConstants.HTTP_NEW_USER  -> {
           ApplicationUtility.showSnack(makeDrinkRecord.responseMessage, parentView, ok)
@@ -207,7 +207,7 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
         this.resources.getString(R.string.all_ok)
       )
     }
-  }*/
+  }
 
   private fun parseSignOutResponse(signOutRecord: SignOutRecord?) {
     ApplicationUtility.stopProgress(progressBar, this)
@@ -240,8 +240,8 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
     homeViewModel.getMenuCategories().observe(this, Observer { it?.let { initPopupMenu(it) } })
     homeViewModel.getBasicMenu().observe(this, Observer { it?.let { updateUIWithMenu(it) } })
     homeViewModel.getUserDataResponse().observe(this, Observer { it?.let { updateUIWithUser(it) } })
-/*    homeViewModel.observeMakeDrink()
-      .observe(this, Observer { it?.let { parseMakeDrinkResponse(it) } })*/
+    homeViewModel.observeMakeDrink()
+      .observe(this, Observer { it?.let { parseMakeDrinkResponse(it) } })
     homeViewModel.getSignOutResponse()
       .observe(this, Observer { it?.let { parseSignOutResponse(it) } })
   }
@@ -256,7 +256,8 @@ class HomeActivity : BaseActivity(), IDrinkClickListener,
   }
 
   override fun onDrinkClicked(drinkName: String, price: String) {
-    startActivity(PaymentActivity.newIntent(drinkName, price, this))
+    //startActivity(PaymentActivity.newIntent(drinkName, price, this))
+    homeViewModel.makeDrink(drinkName)
   }
 
   override fun onNavigationItemSelected(p0: MenuItem): Boolean {

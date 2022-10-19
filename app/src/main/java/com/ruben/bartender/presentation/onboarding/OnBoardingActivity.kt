@@ -7,10 +7,10 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.ruben.bartender.R
 import com.ruben.bartender.base.BaseActivity
+import com.ruben.bartender.domain.interactor.user.UserHandler
 import com.ruben.bartender.presentation.onboarding.login.LoginFragment
 import com.ruben.bartender.utils.ApplicationConstants.LOGIN_TAG
 import com.ruben.bartender.utils.ApplicationUtility
-import com.ruben.domain.interactor.user.UserHandler
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

@@ -1,11 +1,11 @@
 package com.ruben.bartender.injection.module
 
-import com.ruben.data.repository.UserRepositoryImpl
-import com.ruben.domain.interactor.user.GetUserDataUseCase
-import com.ruben.domain.interactor.user.SignOutUseCase
-import com.ruben.domain.interactor.user.UserHandler
-import com.ruben.domain.interactor.user.UserHandlerImpl
-import com.ruben.domain.repository.UserRepository
+import com.ruben.bartender.data.repository.UserRepositoryImpl
+import com.ruben.bartender.domain.interactor.user.GetUserDataUseCase
+import com.ruben.bartender.domain.interactor.user.SignOutUseCase
+import com.ruben.bartender.domain.interactor.user.UserHandler
+import com.ruben.bartender.domain.interactor.user.UserHandlerImpl
+import com.ruben.bartender.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 

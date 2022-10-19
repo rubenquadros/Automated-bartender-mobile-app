@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     id("kotlin-kapt")
     id("com.google.gms.google-services")
+    id("kotlin-android-extensions")
 }
 
 apply("./gradleScript/dependencies.gradle")
@@ -23,13 +24,13 @@ android {
             useSupportLibrary = true
         }
 
-        composeOptions {
-            kotlinCompilerExtensionVersion = Versions.compose
-        }
-
-        buildFeatures {
-            compose = true
-        }
+//        composeOptions {
+//            kotlinCompilerExtensionVersion = Versions.compose
+//        }
+//
+//        buildFeatures {
+//            compose = true
+//        }
 
         testOptions {
             unitTests {
@@ -91,4 +92,8 @@ android {
         jvmTarget = "1.8"
     }
     namespace = "com.ruben.bartender"
+
+    kapt {
+        correctErrorTypes = true
+    }
 }

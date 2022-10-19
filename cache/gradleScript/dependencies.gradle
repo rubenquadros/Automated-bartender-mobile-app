@@ -1,7 +1,0 @@
-dependencies {
-    def roomDependencies = rootProject.ext.roomDependencies
-
-    implementation roomDependencies.room
-    implementation roomDependencies.roomCoroutines
-    kapt roomDependencies.annotationProcessor
-}

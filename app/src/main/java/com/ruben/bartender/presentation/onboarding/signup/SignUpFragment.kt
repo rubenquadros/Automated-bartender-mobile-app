@@ -24,8 +24,8 @@ import butterknife.OnClick
 import com.ruben.bartender.R
 import com.ruben.bartender.presentation.home.HomeActivity
 import com.ruben.bartender.utils.ApplicationUtility
-import com.ruben.domain.model.SaveUserRecord
-import com.ruben.remote.utils.ApiConstants
+import com.ruben.bartender.data.remote.utils.ApiConstants
+import com.ruben.bartender.domain.model.SaveUserRecord
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject

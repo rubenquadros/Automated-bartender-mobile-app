@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.PhoneAuthCredential
-import com.ruben.domain.interactor.boarding.CheckUserUseCase
-import com.ruben.domain.interactor.boarding.OnBoardingUseCase
-import com.ruben.domain.model.CheckUserRecord
-import com.ruben.domain.model.OtpRecord
-import com.ruben.domain.model.SignInRecord
+import com.ruben.bartender.domain.interactor.boarding.CheckUserUseCase
+import com.ruben.bartender.domain.interactor.boarding.OnBoardingUseCase
+import com.ruben.bartender.domain.model.CheckUserRecord
+import com.ruben.bartender.domain.model.OtpRecord
+import com.ruben.bartender.domain.model.SignInRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect

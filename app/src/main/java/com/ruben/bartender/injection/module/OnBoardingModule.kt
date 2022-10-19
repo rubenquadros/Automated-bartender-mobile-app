@@ -1,12 +1,12 @@
 package com.ruben.bartender.injection.module
 
-import com.ruben.data.repository.OnBoardingRepositoryImpl
-import com.ruben.data.repository.SignUpRepositoryImpl
-import com.ruben.domain.interactor.boarding.CheckUserUseCase
-import com.ruben.domain.interactor.boarding.OnBoardingUseCase
-import com.ruben.domain.interactor.boarding.SignUpUseCase
-import com.ruben.domain.repository.OnBoardingRepository
-import com.ruben.domain.repository.SignUpRepository
+import com.ruben.bartender.data.repository.OnBoardingRepositoryImpl
+import com.ruben.bartender.data.repository.SignUpRepositoryImpl
+import com.ruben.bartender.domain.interactor.boarding.CheckUserUseCase
+import com.ruben.bartender.domain.interactor.boarding.OnBoardingUseCase
+import com.ruben.bartender.domain.interactor.boarding.SignUpUseCase
+import com.ruben.bartender.domain.repository.OnBoardingRepository
+import com.ruben.bartender.domain.repository.SignUpRepository
 import dagger.Module
 import dagger.Provides
 

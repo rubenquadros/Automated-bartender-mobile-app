@@ -29,8 +29,8 @@ import com.ruben.bartender.payments.PaymentConstants
 import com.ruben.bartender.presentation.home.HomeViewModel
 import com.ruben.bartender.utils.ApplicationConstants
 import com.ruben.bartender.utils.ApplicationUtility
-import com.ruben.domain.model.MakeDrinkRecord
-import com.ruben.remote.utils.ApiConstants
+import com.ruben.bartender.data.remote.utils.ApiConstants
+import com.ruben.bartender.domain.model.MakeDrinkRecord
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.all_appbar_layout.*
 import kotlinx.coroutines.Dispatchers

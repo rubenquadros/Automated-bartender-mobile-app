@@ -6,9 +6,9 @@ import android.os.Handler
 import android.view.WindowManager
 import com.ruben.bartender.R
 import com.ruben.bartender.base.BaseActivity
+import com.ruben.bartender.domain.interactor.user.UserHandler
 import com.ruben.bartender.presentation.home.HomeActivity
 import com.ruben.bartender.presentation.onboarding.OnBoardingActivity
-import com.ruben.domain.interactor.user.UserHandler
 import dagger.android.AndroidInjection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject

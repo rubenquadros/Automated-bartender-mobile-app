@@ -5,6 +5,7 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
     id("dagger.hilt.android.plugin")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -52,6 +53,12 @@ android {
                 )
             }
         }
+
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            "\"http://192.168.1.108:5000/\""
+        )
     }
 
     signingConfigs {
@@ -120,6 +127,8 @@ dependencies {
 
     //androidX
     implementation(Dependencies.Androidx.splashScreen)
+    implementation(Dependencies.Androidx.datastore)
+    implementation(Dependencies.Androidx.processLifecycle)
 
     //material design
     implementation(Dependencies.Material.library)
@@ -153,6 +162,7 @@ dependencies {
 
     //accompanist
     implementation(Dependencies.Accompanist.navigationAnimation)
+    implementation(Dependencies.Accompanist.systemUiController)
 
     //hilt
     implementation(Dependencies.Hilt.library)
@@ -163,6 +173,8 @@ dependencies {
     implementation(platform(Dependencies.Firebase.bom))
     implementation(Dependencies.Firebase.firestore)
     implementation(Dependencies.Firebase.auth)
+    implementation(Dependencies.Firebase.crashlytics)
+    implementation(Dependencies.Firebase.crashlytics)
 
     //test
     testImplementation(Dependencies.Test.junit)

@@ -1,6 +1,6 @@
 package com.ruben.bartender.domain.interactor.boarding
 
-import com.ruben.bartender.domain.model.SaveUserRecord
+import com.ruben.bartender.domain.record.SaveUserRecord
 import com.ruben.bartender.domain.repository.SignUpRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

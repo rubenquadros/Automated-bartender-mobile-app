@@ -1,73 +1,144 @@
 package com.ruben.bartender.presentation.ui.login
 
+import android.util.Log
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.SavedStateHandle
 import com.google.firebase.auth.PhoneAuthCredential
-import com.ruben.bartender.domain.interactor.boarding.CheckUserUseCase
-import com.ruben.bartender.domain.interactor.boarding.OnBoardingUseCase
-import com.ruben.bartender.domain.model.CheckUserRecord
-import com.ruben.bartender.domain.model.OtpRecord
-import com.ruben.bartender.domain.model.SignInRecord
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
+import com.ruben.bartender.R
+import com.ruben.bartender.domain.BaseRecord
+import com.ruben.bartender.domain.interactor.onboarding.LoginUseCase
+import com.ruben.bartender.domain.interactor.onboarding.SendOtpUseCase
+import com.ruben.bartender.domain.record.ErrorRecord
+import com.ruben.bartender.domain.record.LoginRecord
+import com.ruben.bartender.domain.record.SendOtpErrorRecord
+import com.ruben.bartender.domain.record.SendOtpRecord
+import com.ruben.bartender.presentation.base.BaseViewModel
+import com.ruben.bartender.presentation.ui.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.regex.Pattern
 import javax.inject.Inject
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
 
 /**
  * Created by ruben.quadros on 09/03/20.
  **/
-@ExperimentalCoroutinesApi
+@HiltViewModel
 class LoginViewModel @Inject constructor(
-  private val onBoardingUseCase: OnBoardingUseCase,
-  private val checkUserUseCase: CheckUserUseCase
-) : ViewModel(), LifecycleObserver {
+    savedStateHandle: SavedStateHandle,
+    private val sendOtpUseCase: SendOtpUseCase,
+    private val loginUseCase: LoginUseCase,
+) : BaseViewModel<LoginState, LoginSideEffect>(savedStateHandle), LifecycleObserver {
 
-  private var sendOtpResponse: MutableLiveData<OtpRecord?> = MutableLiveData()
-  private var signInResponse: MutableLiveData<SignInRecord?> = MutableLiveData()
-  private var checkUserExistsResponse: MutableLiveData<CheckUserRecord?> = MutableLiveData()
+    companion object {
+        private const val TAG = "LoginViewModel"
+    }
 
-  fun sendOTP(phoneNumber: String) {
-    viewModelScope.launch {
-      onBoardingUseCase.sendOTP(phoneNumber).flowOn(Dispatchers.IO)
-        .collect {
-          sendOtpResponse.postValue(it)
+    override fun createInitialState(): LoginState = LoginState()
+
+    fun isValidDigit(digits: String, isOtp: Boolean, isPhoneNumber: Boolean): Boolean {
+        val regex = when {
+            isOtp -> Constants.OTP_REGEX
+            isPhoneNumber -> Constants.PHONE_NUMBER_REGEX
+            else -> ""
+        }
+        return if (digits.isEmpty()) {
+            true
+        } else {
+            Pattern.compile(regex).matcher(digits).matches()
         }
     }
-  }
 
-  fun signIn(phoneAuthCredential: PhoneAuthCredential, phoneNumber: String) {
-    viewModelScope.launch {
-      onBoardingUseCase.signIn(phoneAuthCredential, phoneNumber).flowOn(Dispatchers.IO)
-        .collect {
-          signInResponse.postValue(it)
+    fun onNumberUpdated(number: String) = intent {
+        reduce {
+            if (number.length == 10) {
+                state.copy(isNumberEntered = true)
+            } else {
+                state.copy(isNumberEntered = false)
+            }
         }
     }
-  }
 
-  fun checkIfUserExists(phoneNumber: String) {
-    viewModelScope.launch {
-      checkUserUseCase.checkIfUserExists(phoneNumber).flowOn(Dispatchers.IO)
-        .collect {
-          checkUserExistsResponse.postValue(it)
+    fun onOtpUpdated(otp: String) = intent {
+        reduce {
+            if (otp.length == 6) {
+                state.copy(isOtpEntered = true)
+            } else {
+                state.copy(isOtpEntered = false)
+            }
         }
     }
-  }
 
-  fun getOtpResponse(): LiveData<OtpRecord?> {
-    return sendOtpResponse
-  }
+    fun sendOtp(number: String) = intent {
+        sendOtpUseCase(SendOtpUseCase.Params(phoneNumber = number)).collect { baseRecord: BaseRecord<SendOtpRecord, SendOtpErrorRecord> ->
+            when (baseRecord) {
+                is BaseRecord.Loading -> {
+                    reduce { state.copy(isLoading = true) }
+                }
+                is BaseRecord.Success -> {
+                    onSendOtpSuccess(sendOtpRecord = baseRecord.body, number = number)
+                }
+                else -> {
+                    Log.d(
+                        TAG,
+                        "Otp verification failed: ${(baseRecord as? BaseRecord.Error)?.error?.message}"
+                    )
+                    reduce { state.copy(isLoading = false) }
+                    postSideEffect(LoginSideEffect.ShowError(message = R.string.login_otp_send_fail))
+                }
+            }
+        }
+    }
 
-  fun getSignInResponse(): LiveData<SignInRecord?> {
-    return signInResponse
-  }
+    fun login(credential: PhoneAuthCredential) = intent {
+        loginUseCase(LoginUseCase.Params(credential = credential)).collect { baseRecord: BaseRecord<LoginRecord, ErrorRecord> ->
+            when (baseRecord) {
+                is BaseRecord.Loading -> {
+                    reduce { state.copy(isLoading = true) }
+                }
+                is BaseRecord.Success -> {
+                    reduce { state.copy(isLoading = false) }
+                    onLoginSuccess(loginRecord = baseRecord.body)
+                }
+                else -> {
+                    Log.d(
+                        TAG,
+                        "Login failed: ${((baseRecord as? BaseRecord.Error)?.error as? ErrorRecord.GenericErrorRecord)?.message}"
+                    )
+                    reduce { state.copy(isLoading = false) }
+                    postSideEffect(LoginSideEffect.ShowError(message = R.string.login_fail))
+                }
+            }
+        }
+    }
 
-  fun getCheckUserResponse(): LiveData<CheckUserRecord?> {
-    return checkUserExistsResponse
-  }
+    private fun onSendOtpSuccess(sendOtpRecord: SendOtpRecord, number: String) = intent {
+        when (sendOtpRecord) {
+            is SendOtpRecord.VerificationSuccessRecord -> {
+                reduce { state.copy(isLoading = false, phoneNumber = number) }
+                login(credential = sendOtpRecord.credential)
+            }
+            is SendOtpRecord.OtpVerificationId -> {
+                reduce {
+                    state.copy(
+                        verificationId = sendOtpRecord.id,
+                        isLoading = false,
+                        phoneNumber = number
+                    )
+                }
+            }
+        }
+    }
 
+    private fun onLoginSuccess(loginRecord: LoginRecord) = intent {
+        when (loginRecord) {
+            LoginRecord.LoginSuccess -> {
+                postSideEffect(LoginSideEffect.LoginSuccess)
+            }
+            LoginRecord.NewUser -> {
+                postSideEffect(LoginSideEffect.NavigateToSignUp(phoneNumber = state.phoneNumber))
+            }
+        }
+    }
 }

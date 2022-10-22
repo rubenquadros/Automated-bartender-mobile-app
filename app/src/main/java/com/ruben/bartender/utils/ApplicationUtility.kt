@@ -67,9 +67,9 @@ object ApplicationUtility {
     okButton.setOnClickListener {
       when(dialogName) {
         ApplicationConstants.DRINK_SUCCESS -> {
-          val intent = Intent(context, HomeActivity::class.java)
-          intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-          context.startActivity(intent)
+          //val intent = Intent(context, HomeActivity::class.java)
+          //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+          //context.startActivity(intent)
           alertDialog.dismiss()
         }
         ApplicationConstants.GOOGLE_PAY_INSTALL -> {

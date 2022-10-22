@@ -1,6 +1,6 @@
 package com.ruben.bartender.domain.repository
 
-import com.ruben.bartender.domain.model.SaveUserRecord
+import com.ruben.bartender.domain.record.SaveUserRecord
 import kotlinx.coroutines.flow.Flow
 
 /**

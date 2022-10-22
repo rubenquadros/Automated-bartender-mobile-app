@@ -1,6 +1,6 @@
 package com.ruben.bartender.domain.repository
 
-import com.ruben.bartender.domain.model.MakeDrinkRecord
+import com.ruben.bartender.domain.record.MakeDrinkRecord
 
 
 /**

@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">elBarman</string>
+    <string name="login_title">Login</string>
     <string name="login_enter_number">Please enter your mobile number</string>
-    <string name="boarding_num_hint">Phone Number *</string>
-    <string name="boarding_otp_hint">XXXXXX</string>
-    <string name="login_otp_desc">Your mobile number will be auto-verified. Please enter the received 6 digit OTP if it is not auto-detected and auto-verified</string>
+    <string name="login_number_hint">Phone Number *</string>
+    <string name="login_enter_otp">Please enter the OTP</string>
+    <string name="login_otp_hint">XXXXXX *</string>
+    <string name="login_otp_desc">Your mobile number will be auto-verified. Please enter the received 6 digit OTP if it is not auto-detected and auto-verified.</string>
     <string name="boarding_auth_fail">Authentication failed</string>
-    <string name="boarding_otp_send_fail">Couldn\'t send OTP. Please try again later</string>
+    <string name="login_otp_send_fail">Couldn\'t send OTP for verification. Please try again later.</string>
+    <string name="login_fail">Couldn\'t log you in. Please try again later.</string>
     <string name="signup_first_name_hint">First Name *</string>
     <string name="signup_last_name_hint">Last Name *</string>
     <string name="signup_save_failed">Failed to save user data. Please try again later</string>
@@ -28,7 +31,7 @@
     <string name="all_country_code">+91</string>
     <string name="all_rupee_symbol">\u20B9</string>
     <string name="all_resend">Resend</string>
-    <string name="all_verify">VERIFY</string>
+    <string name="all_verify">Verify</string>
     <string name="all_get_started">Get Started</string>
     <string name="all_unexpected_crash">OOPS! I crashed! Don\'t worry the developers have been notified</string>
     <string name="all_home">HOME</string>

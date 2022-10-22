@@ -1,6 +1,7 @@
 package com.ruben.bartender.presentation.activity
 
 import androidx.lifecycle.SavedStateHandle
+import com.ruben.bartender.domain.interactor.user.GetLoginStatusUseCase
 import com.ruben.bartender.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -11,8 +12,10 @@ import org.orbitmvi.orbit.syntax.simple.reduce
  * Created by Ruben Quadros on 22/10/22
  **/
 @HiltViewModel
-class MainViewModel @Inject constructor(savedStateHandle: SavedStateHandle) :
-    BaseViewModel<MainState, Nothing>(savedStateHandle) {
+class MainViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val getLoginStatusUseCase: GetLoginStatusUseCase
+) : BaseViewModel<MainState, Nothing>(savedStateHandle) {
 
     override fun createInitialState(): MainState = MainState()
 
@@ -22,6 +25,7 @@ class MainViewModel @Inject constructor(savedStateHandle: SavedStateHandle) :
     }
 
     private fun checkLoginState() = intent {
-        reduce { state.copy(isNotReady = false, isUserLoggedIn = false) }
+        val userLoginStatus = getLoginStatusUseCase()
+        reduce { state.copy(isNotReady = false, isUserLoggedIn = userLoginStatus.isLoggedIn) }
     }
 }

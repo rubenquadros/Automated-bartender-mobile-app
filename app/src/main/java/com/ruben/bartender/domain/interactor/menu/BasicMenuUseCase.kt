@@ -1,7 +1,7 @@
 package com.ruben.bartender.domain.interactor.menu
 
-import com.ruben.bartender.domain.model.BasicMenuRecord
-import com.ruben.bartender.domain.model.CategoryRecord
+import com.ruben.bartender.domain.record.BasicMenuRecord
+import com.ruben.bartender.domain.record.CategoryRecord
 import com.ruben.bartender.domain.repository.MenuRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

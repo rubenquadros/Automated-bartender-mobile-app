@@ -21,6 +21,8 @@ object GradlePlugin {
 object Dependencies {
     object Androidx {
         const val splashScreen = "androidx.core:core-splashscreen:1.0.0"
+        const val datastore = "androidx.datastore:datastore-preferences:1.0.0"
+        const val processLifecycle = "androidx.lifecycle:lifecycle-process:2.6.0-alpha02"
     }
 
     object Compose {
@@ -46,6 +48,7 @@ object Dependencies {
     object Accompanist {
         private const val version = "0.26.5-rc"
         const val navigationAnimation = "com.google.accompanist:accompanist-navigation-animation:$version"
+        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
     }
 
     object Material {
@@ -88,9 +91,11 @@ object Dependencies {
     }
 
     object Firebase {
-        const val bom = "com.google.firebase:firebase-bom:31.0.0"
+        const val bom = "com.google.firebase:firebase-bom:30.5.0"
         const val firestore = "com.google.firebase:firebase-firestore-ktx"
         const val auth = "com.google.firebase:firebase-auth-ktx"
+        const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
+        const val analytics = "com.google.firebase:firebase-analytics-ktx"
     }
 
     object Mvi {

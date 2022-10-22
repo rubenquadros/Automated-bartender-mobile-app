@@ -1,9 +1,9 @@
 package com.ruben.bartender.data.repository
 
 import com.ruben.bartender.data.DataSource
-import com.ruben.bartender.domain.model.MakeDrinkRecord
+import com.ruben.bartender.domain.record.MakeDrinkRecord
 import com.ruben.bartender.domain.repository.DrinkRepository
-import com.ruben.bartender.data.mapper.DrinkMapper
+import com.ruben.bartender.data.repository.mapper.DrinkMapper
 import com.ruben.bartender.data.remote.model.request.MakeDrinkRequest
 import com.ruben.bartender.data.remote.utils.ApiConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi

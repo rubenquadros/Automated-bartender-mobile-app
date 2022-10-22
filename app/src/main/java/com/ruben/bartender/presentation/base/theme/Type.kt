@@ -25,9 +25,7 @@ private val fontName = GoogleFont("Libre Baskerville")
 @OptIn(ExperimentalTextApi::class)
 val Baskerville = FontFamily(
     Font(googleFont = fontName, fontProvider = provider, style = FontStyle.Normal, weight = FontWeight.Normal),
-    Font(resId = R.font.libre_baskerville),
     Font(googleFont = fontName, fontProvider = provider, style = FontStyle.Normal, weight = FontWeight.Bold),
-    Font(resId = R.font.libre_baskerville, weight = FontWeight.Bold)
 )
 
 @Immutable

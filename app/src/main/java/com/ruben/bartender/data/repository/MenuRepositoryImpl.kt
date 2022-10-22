@@ -1,10 +1,10 @@
 package com.ruben.bartender.data.repository
 
 import com.ruben.bartender.data.DataSource
-import com.ruben.bartender.domain.model.BasicMenuRecord
-import com.ruben.bartender.domain.model.CategoryRecord
+import com.ruben.bartender.domain.record.BasicMenuRecord
+import com.ruben.bartender.domain.record.CategoryRecord
 import com.ruben.bartender.domain.repository.MenuRepository
-import com.ruben.bartender.data.mapper.MenuMapper
+import com.ruben.bartender.data.repository.mapper.MenuMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

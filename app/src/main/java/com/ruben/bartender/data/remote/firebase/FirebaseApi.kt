@@ -9,7 +9,7 @@ import com.ruben.bartender.data.remote.model.response.menuCategoryResponse.Categ
 import com.ruben.bartender.data.remote.model.response.onBoardingResponse.CheckUserResponse
 import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
 import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SendOtpResponse
-import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SignInResponse
+import com.ruben.bartender.data.remote.model.response.onBoardingResponse.LoginResponse
 import com.ruben.bartender.data.remote.model.response.signoutResponse.SignoutResponse
 import com.ruben.bartender.data.remote.model.response.userDataResponse.UserDataResponse
 import kotlinx.coroutines.flow.Flow
@@ -18,8 +18,8 @@ import kotlinx.coroutines.flow.Flow
  * Created by ruben.quadros on 29/02/20.
  **/
 interface FirebaseApi {
-  fun sendOTP(sendOtpRequest: SendOtpRequest): Flow<SendOtpResponse?>
-  fun signIn(signInRequest: SignInRequest): Flow<SignInResponse?>
+  suspend fun sendOtp(sendOtpRequest: SendOtpRequest): Flow<SendOtpResponse>
+  suspend fun login(signInRequest: SignInRequest): Flow<LoginResponse>
   fun saveUser(saveUserDetailsRequest: SaveUserDetailsRequest): Flow<SaveUserDetailsResponse?>
   fun checkIfUserExists(): Flow<CheckUserResponse?>
   fun getUserData(getUserDataRequest: GetUserDataRequest): Flow<UserDataResponse?>

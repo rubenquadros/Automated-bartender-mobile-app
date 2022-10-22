@@ -1,13 +1,13 @@
 package com.ruben.bartender.data.local
 
-import com.ruben.cache.ConsumerDB
 import com.ruben.bartender.data.local.dao.UserDao
+import javax.inject.Inject
 
 /**
  * Created by ruben.quadros on 12/03/20.
  **/
-class DataBaseManagerImpl(private var consumerDB: ConsumerDB): DatabaseManager {
+class DataBaseManagerImpl @Inject constructor(private var appDb: AppDatabase): DatabaseManager {
   override fun user(): UserDao {
-    return consumerDB.userDAO()
+    return appDb.userDAO()
   }
 }

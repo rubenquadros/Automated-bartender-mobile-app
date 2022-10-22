@@ -1,8 +1,8 @@
 package com.ruben.bartender.domain.interactor.boarding
 
 import com.google.firebase.auth.PhoneAuthCredential
-import com.ruben.bartender.domain.model.OtpRecord
-import com.ruben.bartender.domain.model.SignInRecord
+import com.ruben.bartender.domain.record.OtpRecord
+import com.ruben.bartender.domain.record.SignInRecord
 import com.ruben.bartender.domain.repository.OnBoardingRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -13,10 +13,10 @@ import javax.inject.Inject
 class OnBoardingUseCase @Inject constructor(private val onBoardingRepository: OnBoardingRepository) {
 
   fun sendOTP(phoneNumber: String): Flow<OtpRecord?> {
-    return onBoardingRepository.sendOTP(phoneNumber)
+    return onBoardingRepository.sendOtp(phoneNumber)
   }
 
   fun signIn(phoneAuthCredential: PhoneAuthCredential, phoneNumber: String): Flow<SignInRecord?> {
-    return onBoardingRepository.signIn(phoneAuthCredential, phoneNumber)
+    return onBoardingRepository.login(phoneAuthCredential)
   }
 }

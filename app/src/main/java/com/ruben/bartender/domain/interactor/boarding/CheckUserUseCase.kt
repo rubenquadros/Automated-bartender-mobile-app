@@ -1,6 +1,6 @@
 package com.ruben.bartender.domain.interactor.boarding
 
-import com.ruben.bartender.domain.model.CheckUserRecord
+import com.ruben.bartender.domain.record.CheckUserRecord
 import com.ruben.bartender.domain.repository.OnBoardingRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

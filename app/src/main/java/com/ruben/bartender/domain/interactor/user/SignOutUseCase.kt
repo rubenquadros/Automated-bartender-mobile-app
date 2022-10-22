@@ -1,6 +1,6 @@
 package com.ruben.bartender.domain.interactor.user
 
-import com.ruben.bartender.domain.model.SignOutRecord
+import com.ruben.bartender.domain.record.SignOutRecord
 import com.ruben.bartender.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

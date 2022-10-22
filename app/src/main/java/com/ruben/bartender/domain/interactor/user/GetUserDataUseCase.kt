@@ -1,6 +1,6 @@
 package com.ruben.bartender.domain.interactor.user
 
-import com.ruben.bartender.domain.model.UserRecord
+import com.ruben.bartender.domain.record.UserRecord
 import com.ruben.bartender.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

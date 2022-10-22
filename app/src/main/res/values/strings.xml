@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">elBarman</string>
-    <string name="boarding_enter_num">Please enter your mobile number</string>
+    <string name="login_enter_number">Please enter your mobile number</string>
     <string name="boarding_num_hint">Phone Number *</string>
     <string name="boarding_otp_hint">XXXXXX</string>
-    <string name="boarding_otp_desc">Your mobile number will be auto-verified. Please enter the received 6 digit OTP if it is not auto-detected and auto-verified</string>
+    <string name="login_otp_desc">Your mobile number will be auto-verified. Please enter the received 6 digit OTP if it is not auto-detected and auto-verified</string>
     <string name="boarding_auth_fail">Authentication failed</string>
     <string name="boarding_otp_send_fail">Couldn\'t send OTP. Please try again later</string>
     <string name="signup_first_name_hint">First Name *</string>
     <string name="signup_last_name_hint">Last Name *</string>
     <string name="signup_save_failed">Failed to save user data. Please try again later</string>
+    <string name="signup_desc">One last step to go \u2665</string>
     <string name="payment_card_holder_name">Name on card *</string>
     <string name="payment_card_number">Card number *</string>
     <string name="payment_expiry_date">Expiry (MM/YY) *</string>
@@ -28,11 +29,11 @@
     <string name="all_rupee_symbol">\u20B9</string>
     <string name="all_resend">Resend</string>
     <string name="all_verify">VERIFY</string>
-    <string name="all_get_started">GET STARTED</string>
+    <string name="all_get_started">Get Started</string>
     <string name="all_unexpected_crash">OOPS! I crashed! Don\'t worry the developers have been notified</string>
     <string name="all_home">HOME</string>
     <string name="all_ok">OK</string>
-    <string name="all_continue">CONTINUE</string>
+    <string name="all_continue">Continue</string>
     <string name="all_generic_err">OOPS! Something went wrong, please try again later</string>
     <string name="all_drink_success">Your drink is prepared\n Please collect your drink</string>
     <string name="all_cannot_make_drink">Sorry, unable to make your drink. Please try again later</string>
@@ -43,4 +44,7 @@
     <string name="all_payments">PAYMENTS</string>
     <string name="all_phone_pe_install">You don\'t have PhonePe installed\n Please install the app to continue</string>
     <string name="all_google_pay_install">You don\'t have Google Pay installed\n Please install the app to continue</string>
+    <string name="content_desc_sign_in">Sign in</string>
+    <string name="content_desc_sign_up">Sign up</string>
+    <string name="content_desc_back_button">Go back</string>
 </resources>

@@ -19,7 +19,6 @@
                 android:layout_height="match_parent"
                 android:layout_margin="16dp"
                 android:layout_weight="0.6"
-                android:fontFamily="@font/baskerville_bold"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/all_font_29sp" />
 

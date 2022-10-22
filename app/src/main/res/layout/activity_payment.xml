@@ -4,8 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/payment_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".presentation.checkout.PaymentActivity">
+        android:layout_height="match_parent">
 
     <ProgressBar
             android:id="@+id/paymentProgressBar"
@@ -48,7 +47,6 @@
                     android:id="@+id/upiTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/baskerville_bold"
                     android:text="@string/payment_upi"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/all_font_20sp"
@@ -76,19 +74,19 @@
                     app:srcCompat="@drawable/googlepay_button_content" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/gpayTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/all_margin_56dp"
-                    android:layout_marginEnd="@dimen/all_margin_56dp"
-                    android:fontFamily="@font/baskerville_regular"
-                    android:text="@string/all_gpay"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/all_font_20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/gpayIv"
-                    app:layout_constraintEnd_toStartOf="@+id/gpayNextIv"
-                    app:layout_constraintStart_toEndOf="@+id/gpayIv"
-                    app:layout_constraintTop_toTopOf="@+id/gpayIv" />
+                android:id="@+id/gpayTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/all_margin_56dp"
+                android:layout_marginEnd="@dimen/all_margin_56dp"
+                android:fontFamily="@font/libre_baskerville"
+                android:text="@string/all_gpay"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/all_font_20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/gpayIv"
+                app:layout_constraintEnd_toStartOf="@+id/gpayNextIv"
+                app:layout_constraintStart_toEndOf="@+id/gpayIv"
+                app:layout_constraintTop_toTopOf="@+id/gpayIv" />
 
             <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/gpayNextIv"
@@ -124,7 +122,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/all_margin_56dp"
                     android:layout_marginEnd="@dimen/all_margin_56dp"
-                    android:fontFamily="@font/baskerville_regular"
                     android:text="@string/all_phone_pe"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/all_font_20sp"
@@ -157,7 +154,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/all_margin_24dp"
-                    android:fontFamily="@font/baskerville_bold"
                     android:text="@string/payment_online"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/all_font_20sp"
@@ -187,7 +183,6 @@
                     android:id="@+id/cardTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/baskerville_regular"
                     android:text="@string/all_cards_payment"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/all_font_20sp"

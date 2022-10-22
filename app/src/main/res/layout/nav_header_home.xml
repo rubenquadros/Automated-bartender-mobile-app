@@ -18,15 +18,13 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/all_font_18sp"
-            android:fontFamily="@font/baskerville_bold"/>
+            android:textSize="@dimen/all_font_18sp" />
 
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homePhoneTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/all_font_18sp"
-            android:textColor="@color/colorWhite"
-            android:fontFamily="@font/baskerville_bold"/>
+            android:textColor="@color/colorWhite" />
 
 </LinearLayout>

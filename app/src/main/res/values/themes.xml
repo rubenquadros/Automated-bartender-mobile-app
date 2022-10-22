@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.ElBarman" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorWhite</item>
+        <item name="colorOnSecondary">@color/colorAccent</item>
+    </style>
+
+    <style name="Theme.ElBarman.SplashTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/colorWhite</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/app_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.ElBarman</item>
+    </style>
+</resources>

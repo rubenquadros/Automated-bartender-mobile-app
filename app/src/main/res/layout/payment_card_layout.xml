@@ -19,7 +19,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:digits="@string/all_alphabets"
-                android:fontFamily="@font/baskerville_regular"
                 android:hint="@string/payment_card_holder_name"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/all_font_20sp" />
@@ -42,7 +41,6 @@
                 android:digits="@string/all_digits"
                 android:inputType="number"
                 android:maxLength="16"
-                android:fontFamily="@font/baskerville_regular"
                 android:hint="@string/payment_card_number"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/all_font_20sp" />
@@ -106,7 +104,6 @@
             android:background="@color/disabledColor"
             android:text="@string/all_next"
             android:textColor="@color/colorWhite"
-            android:fontFamily="@font/baskerville_bold"
             android:textSize="@dimen/all_font_22sp"
             android:enabled="false"
             app:layout_constraintBottom_toBottomOf="parent"

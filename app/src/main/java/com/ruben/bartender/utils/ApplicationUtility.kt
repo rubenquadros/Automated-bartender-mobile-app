@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.ruben.bartender.R
-import com.ruben.bartender.presentation.home.HomeActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**

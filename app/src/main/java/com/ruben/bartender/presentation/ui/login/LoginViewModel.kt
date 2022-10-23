@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.SavedStateHandle
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
 import com.ruben.bartender.R
 import com.ruben.bartender.domain.BaseRecord
 import com.ruben.bartender.domain.interactor.onboarding.LoginUseCase
@@ -52,21 +53,13 @@ class LoginViewModel @Inject constructor(
 
     fun onNumberUpdated(number: String) = intent {
         reduce {
-            if (number.length == 10) {
-                state.copy(isNumberEntered = true)
-            } else {
-                state.copy(isNumberEntered = false)
-            }
+            state.copy(isNumberEntered = number.length == Constants.PHONE_NUMBER_LENGTH)
         }
     }
 
     fun onOtpUpdated(otp: String) = intent {
         reduce {
-            if (otp.length == 6) {
-                state.copy(isOtpEntered = true)
-            } else {
-                state.copy(isOtpEntered = false)
-            }
+            state.copy(isOtpEntered = otp.length == Constants.OTP_LENGTH)
         }
     }
 
@@ -91,8 +84,17 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun validateOtp(otp: String) = intent {
+        login(credential = PhoneAuthProvider.getCredential(state.verificationId, otp))
+    }
+
     fun login(credential: PhoneAuthCredential) = intent {
-        loginUseCase(LoginUseCase.Params(credential = credential)).collect { baseRecord: BaseRecord<LoginRecord, ErrorRecord> ->
+        loginUseCase(
+            LoginUseCase.Params(
+                credential = credential,
+                phoneNumber = state.phoneNumber
+            )
+        ).collect { baseRecord: BaseRecord<LoginRecord, ErrorRecord> ->
             when (baseRecord) {
                 is BaseRecord.Loading -> {
                     reduce { state.copy(isLoading = true) }

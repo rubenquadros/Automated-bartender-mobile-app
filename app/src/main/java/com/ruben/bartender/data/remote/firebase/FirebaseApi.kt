@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.Flow
 interface FirebaseApi {
   suspend fun sendOtp(sendOtpRequest: SendOtpRequest): Flow<SendOtpResponse>
   suspend fun login(signInRequest: SignInRequest): Flow<LoginResponse>
-  fun saveUser(saveUserDetailsRequest: SaveUserDetailsRequest): Flow<SaveUserDetailsResponse?>
+  suspend fun saveUser(saveUserDetailsRequest: SaveUserDetailsRequest): Flow<SaveUserDetailsResponse>
   fun checkIfUserExists(): Flow<CheckUserResponse?>
   fun getUserData(getUserDataRequest: GetUserDataRequest): Flow<UserDataResponse?>
   fun getBasicMenu(): Flow<BasicMenuResponse?>

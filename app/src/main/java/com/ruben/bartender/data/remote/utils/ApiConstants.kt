@@ -22,7 +22,9 @@ object ApiConstants {
   const val BASIC_MENU_DOC = "basicmenu"
   const val BASIC_MENU_COLLECTION = "basicmenulist"
   const val USER_DETAILS_COLLECTION = "users"
+  const val FIRST_NAME_DOC = "first_name"
+  const val LAST_NAME_DOC = "last_name"
+  const val PHONE_NUMBER_DOC = "phone_number_doc"
   const val IS_LOGGED_IN = "is_logged_in"
   const val IS_REGISTERED = "is_registered"
-  const val PHONE_NUMBER = "phone_number"
 }

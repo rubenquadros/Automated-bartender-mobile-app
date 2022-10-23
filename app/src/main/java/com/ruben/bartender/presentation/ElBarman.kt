@@ -4,6 +4,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -20,17 +22,27 @@ import com.ruben.bartender.presentation.ui.signup.SignUpScreen
 fun ElBarman(isLoggedIn: Boolean) {
     val navController = rememberAnimatedNavController()
     val navGraph = remember(navController) { NavGraph(navController) }
-    val home = if (isLoggedIn) "" else Destination.LOGIN.Route
+    val home = if (isLoggedIn) Destination.HOME.Route else Destination.LOGIN.Route
 
     AnimatedNavHost(navController = navController, startDestination = home) {
         composable(route = Destination.LOGIN.Route) {
             StatusBarColor()
-            LoginScreen()
+            LoginScreen(
+                navigateToHome = {},
+                navigateToSignUp = navGraph.openSignUp
+            )
         }
 
-        composable(route = Destination.SIGNUP.Route) {
+        composable(
+            route = Destination.SIGNUP.Route,
+            arguments = listOf(
+                navArgument(name = Destination.SIGNUP.PhoneArg) { type = NavType.StringType }
+            )
+        ) {
             StatusBarColor()
-            SignUpScreen()
+            SignUpScreen(
+                navigateToHome = {}
+            )
         }
 
         composable(route = Destination.HOME.Route) {

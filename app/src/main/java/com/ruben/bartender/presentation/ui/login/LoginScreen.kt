@@ -54,7 +54,9 @@ import org.orbitmvi.orbit.compose.collectAsState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    navigateToHome: () -> Unit,
+    navigateToSignUp: (number: String) -> Unit
 ) {
 
     val snackbarHostState = remember {
@@ -68,10 +70,10 @@ fun LoginScreen(
         loginViewModel.uiSideEffect().collect { uiSideEffect ->
             when (uiSideEffect) {
                 LoginSideEffect.LoginSuccess -> {
-                    //TODO:navigate home screen
+                    navigateToHome()
                 }
                 is LoginSideEffect.NavigateToSignUp -> {
-                    //TODO:navigate to signup allow skip
+                    navigateToSignUp(uiSideEffect.phoneNumber)
                 }
                 is LoginSideEffect.ShowError -> {
                     snackbarHostState.showSnackbar(context.resources.getString(uiSideEffect.message))
@@ -94,7 +96,7 @@ fun LoginScreen(
         LoginContent(
             topPaddingValue = paddingValues.calculateTopPadding(),
             onNumberEntered = loginViewModel::sendOtp,
-            onOtpEntered = {},
+            onOtpEntered = loginViewModel::validateOtp,
             onOtpUpdated = loginViewModel::onOtpUpdated,
             onNumberUpdated = loginViewModel::onNumberUpdated,
             isNumberEntered = { loginState.isNumberEntered },

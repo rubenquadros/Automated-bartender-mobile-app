@@ -12,9 +12,9 @@ import androidx.room.Entity
 )
 data class UserEntity(
   @ColumnInfo(name = "first_name")
-  val firstName: String?,
+  val firstName: String,
   @ColumnInfo(name = "last_name")
-  val lastName: String?,
+  val lastName: String,
   @ColumnInfo(name = "phone_number")
   val phoneNumber: String
 )

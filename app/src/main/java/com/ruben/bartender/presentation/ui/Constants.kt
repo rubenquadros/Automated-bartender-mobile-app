@@ -6,4 +6,7 @@ package com.ruben.bartender.presentation.ui
 object Constants {
     const val PHONE_NUMBER_REGEX = "[\\d]{1,10}"
     const val OTP_REGEX = "[\\d]{1,6}"
+    const val LETTERS_REGEX = "^[a-zA-Z]*\$"
+    const val PHONE_NUMBER_LENGTH = 10
+    const val OTP_LENGTH = 6
 }

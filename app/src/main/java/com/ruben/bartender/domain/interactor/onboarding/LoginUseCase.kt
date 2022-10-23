@@ -19,8 +19,11 @@ class LoginUseCase @Inject constructor(private val onBoardingRepository: OnBoard
     override suspend fun execute(request: Params): Flow<BaseRecord<LoginRecord, ErrorRecord>> =
         flow {
             emit(BaseRecord.Loading)
-            onBoardingRepository.login(phoneAuthCredential = request.credential)
+            onBoardingRepository.login(
+                phoneAuthCredential = request.credential,
+                phoneNumber = request.phoneNumber
+            )
         }
 
-    data class Params(val credential: PhoneAuthCredential)
+    data class Params(val credential: PhoneAuthCredential, val phoneNumber: String)
 }

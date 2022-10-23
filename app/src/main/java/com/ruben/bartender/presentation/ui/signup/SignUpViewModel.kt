@@ -1,35 +1,79 @@
 package com.ruben.bartender.presentation.ui.signup
 
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.ruben.bartender.domain.interactor.boarding.SignUpUseCase
-import com.ruben.bartender.domain.record.SaveUserRecord
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
+import androidx.lifecycle.SavedStateHandle
+import com.ruben.bartender.R
+import com.ruben.bartender.domain.BaseRecord
+import com.ruben.bartender.domain.interactor.onboarding.SignUpUseCase
+import com.ruben.bartender.domain.record.ErrorRecord
+import com.ruben.bartender.presentation.Destination
+import com.ruben.bartender.presentation.base.BaseViewModel
+import com.ruben.bartender.presentation.ui.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
 
 /**
  * Created by ruben.quadros on 11/03/20.
  **/
-@ExperimentalCoroutinesApi
-class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCase): ViewModel(),
-  LifecycleObserver {
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val signUpUseCase: SignUpUseCase
+) : BaseViewModel<SignUpState, SignUpSideEffect>(savedStateHandle) {
 
-  private var saveUserResponse: MutableLiveData<SaveUserRecord?> = MutableLiveData()
+    override fun createInitialState(): SignUpState =
+        SignUpState(
+            phoneNumber = savedStateHandle.get<String>(Destination.SIGNUP.PhoneArg).orEmpty()
+        )
 
-  fun saveUser(firstName: String, lastName: String, phoneNumber: String) {
-    viewModelScope.launch {
-      signUpUseCase.saveUser(firstName, lastName, phoneNumber).flowOn(Dispatchers.IO)
-        .collect { saveUserResponse.postValue(it) }
+    fun onFirstNameUpdated(name: String) = intent {
+        reduce {
+            state.copy(isFirstNameEntered = name.isNotEmpty())
+        }
     }
-  }
 
-  fun getSaveUserResponse(): LiveData<SaveUserRecord?> {
-    return saveUserResponse
-  }
+    fun onLastNameUpdated(name: String) = intent {
+        reduce {
+            state.copy(isLastNameEntered = name.isNotEmpty())
+        }
+    }
+
+    fun isValidLetter(letters: String): Boolean {
+        return letters.matches(Constants.LETTERS_REGEX.toRegex())
+    }
+
+    fun navigateToHome() = intent {
+        postSideEffect(SignUpSideEffect.SignUpSuccess)
+    }
+
+    fun saveUser(firstName: String, lastName: String) = intent {
+        signUpUseCase(
+            SignUpUseCase.Params(
+                phoneNumber = state.phoneNumber,
+                firstName = firstName,
+                lastName = lastName
+            )
+        ).collect { baseRecord: BaseRecord<Nothing, ErrorRecord> ->
+            when (baseRecord) {
+                is BaseRecord.Loading -> {
+                    reduce { state.copy(isLoading = true) }
+                }
+                is BaseRecord.SuccessNoBody -> {
+                    reduce { state.copy(isLoading = false) }
+                    navigateToHome()
+                }
+                else -> {
+                    reduce { state.copy(isLoading = false) }
+                    postSideEffect(
+                        SignUpSideEffect.ShowError(
+                            message = R.string.signup_save_failed,
+                            action = R.string.all_ok
+                        )
+                    )
+                }
+            }
+        }
+    }
 }

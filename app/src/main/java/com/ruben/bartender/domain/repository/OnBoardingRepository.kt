@@ -12,6 +12,16 @@ import kotlinx.coroutines.flow.Flow
  * Created by ruben.quadros on 09/03/20.
  **/
 interface OnBoardingRepository {
-  suspend fun sendOtp(phoneNumber: String): Flow<BaseRecord<SendOtpRecord, SendOtpErrorRecord>>
-  suspend fun login(phoneAuthCredential: PhoneAuthCredential): Flow<BaseRecord<LoginRecord, ErrorRecord>>
+    suspend fun sendOtp(phoneNumber: String): Flow<BaseRecord<SendOtpRecord, SendOtpErrorRecord>>
+
+    suspend fun login(
+        phoneAuthCredential: PhoneAuthCredential,
+        phoneNumber: String
+    ): Flow<BaseRecord<LoginRecord, ErrorRecord>>
+
+    suspend fun saveUser(
+        phoneNumber: String,
+        firstName: String,
+        lastName: String
+    ): Flow<BaseRecord<Nothing, ErrorRecord>>
 }

@@ -9,6 +9,8 @@ sealed class BaseRecord<out RECORD, out ERROR> {
 
     data class Success<RECORD>(val body: RECORD) : BaseRecord<RECORD, Nothing>()
 
+    object SuccessNoBody : BaseRecord<Nothing, Nothing>()
+
     data class Error<ERROR>(val error: ERROR) : BaseRecord<Nothing, ERROR>()
 
     object UnknownError : BaseRecord<Nothing, Nothing>()

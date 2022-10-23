@@ -7,4 +7,6 @@ sealed class LoginResponse {
     data class LoginFail(val message: String) : LoginResponse()
     object NewUser : LoginResponse()
     object LoginSuccess : LoginResponse()
+
+    fun isSuccess() = this is NewUser || this is LoginSuccess
 }

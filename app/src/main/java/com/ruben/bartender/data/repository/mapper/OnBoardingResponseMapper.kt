@@ -1,6 +1,7 @@
 package com.ruben.bartender.data.repository.mapper
 
 import com.ruben.bartender.data.remote.model.response.onBoardingResponse.LoginResponse
+import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
 import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SendOtpResponse
 import com.ruben.bartender.domain.BaseRecord
 import com.ruben.bartender.domain.record.ErrorRecord
@@ -50,6 +51,19 @@ fun LoginResponse.toLoginBaseRecord(): BaseRecord<LoginRecord, ErrorRecord> {
         is LoginResponse.LoginSuccess -> {
             BaseRecord.Success(
                 body = LoginRecord.LoginSuccess
+            )
+        }
+    }
+}
+
+fun SaveUserDetailsResponse.toSaveUserBaseRecord(): BaseRecord<Nothing, ErrorRecord> {
+    return when(this) {
+        is SaveUserDetailsResponse.SaveSuccess -> {
+            BaseRecord.SuccessNoBody
+        }
+        is SaveUserDetailsResponse.SaveFail -> {
+            BaseRecord.Error(
+                error = ErrorRecord.GenericErrorRecord(message = this.message)
             )
         }
     }

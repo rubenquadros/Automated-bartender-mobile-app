@@ -32,8 +32,11 @@ import kotlinx.coroutines.flow.channelFlow
  **/
 class FirebaseApiImpl @Inject constructor() : FirebaseApi {
 
+    companion object {
+        private const val TAG = "FirebaseApiImpl"
+    }
+
     private val firestoreDB = FirebaseFirestore.getInstance()
-    private val TAG = javaClass.simpleName
 
     override fun getBasicMenu(): Flow<BasicMenuResponse?> {
         return channelFlow {
@@ -129,21 +132,24 @@ class FirebaseApiImpl @Inject constructor() : FirebaseApi {
         }
     }
 
-    override fun saveUser(saveUserDetailsRequest: SaveUserDetailsRequest): Flow<SaveUserDetailsResponse?> {
-        return channelFlow {
+    override suspend fun saveUser(saveUserDetailsRequest: SaveUserDetailsRequest): Flow<SaveUserDetailsResponse> {
+        return callbackFlow {
             firestoreDB.collection(ApiConstants.USER_DETAILS_COLLECTION)
                 .document(saveUserDetailsRequest.phoneNumber)
-                .set(saveUserDetailsRequest)
+                .update(
+                    ApiConstants.FIRST_NAME_DOC,
+                    saveUserDetailsRequest.firstName,
+                    ApiConstants.LAST_NAME_DOC,
+                    saveUserDetailsRequest.lastName,
+                    ApiConstants.PHONE_NUMBER_DOC,
+                    saveUserDetailsRequest.phoneNumber
+                )
                 .addOnSuccessListener {
-                    val saveUserDetailsResponse = SaveUserDetailsResponse(0)
-                    saveUserDetailsResponse.status = 200
-                    channel.trySend(saveUserDetailsResponse)
+                    trySend(SaveUserDetailsResponse.SaveSuccess)
                 }
                 .addOnFailureListener {
-                    val saveUserDetailsResponse = SaveUserDetailsResponse(0)
-                    saveUserDetailsResponse.status = 500
-                    channel.trySend(saveUserDetailsResponse)
-                    channel.close()
+                    trySend(SaveUserDetailsResponse.SaveFail(message = it.message.orEmpty()))
+                    close(null)
                 }
             awaitClose()
         }

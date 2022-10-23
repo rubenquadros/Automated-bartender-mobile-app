@@ -4,7 +4,7 @@ import com.ruben.bartender.data.remote.model.request.GetUserDataRequest
 import com.ruben.bartender.data.remote.model.request.SendOtpRequest
 import com.ruben.bartender.data.remote.model.request.SignInRequest
 import com.ruben.bartender.data.remote.model.request.SaveUserDetailsRequest
-import com.ruben.bartender.data.remote.model.response.basicMenuResponse.BasicMenuResponse
+import com.ruben.bartender.data.remote.model.response.basicMenuResponse.MainMenuResponse
 import com.ruben.bartender.data.remote.model.response.menuCategoryResponse.CategoryResponse
 import com.ruben.bartender.data.remote.model.response.onBoardingResponse.CheckUserResponse
 import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
@@ -23,7 +23,7 @@ interface FirebaseApi {
   suspend fun saveUser(saveUserDetailsRequest: SaveUserDetailsRequest): Flow<SaveUserDetailsResponse>
   fun checkIfUserExists(): Flow<CheckUserResponse?>
   fun getUserData(getUserDataRequest: GetUserDataRequest): Flow<UserDataResponse?>
-  fun getBasicMenu(): Flow<BasicMenuResponse?>
+  suspend fun getMainMenu(): Flow<MainMenuResponse>
   fun getMenuCategories(): Flow<CategoryResponse?>
   fun logout(): Flow<SignoutResponse?>
 }

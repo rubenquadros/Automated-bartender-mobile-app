@@ -11,6 +11,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
+import com.ruben.bartender.presentation.ui.home.HomeScreen
 import com.ruben.bartender.presentation.ui.login.LoginScreen
 import com.ruben.bartender.presentation.ui.signup.SignUpScreen
 
@@ -22,7 +23,7 @@ import com.ruben.bartender.presentation.ui.signup.SignUpScreen
 fun ElBarman(isLoggedIn: Boolean) {
     val navController = rememberAnimatedNavController()
     val navGraph = remember(navController) { NavGraph(navController) }
-    val home = if (isLoggedIn) Destination.HOME.Route else Destination.LOGIN.Route
+    val home = if (isLoggedIn) Destination.HOME.Route else Destination.HOME.Route //revert to login
 
     AnimatedNavHost(navController = navController, startDestination = home) {
         composable(route = Destination.LOGIN.Route) {
@@ -47,6 +48,7 @@ fun ElBarman(isLoggedIn: Boolean) {
 
         composable(route = Destination.HOME.Route) {
             StatusBarColor()
+            HomeScreen()
         }
     }
 }

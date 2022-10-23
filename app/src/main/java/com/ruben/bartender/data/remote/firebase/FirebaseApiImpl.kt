@@ -11,7 +11,8 @@ import com.ruben.bartender.data.remote.model.request.GetUserDataRequest
 import com.ruben.bartender.data.remote.model.request.SaveUserDetailsRequest
 import com.ruben.bartender.data.remote.model.request.SendOtpRequest
 import com.ruben.bartender.data.remote.model.request.SignInRequest
-import com.ruben.bartender.data.remote.model.response.basicMenuResponse.BasicMenuResponse
+import com.ruben.bartender.data.remote.model.response.basicMenuResponse.MainMenuItem
+import com.ruben.bartender.data.remote.model.response.basicMenuResponse.MainMenuResponse
 import com.ruben.bartender.data.remote.model.response.menuCategoryResponse.CategoryResponse
 import com.ruben.bartender.data.remote.model.response.onBoardingResponse.CheckUserResponse
 import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
@@ -38,20 +39,25 @@ class FirebaseApiImpl @Inject constructor() : FirebaseApi {
 
     private val firestoreDB = FirebaseFirestore.getInstance()
 
-    override fun getBasicMenu(): Flow<BasicMenuResponse?> {
-        return channelFlow {
-            firestoreDB.collection(ApiConstants.MENU_COLLECTION)
-                .document(ApiConstants.BASIC_MENU_DOC)
-                .collection(ApiConstants.BASIC_MENU_COLLECTION)
+    override suspend fun getMainMenu(): Flow<MainMenuResponse> {
+        return callbackFlow {
+            firestoreDB.collection(ApiConstants.MAIN_MENU_COLLECTION)
                 .get()
                 .addOnSuccessListener { result ->
-                    val basicMenuResponse = BasicMenuResponse(result.documents)
-                    channel.trySend(basicMenuResponse)
+                    val mainMenu = result.documents.map {
+                        MainMenuItem(
+                            name = (it.data?.get(ApiConstants.MENU_ITEM_NAME_KEY) as? String).orEmpty(),
+                            price = (it.data?.get(ApiConstants.MENU_ITEM_PRICE_KEY) as? String).orEmpty(),
+                            image = (it.data?.get(ApiConstants.MENU_ITEM_IMAGE_KEY) as? String).orEmpty(),
+                            uniqueId = (it.data?.get(ApiConstants.MENU_ITEM_UNIQUE_ID_KEY) as? String).orEmpty()
+                        )
+                    }
+                    trySend(MainMenuResponse.MainMenuSuccess(mainMenu = mainMenu))
                 }
                 .addOnFailureListener {
                     Log.d(TAG, it.message.toString())
-                    channel.trySend(null)
-                    channel.close(it)
+                    trySend(MainMenuResponse.MainMenuFail(message = it.message.orEmpty()))
+                    close(it)
                 }
             awaitClose()
         }
@@ -59,7 +65,7 @@ class FirebaseApiImpl @Inject constructor() : FirebaseApi {
 
     override fun getMenuCategories(): Flow<CategoryResponse?> {
         return channelFlow {
-            firestoreDB.collection(ApiConstants.MENU_COLLECTION).get()
+            firestoreDB.collection(ApiConstants.MAIN_MENU_COLLECTION).get()
                 .addOnSuccessListener { result ->
                     val categoryResponse = CategoryResponse(result.documents)
                     channel.trySend(categoryResponse)

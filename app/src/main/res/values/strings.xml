@@ -33,8 +33,9 @@
     <string name="all_resend">Resend</string>
     <string name="all_verify">Verify</string>
     <string name="all_get_started">Get Started</string>
+    <string name="all_get_drink">Get</string>
     <string name="all_unexpected_crash">OOPS! I crashed! Don\'t worry the developers have been notified</string>
-    <string name="all_home">HOME</string>
+    <string name="all_home">Home</string>
     <string name="all_ok">OK</string>
     <string name="all_continue">Continue</string>
     <string name="all_generic_err">OOPS! Something went wrong, please try again later</string>
@@ -47,7 +48,12 @@
     <string name="all_payments">PAYMENTS</string>
     <string name="all_phone_pe_install">You don\'t have PhonePe installed\n Please install the app to continue</string>
     <string name="all_google_pay_install">You don\'t have Google Pay installed\n Please install the app to continue</string>
+    <string name="bottom_navigation_title_menu">Menu</string>
+    <string name="bottom_navigation_title_profile">Profile</string>
+    <string name="menu_price">\u20B9%s</string>
     <string name="content_desc_sign_in">Sign in</string>
     <string name="content_desc_sign_up">Sign up</string>
     <string name="content_desc_back_button">Go back</string>
+    <string name="content_desc_menu">Bar menu</string>
+    <string name="content_desc_profile">Your profile</string>
 </resources>

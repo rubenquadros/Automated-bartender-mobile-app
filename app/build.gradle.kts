@@ -163,6 +163,7 @@ dependencies {
     //accompanist
     implementation(Dependencies.Accompanist.navigationAnimation)
     implementation(Dependencies.Accompanist.systemUiController)
+    implementation(Dependencies.Accompanist.navigationMaterial)
 
     //hilt
     implementation(Dependencies.Hilt.library)

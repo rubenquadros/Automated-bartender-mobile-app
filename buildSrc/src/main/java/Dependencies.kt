@@ -49,6 +49,7 @@ object Dependencies {
         private const val version = "0.26.5-rc"
         const val navigationAnimation = "com.google.accompanist:accompanist-navigation-animation:$version"
         const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
+        const val navigationMaterial = "com.google.accompanist:accompanist-navigation-material:$version"
     }
 
     object Material {

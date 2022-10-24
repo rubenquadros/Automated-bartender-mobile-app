@@ -33,23 +33,25 @@ import com.ruben.bartender.R
 import com.ruben.bartender.domain.record.MainMenuRecord
 import com.ruben.bartender.domain.record.MenuItem
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
+import com.ruben.bartender.presentation.ui.common.LoadingView
 
 /**
  * Created by Ruben Quadros on 23/10/22
  **/
 @Composable
 fun MenuScreen(
-    menuViewModel: MenuViewModel = hiltViewModel()
+    menuViewModel: MenuViewModel = hiltViewModel(),
+    navigateToDetails: (drinkId: String) -> Unit
 ) {
     val menuState by menuViewModel.uiState().collectAsState()
 
     when (menuState) {
         is MenuState.LoadingState -> {
-
+            LoadingView(modifier = Modifier.fillMaxSize())
         }
         is MenuState.MainMenuState -> {
             (menuState as? MenuState.MainMenuState)?.let {
-                MenuContent(mainMenuRecord = it.mainMenu)
+                MenuContent(mainMenuRecord = it.mainMenu, onItemClick = navigateToDetails)
             }
         }
         else -> {
@@ -61,22 +63,25 @@ fun MenuScreen(
 @Composable
 private fun MenuContent(
     modifier: Modifier = Modifier,
-    mainMenuRecord: MainMenuRecord
+    mainMenuRecord: MainMenuRecord,
+    onItemClick: (drinkId: String) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier.fillMaxSize(),
         columns = GridCells.Fixed(count = 2)
     ) {
         items(items = mainMenuRecord.menuRecord, key = { item: MenuItem -> item.id }) {
-            MenuItemUI(menuItem = it)
+            MenuItemUI(menuItem = it, onItemClick = onItemClick)
         }
     }
 }
 
 @Composable
-private fun MenuItemUI(menuItem: MenuItem) {
+private fun MenuItemUI(menuItem: MenuItem, onItemClick: (drinkId: String) -> Unit) {
     Card(
-        modifier = menuItemModifier,
+        modifier = menuItemModifier.clickable {
+            onItemClick(menuItem.id)
+        },
         elevation = CardDefaults.cardElevation(defaultElevation = 20.dp),
         colors = CardDefaults.cardColors(containerColor = ElBarmanTheme.colors.onPrimary)
     ) {
@@ -130,18 +135,25 @@ private fun MenuItemUI(menuItem: MenuItem) {
     }
 }
 
-private val menuItemModifier = Modifier.padding(8.dp).fillMaxWidth()
+private val menuItemModifier = Modifier
+    .padding(8.dp)
+    .fillMaxWidth()
 
-private val menuItemImageModifier = Modifier.height(150.dp).fillMaxWidth()
+private val menuItemImageModifier = Modifier
+    .height(150.dp)
+    .fillMaxWidth()
 
 private val menuItemNameModifier = Modifier.padding(8.dp)
 
-private val menuItemPriceRowModifier = Modifier.padding(8.dp).fillMaxWidth()
+private val menuItemPriceRowModifier = Modifier
+    .padding(8.dp)
+    .fillMaxWidth()
 
 @Preview(showBackground = true)
 @Composable
 private fun PreviewMenuItem() {
     MenuItemUI(
-        menuItem = MenuItem(name = "ScrewDriver", image = "", price = "400", id = "abc")
+        menuItem = MenuItem(name = "ScrewDriver", image = "", price = "400", id = "abc"),
+        onItemClick = {}
     )
 }

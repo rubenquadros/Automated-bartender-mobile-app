@@ -9,6 +9,8 @@ import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
 import com.ruben.bartender.presentation.ui.home.HomeScreen
@@ -18,15 +20,16 @@ import com.ruben.bartender.presentation.ui.signup.SignUpScreen
 /**
  * Created by Ruben Quadros on 22/10/22
  **/
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
 @Composable
 fun ElBarman(isLoggedIn: Boolean) {
-    val navController = rememberAnimatedNavController()
+    val bottomSheetNavigator = rememberBottomSheetNavigator()
+    val navController = rememberAnimatedNavController(bottomSheetNavigator)
     val navGraph = remember(navController) { NavGraph(navController) }
-    val home = if (isLoggedIn) Destination.HOME.Route else Destination.LOGIN.Route
+    val home = if (isLoggedIn) Destination.Home.Route else Destination.Login.Route
 
     AnimatedNavHost(navController = navController, startDestination = home) {
-        composable(route = Destination.LOGIN.Route) {
+        composable(route = Destination.Login.Route) {
             StatusBarColor()
             LoginScreen(
                 navigateToHome = navGraph.openHome,
@@ -35,9 +38,9 @@ fun ElBarman(isLoggedIn: Boolean) {
         }
 
         composable(
-            route = Destination.SIGNUP.Route,
+            route = Destination.SignUp.Route,
             arguments = listOf(
-                navArgument(name = Destination.SIGNUP.PhoneArg) { type = NavType.StringType }
+                navArgument(name = Destination.SignUp.PhoneArg) { type = NavType.StringType }
             )
         ) {
             StatusBarColor()
@@ -46,7 +49,7 @@ fun ElBarman(isLoggedIn: Boolean) {
             )
         }
 
-        composable(route = Destination.HOME.Route) {
+        composable(route = Destination.Home.Route) {
             StatusBarColor()
             HomeScreen()
         }

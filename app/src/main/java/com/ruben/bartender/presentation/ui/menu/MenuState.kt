@@ -18,7 +18,8 @@ sealed class MenuState : Parcelable {
 
     @Parcelize
     data class MainMenuState(
-        val mainMenu: MainMenuRecord
+        val mainMenu: MainMenuRecord = MainMenuRecord(emptyList()),
+        val shouldShowDetails: Boolean = false
     ) : MenuState()
 
     @Parcelize

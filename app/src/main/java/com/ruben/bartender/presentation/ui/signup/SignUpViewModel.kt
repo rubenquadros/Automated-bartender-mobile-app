@@ -25,7 +25,7 @@ class SignUpViewModel @Inject constructor(
 
     override fun createInitialState(): SignUpState =
         SignUpState(
-            phoneNumber = savedStateHandle.get<String>(Destination.SIGNUP.PhoneArg).orEmpty()
+            phoneNumber = savedStateHandle.get<String>(Destination.SignUp.PhoneArg).orEmpty()
         )
 
     fun onFirstNameUpdated(name: String) = intent {

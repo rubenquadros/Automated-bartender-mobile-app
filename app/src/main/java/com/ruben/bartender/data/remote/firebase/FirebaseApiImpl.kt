@@ -1,10 +1,11 @@
 package com.ruben.bartender.data.remote.firebase
 
+import android.content.Context
 import android.util.Log
+import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ruben.bartender.data.remote.model.request.GetUserDataRequest
@@ -21,6 +22,7 @@ import com.ruben.bartender.data.remote.model.response.onBoardingResponse.LoginRe
 import com.ruben.bartender.data.remote.model.response.signoutResponse.SignoutResponse
 import com.ruben.bartender.data.remote.model.response.userDataResponse.UserDataResponse
 import com.ruben.bartender.data.remote.utils.ApiConstants
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -34,7 +36,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 /**
  * Created by ruben.quadros on 01/03/20.
  **/
-class FirebaseApiImpl @Inject constructor() : FirebaseApi {
+class FirebaseApiImpl @Inject constructor(@ApplicationContext private val context: Context) : FirebaseApi {
 
     companion object {
         private const val TAG = "FirebaseApiImpl"
@@ -82,8 +84,6 @@ class FirebaseApiImpl @Inject constructor() : FirebaseApi {
 
     override suspend fun sendOtp(sendOtpRequest: SendOtpRequest): Flow<SendOtpResponse> {
         return callbackFlow {
-            val firebaseAuth = FirebaseAuth.getInstance().apply { setLanguageCode("en") }
-
             val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                     trySend(SendOtpResponse.VerificationComplete(credential = credential))
@@ -102,13 +102,13 @@ class FirebaseApiImpl @Inject constructor() : FirebaseApi {
                 }
             }
 
-            val options = PhoneAuthOptions.newBuilder(firebaseAuth)
-                .setPhoneNumber(sendOtpRequest.phoneNumber)
-                .setTimeout(ApiConstants.TIMEOUT_OTP, TimeUnit.SECONDS)
-                .setCallbacks(callbacks)
-                .build()
-
-            PhoneAuthProvider.verifyPhoneNumber(options)
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                sendOtpRequest.phoneNumber,
+                ApiConstants.TIMEOUT_OTP,
+                TimeUnit.SECONDS,
+                TaskExecutors.MAIN_THREAD,
+                callbacks
+            )
 
             awaitClose()
         }

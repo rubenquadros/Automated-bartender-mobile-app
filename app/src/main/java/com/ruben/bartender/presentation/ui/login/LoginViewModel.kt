@@ -64,7 +64,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun sendOtp(number: String) = intent {
-        sendOtpUseCase(SendOtpUseCase.Params(phoneNumber = number)).collect { baseRecord: BaseRecord<SendOtpRecord, SendOtpErrorRecord> ->
+        sendOtpUseCase(SendOtpUseCase.Params(phoneNumber = "+91$number")).collect { baseRecord: BaseRecord<SendOtpRecord, SendOtpErrorRecord> ->
             when (baseRecord) {
                 is BaseRecord.Loading -> {
                     reduce { state.copy(isLoading = true) }
@@ -126,7 +126,8 @@ class LoginViewModel @Inject constructor(
                     state.copy(
                         verificationId = sendOtpRecord.id,
                         isLoading = false,
-                        phoneNumber = number
+                        phoneNumber = number,
+                        shouldShowOtpField = true
                     )
                 }
             }

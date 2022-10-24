@@ -23,13 +23,13 @@ import com.ruben.bartender.presentation.ui.signup.SignUpScreen
 fun ElBarman(isLoggedIn: Boolean) {
     val navController = rememberAnimatedNavController()
     val navGraph = remember(navController) { NavGraph(navController) }
-    val home = if (isLoggedIn) Destination.HOME.Route else Destination.HOME.Route //revert to login
+    val home = if (isLoggedIn) Destination.HOME.Route else Destination.LOGIN.Route
 
     AnimatedNavHost(navController = navController, startDestination = home) {
         composable(route = Destination.LOGIN.Route) {
             StatusBarColor()
             LoginScreen(
-                navigateToHome = {},
+                navigateToHome = navGraph.openHome,
                 navigateToSignUp = navGraph.openSignUp
             )
         }
@@ -42,7 +42,7 @@ fun ElBarman(isLoggedIn: Boolean) {
         ) {
             StatusBarColor()
             SignUpScreen(
-                navigateToHome = {}
+                navigateToHome = navGraph.openHome
             )
         }
 

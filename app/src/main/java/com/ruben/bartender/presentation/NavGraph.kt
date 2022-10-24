@@ -11,6 +11,10 @@ class NavGraph(navHostController: NavHostController) {
     }
 
     val openSignUp: (number: String) -> Unit = { number ->
-        navHostController.navigate(Destination.SIGNUP.createRoute(number))
+        navHostController.navigate(route = Destination.SIGNUP.createRoute(number))
+    }
+
+    val openHome: () -> Unit = {
+        navHostController.navigate(route = Destination.HOME.Route)
     }
 }

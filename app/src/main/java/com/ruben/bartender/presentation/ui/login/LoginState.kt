@@ -13,5 +13,6 @@ data class LoginState(
     val isOtpEntered: Boolean = false,
     val isOtpSent: Boolean = false,
     val verificationId: String = "",
-    val phoneNumber: String = ""
+    val phoneNumber: String = "",
+    val shouldShowOtpField: Boolean = false
 ) : Parcelable

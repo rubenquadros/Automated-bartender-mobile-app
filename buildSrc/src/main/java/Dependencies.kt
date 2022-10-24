@@ -91,11 +91,10 @@ object Dependencies {
     }
 
     object Firebase {
-        const val bom = "com.google.firebase:firebase-bom:30.5.0"
-        const val firestore = "com.google.firebase:firebase-firestore-ktx"
-        const val auth = "com.google.firebase:firebase-auth-ktx"
-        const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
-        const val analytics = "com.google.firebase:firebase-analytics-ktx"
+        const val firestore = "com.google.firebase:firebase-firestore-ktx:24.4.0"
+        const val auth = "com.google.firebase:firebase-auth:19.2.0"
+        const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx:18.3.1"
+        const val analytics = "com.google.firebase:firebase-analytics-ktx:21.2.0"
     }
 
     object Mvi {

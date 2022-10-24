@@ -102,14 +102,17 @@ fun LoginScreen(
             isNumberEntered = { loginState.isNumberEntered },
             isOtpEntered = { loginState.isOtpEntered },
             isButtonEnabled = {
-                if (loginState.isNumberEntered) {
-                    loginState.isOtpEntered
-                } else {
-                    loginState.isNumberEntered && loginState.isOtpEntered
+                when {
+                    loginState.isNumberEntered && loginState.isOtpEntered.not() -> true
+                    loginState.shouldShowOtpField -> {
+                        loginState.isNumberEntered && loginState.isOtpEntered
+                    }
+                    else -> false
                 }
             },
             isValidDigit = loginViewModel::isValidDigit,
-            isLoading = { loginState.isLoading }
+            isLoading = { loginState.isLoading },
+            shouldShowOtpField = { loginState.shouldShowOtpField }
         )
     }
 }
@@ -126,7 +129,8 @@ private fun LoginContent(
     isOtpEntered: () -> Boolean,
     isButtonEnabled: () -> Boolean,
     isValidDigit: (digits: String, isOtp: Boolean, isPhoneNumber: Boolean) -> Boolean,
-    isLoading: () -> Boolean
+    isLoading: () -> Boolean,
+    shouldShowOtpField: () -> Boolean
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         LoginUI(
@@ -138,7 +142,8 @@ private fun LoginContent(
             isNumberEntered = isNumberEntered,
             isOtpEntered = isOtpEntered,
             isButtonEnabled = isButtonEnabled,
-            isValidDigit = isValidDigit
+            isValidDigit = isValidDigit,
+            shouldShowOtpField = shouldShowOtpField
         )
 
         if (isLoading()) {
@@ -157,6 +162,7 @@ private fun LoginUI(
     onNumberUpdated: (number: String) -> Unit,
     onOtpUpdated: (otp: String) -> Unit,
     isNumberEntered: () -> Boolean,
+    shouldShowOtpField: () -> Boolean,
     isOtpEntered: () -> Boolean,
     isButtonEnabled: () -> Boolean,
     isValidDigit: (digits: String, isOtp: Boolean, isPhoneNumber: Boolean) -> Boolean
@@ -238,7 +244,7 @@ private fun LoginUI(
                     )
                 )
 
-                if (isNumberEntered()) {
+                if (shouldShowOtpField()) {
                     Text(
                         modifier = Modifier
                             .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -321,7 +327,7 @@ private fun LoginUI(
                     }
                 ) {
                     Text(
-                        text = if (isNumberEntered()) {
+                        text = if (shouldShowOtpField()) {
                             stringResource(id = R.string.all_verify)
                         } else {
                             stringResource(id = R.string.all_continue)
@@ -346,6 +352,7 @@ private fun PreviewLoginContent() {
         isOtpEntered = { true },
         isButtonEnabled =  { true },
         isValidDigit = { _, _, _ -> true },
-        isLoading = { false }
+        isLoading = { false },
+        shouldShowOtpField = { true }
     )
 }

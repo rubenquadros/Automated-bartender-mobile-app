@@ -170,7 +170,6 @@ dependencies {
     kapt(Dependencies.Hilt.kapt)
 
     //firebase
-    implementation(platform(Dependencies.Firebase.bom))
     implementation(Dependencies.Firebase.firestore)
     implementation(Dependencies.Firebase.auth)
     implementation(Dependencies.Firebase.crashlytics)

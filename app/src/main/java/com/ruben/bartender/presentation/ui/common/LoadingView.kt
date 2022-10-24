@@ -1,11 +1,13 @@
 package com.ruben.bartender.presentation.ui.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
@@ -18,7 +20,7 @@ fun LoadingView(
     modifier: Modifier = Modifier,
     alignment: Alignment = Alignment.Center
 ) {
-    Box(modifier = modifier, contentAlignment = alignment) {
+    Box(modifier = modifier.background(Color.Transparent), contentAlignment = alignment) {
         CircularProgressIndicator(
             modifier = Modifier.testTag("progress_bar"),
             color = ElBarmanTheme.colors.onPrimaryVariant

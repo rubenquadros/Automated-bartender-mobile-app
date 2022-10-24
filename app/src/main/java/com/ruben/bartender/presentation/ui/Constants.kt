@@ -9,4 +9,8 @@ object Constants {
     const val LETTERS_REGEX = "^[a-zA-Z]*\$"
     const val PHONE_NUMBER_LENGTH = 10
     const val OTP_LENGTH = 6
+    const val COUNTRY_CODE = "+91"
+    const val OTP_TIME = 60 * 1000L //60 sec
+    const val OTP_TIMER_INTERVAL = 1000L //1 sec
+    const val OTP_TIMER_FORMAT = "%02d:%02d"
 }

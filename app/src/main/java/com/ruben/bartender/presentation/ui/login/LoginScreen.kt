@@ -2,6 +2,7 @@ package com.ruben.bartender.presentation.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -112,7 +113,9 @@ fun LoginScreen(
             },
             isValidDigit = loginViewModel::isValidDigit,
             isLoading = { loginState.isLoading },
-            shouldShowOtpField = { loginState.shouldShowOtpField }
+            shouldShowOtpField = { loginState.shouldShowOtpField },
+            timerText = { loginState.otpTimer },
+            shouldShowResend = { loginState.shouldShowResendOtp }
         )
     }
 }
@@ -130,7 +133,9 @@ private fun LoginContent(
     isButtonEnabled: () -> Boolean,
     isValidDigit: (digits: String, isOtp: Boolean, isPhoneNumber: Boolean) -> Boolean,
     isLoading: () -> Boolean,
-    shouldShowOtpField: () -> Boolean
+    shouldShowOtpField: () -> Boolean,
+    timerText: () -> String,
+    shouldShowResend: () -> Boolean
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         LoginUI(
@@ -143,7 +148,9 @@ private fun LoginContent(
             isOtpEntered = isOtpEntered,
             isButtonEnabled = isButtonEnabled,
             isValidDigit = isValidDigit,
-            shouldShowOtpField = shouldShowOtpField
+            shouldShowOtpField = shouldShowOtpField,
+            timerText = timerText,
+            shouldShowResend = shouldShowResend
         )
 
         if (isLoading()) {
@@ -165,7 +172,9 @@ private fun LoginUI(
     shouldShowOtpField: () -> Boolean,
     isOtpEntered: () -> Boolean,
     isButtonEnabled: () -> Boolean,
-    isValidDigit: (digits: String, isOtp: Boolean, isPhoneNumber: Boolean) -> Boolean
+    isValidDigit: (digits: String, isOtp: Boolean, isPhoneNumber: Boolean) -> Boolean,
+    timerText: () -> String,
+    shouldShowResend: () -> Boolean
 ) {
     var phoneNumberState by remember {
         mutableStateOf("")
@@ -175,9 +184,10 @@ private fun LoginUI(
         mutableStateOf("")
     }
 
-    Column(modifier = modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         Card(
             modifier = modifier
@@ -288,7 +298,21 @@ private fun LoginUI(
                             onDone = {
                                 onOtpEntered(otpState)
                             }
-                        )
+                        ),
+                        trailingIcon = {
+                            Text(
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .clickable(enabled = shouldShowResend(), onClick = {
+                                        onNumberEntered(phoneNumberState)
+                                    }),
+                                text = if (shouldShowResend()) {
+                                    stringResource(id = R.string.all_resend)
+                                } else {
+                                    timerText()
+                                }
+                            )
+                        }
                     )
                 }
 
@@ -350,9 +374,11 @@ private fun PreviewLoginContent() {
         topPaddingValue = 0.dp,
         isNumberEntered = { true },
         isOtpEntered = { true },
-        isButtonEnabled =  { true },
+        isButtonEnabled = { true },
         isValidDigit = { _, _, _ -> true },
         isLoading = { false },
-        shouldShowOtpField = { true }
+        shouldShowOtpField = { true },
+        timerText = { "00:30" },
+        shouldShowResend = { false }
     )
 }

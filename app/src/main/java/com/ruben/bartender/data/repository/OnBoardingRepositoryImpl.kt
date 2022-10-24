@@ -1,6 +1,7 @@
 package com.ruben.bartender.data.repository
 
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
 import com.ruben.bartender.base.DispatcherProvider
 import com.ruben.bartender.data.DataSource
 import com.ruben.bartender.data.local.entity.UserEntity
@@ -33,8 +34,11 @@ class OnBoardingRepositoryImpl @Inject constructor(
     private val preferences = dataSource.preference()
     private val db = dataSource.db()
 
-    override suspend fun sendOtp(phoneNumber: String): Flow<BaseRecord<SendOtpRecord, SendOtpErrorRecord>> {
-        return firebaseApi.sendOtp(SendOtpRequest(phoneNumber)).map {
+    override suspend fun sendOtp(
+        phoneNumber: String,
+        resendToken: PhoneAuthProvider.ForceResendingToken?
+    ): Flow<BaseRecord<SendOtpRecord, SendOtpErrorRecord>> {
+        return firebaseApi.sendOtp(SendOtpRequest(phoneNumber, resendToken)).map {
             it.toSendOtpBaseRecord()
         }
     }

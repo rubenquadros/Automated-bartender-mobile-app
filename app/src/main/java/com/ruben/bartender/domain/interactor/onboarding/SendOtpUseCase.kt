@@ -1,5 +1,6 @@
 package com.ruben.bartender.domain.interactor.onboarding
 
+import com.google.firebase.auth.PhoneAuthProvider
 import com.ruben.bartender.domain.BaseFlowUseCase
 import com.ruben.bartender.domain.BaseRecord
 import com.ruben.bartender.domain.record.SendOtpErrorRecord
@@ -19,8 +20,11 @@ class SendOtpUseCase @Inject constructor(private val onBoardingRepository: OnBoa
     override suspend fun execute(request: Params): Flow<BaseRecord<SendOtpRecord, SendOtpErrorRecord>> =
         flow {
             emit(BaseRecord.Loading)
-            emitAll(onBoardingRepository.sendOtp(phoneNumber = request.phoneNumber))
+            emitAll(onBoardingRepository.sendOtp(phoneNumber = request.phoneNumber, request.resendToken))
         }
 
-    data class Params(val phoneNumber: String)
+    data class Params(
+        val phoneNumber: String,
+        val resendToken: PhoneAuthProvider.ForceResendingToken?
+    )
 }

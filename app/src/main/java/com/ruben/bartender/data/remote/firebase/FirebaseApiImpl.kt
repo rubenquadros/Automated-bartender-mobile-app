@@ -98,7 +98,12 @@ class FirebaseApiImpl @Inject constructor(@ApplicationContext private val contex
                     token: PhoneAuthProvider.ForceResendingToken
                 ) {
                     super.onCodeSent(verificationId, token)
-                    trySend(SendOtpResponse.OtpSent(verificationId = verificationId))
+                    trySend(
+                        SendOtpResponse.OtpSent(
+                            verificationId = verificationId,
+                            resendToken = token
+                        )
+                    )
                 }
             }
 
@@ -107,7 +112,8 @@ class FirebaseApiImpl @Inject constructor(@ApplicationContext private val contex
                 ApiConstants.TIMEOUT_OTP,
                 TimeUnit.SECONDS,
                 TaskExecutors.MAIN_THREAD,
-                callbacks
+                callbacks,
+                sendOtpRequest.resendToken
             )
 
             awaitClose()

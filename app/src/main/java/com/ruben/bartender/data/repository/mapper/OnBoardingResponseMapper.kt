@@ -29,7 +29,8 @@ fun SendOtpResponse.toSendOtpBaseRecord(): BaseRecord<SendOtpRecord, SendOtpErro
         is SendOtpResponse.OtpSent -> {
             BaseRecord.Success(
                 body = SendOtpRecord.OtpVerificationId(
-                    id = this.verificationId
+                    id = this.verificationId,
+                    resendToken = this.resendToken
                 )
             )
         }

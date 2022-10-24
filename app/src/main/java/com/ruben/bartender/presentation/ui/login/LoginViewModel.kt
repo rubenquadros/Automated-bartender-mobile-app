@@ -1,11 +1,13 @@
 package com.ruben.bartender.presentation.ui.login
 
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.SavedStateHandle
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.ruben.bartender.R
+import com.ruben.bartender.base.DispatcherProvider
 import com.ruben.bartender.domain.BaseRecord
 import com.ruben.bartender.domain.interactor.onboarding.LoginUseCase
 import com.ruben.bartender.domain.interactor.onboarding.SendOtpUseCase
@@ -16,8 +18,10 @@ import com.ruben.bartender.domain.record.SendOtpRecord
 import com.ruben.bartender.presentation.base.BaseViewModel
 import com.ruben.bartender.presentation.ui.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import javax.inject.Inject
+import kotlinx.coroutines.withContext
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -28,6 +32,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val dispatcherProvider: DispatcherProvider,
     private val sendOtpUseCase: SendOtpUseCase,
     private val loginUseCase: LoginUseCase,
 ) : BaseViewModel<LoginState, LoginSideEffect>(savedStateHandle), LifecycleObserver {
@@ -35,6 +40,8 @@ class LoginViewModel @Inject constructor(
     companion object {
         private const val TAG = "LoginViewModel"
     }
+
+    private var countDownTimer: CountDownTimer? = null
 
     override fun createInitialState(): LoginState = LoginState()
 
@@ -64,7 +71,12 @@ class LoginViewModel @Inject constructor(
     }
 
     fun sendOtp(number: String) = intent {
-        sendOtpUseCase(SendOtpUseCase.Params(phoneNumber = "+91$number")).collect { baseRecord: BaseRecord<SendOtpRecord, SendOtpErrorRecord> ->
+        sendOtpUseCase(
+            SendOtpUseCase.Params(
+                phoneNumber = "${Constants.COUNTRY_CODE}$number",
+                resendToken = state.resendToken
+            )
+        ).collect { baseRecord: BaseRecord<SendOtpRecord, SendOtpErrorRecord> ->
             when (baseRecord) {
                 is BaseRecord.Loading -> {
                     reduce { state.copy(isLoading = true) }
@@ -89,6 +101,9 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login(credential: PhoneAuthCredential) = intent {
+        //stop otp timer
+        countDownTimer?.cancel()
+
         loginUseCase(
             LoginUseCase.Params(
                 credential = credential,
@@ -122,12 +137,14 @@ class LoginViewModel @Inject constructor(
                 login(credential = sendOtpRecord.credential)
             }
             is SendOtpRecord.OtpVerificationId -> {
+                startCountDown()
                 reduce {
                     state.copy(
                         verificationId = sendOtpRecord.id,
                         isLoading = false,
                         phoneNumber = number,
-                        shouldShowOtpField = true
+                        shouldShowOtpField = true,
+                        resendToken = sendOtpRecord.resendToken
                     )
                 }
             }
@@ -144,4 +161,36 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
+    private suspend fun startCountDown() {
+        withContext(dispatcherProvider.main) {
+            countDownTimer =
+                object : CountDownTimer(Constants.OTP_TIME, Constants.OTP_TIMER_INTERVAL) {
+
+                    override fun onTick(millisUntilFinished: Long) {
+                        updateTimerInterval(millisUntilFinished = millisUntilFinished)
+                    }
+
+                    override fun onFinish() {
+                        onTimerExpired()
+                    }
+                }
+
+            countDownTimer?.start()
+        }
+    }
+
+    private fun updateTimerInterval(millisUntilFinished: Long) = intent {
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)
+
+        reduce {
+            state.copy(otpTimer = String.format(Constants.OTP_TIMER_FORMAT, minutes, seconds))
+        }
+    }
+
+    private fun onTimerExpired() = intent {
+        reduce { state.copy(otpTimer = "", shouldShowResendOtp = true) }
+    }
+
 }

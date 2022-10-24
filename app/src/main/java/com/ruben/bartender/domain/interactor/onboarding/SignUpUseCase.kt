@@ -16,10 +16,12 @@ class SignUpUseCase @Inject constructor(private val onBoardingRepository: OnBoar
 
     override suspend fun execute(request: Params): Flow<BaseRecord<Nothing, ErrorRecord>> = flow {
         emit(BaseRecord.Loading)
-        onBoardingRepository.saveUser(
-            phoneNumber = request.phoneNumber,
-            firstName = request.firstName,
-            lastName = request.lastName
+        emit(
+            onBoardingRepository.saveUser(
+                phoneNumber = request.phoneNumber,
+                firstName = request.firstName,
+                lastName = request.lastName
+            )
         )
     }
 

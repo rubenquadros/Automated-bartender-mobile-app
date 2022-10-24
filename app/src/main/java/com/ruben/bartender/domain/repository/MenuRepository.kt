@@ -10,6 +10,6 @@ import kotlinx.coroutines.flow.Flow
  * Created by ruben.quadros on 29/02/20.
  **/
 interface MenuRepository {
-  suspend fun getMainMenu(): Flow<BaseRecord<MainMenuRecord, ErrorRecord>>
+  suspend fun getMainMenu(): BaseRecord<MainMenuRecord, ErrorRecord>
   fun getMenuCategories(): Flow<CategoryRecord?>
 }

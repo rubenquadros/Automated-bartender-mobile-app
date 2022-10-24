@@ -18,6 +18,6 @@ class GetMainMenuUseCase @Inject constructor(private val menuRepository: MenuRep
     override suspend fun execute(request: Unit): Flow<BaseRecord<MainMenuRecord, ErrorRecord>> =
         flow {
             emit(BaseRecord.Loading)
-            menuRepository.getMainMenu()
+            emit(menuRepository.getMainMenu())
         }
 }

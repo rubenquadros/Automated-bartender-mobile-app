@@ -7,6 +7,7 @@ import com.ruben.bartender.domain.record.SendOtpRecord
 import com.ruben.bartender.domain.repository.OnBoardingRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 
 /**
@@ -18,7 +19,7 @@ class SendOtpUseCase @Inject constructor(private val onBoardingRepository: OnBoa
     override suspend fun execute(request: Params): Flow<BaseRecord<SendOtpRecord, SendOtpErrorRecord>> =
         flow {
             emit(BaseRecord.Loading)
-            onBoardingRepository.sendOtp(phoneNumber = request.phoneNumber)
+            emitAll(onBoardingRepository.sendOtp(phoneNumber = request.phoneNumber))
         }
 
     data class Params(val phoneNumber: String)

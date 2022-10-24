@@ -17,11 +17,11 @@ interface OnBoardingRepository {
     suspend fun login(
         phoneAuthCredential: PhoneAuthCredential,
         phoneNumber: String
-    ): Flow<BaseRecord<LoginRecord, ErrorRecord>>
+    ): BaseRecord<LoginRecord, ErrorRecord>
 
     suspend fun saveUser(
         phoneNumber: String,
         firstName: String,
         lastName: String
-    ): Flow<BaseRecord<Nothing, ErrorRecord>>
+    ): BaseRecord<Nothing, ErrorRecord>
 }

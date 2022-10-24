@@ -23,10 +23,13 @@ import com.ruben.bartender.data.remote.model.response.userDataResponse.UserDataR
 import com.ruben.bartender.data.remote.utils.ApiConstants
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 /**
  * Created by ruben.quadros on 01/03/20.
@@ -39,8 +42,8 @@ class FirebaseApiImpl @Inject constructor() : FirebaseApi {
 
     private val firestoreDB = FirebaseFirestore.getInstance()
 
-    override suspend fun getMainMenu(): Flow<MainMenuResponse> {
-        return callbackFlow {
+    override suspend fun getMainMenu(): MainMenuResponse {
+        return suspendCancellableCoroutine { continuation: CancellableContinuation<MainMenuResponse> ->
             firestoreDB.collection(ApiConstants.MAIN_MENU_COLLECTION)
                 .get()
                 .addOnSuccessListener { result ->
@@ -52,14 +55,12 @@ class FirebaseApiImpl @Inject constructor() : FirebaseApi {
                             uniqueId = (it.data?.get(ApiConstants.MENU_ITEM_UNIQUE_ID_KEY) as? String).orEmpty()
                         )
                     }
-                    trySend(MainMenuResponse.MainMenuSuccess(mainMenu = mainMenu))
+                    continuation.resume(MainMenuResponse.MainMenuSuccess(mainMenu = mainMenu))
                 }
                 .addOnFailureListener {
                     Log.d(TAG, it.message.toString())
-                    trySend(MainMenuResponse.MainMenuFail(message = it.message.orEmpty()))
-                    close(it)
+                    continuation.resume(MainMenuResponse.MainMenuFail(message = it.message.orEmpty()))
                 }
-            awaitClose()
         }
     }
 
@@ -113,8 +114,8 @@ class FirebaseApiImpl @Inject constructor() : FirebaseApi {
         }
     }
 
-    override suspend fun login(signInRequest: SignInRequest): Flow<LoginResponse> {
-        return callbackFlow {
+    override suspend fun login(signInRequest: SignInRequest): LoginResponse {
+        return suspendCancellableCoroutine { continuation: CancellableContinuation<LoginResponse> ->
             FirebaseAuth.getInstance().signInWithCredential(signInRequest.phoneAuthCredential)
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
@@ -122,24 +123,22 @@ class FirebaseApiImpl @Inject constructor() : FirebaseApi {
                         if (user?.metadata?.creationTimestamp == user?.metadata?.lastSignInTimestamp
                             || (user?.metadata?.lastSignInTimestamp!! - user.metadata?.creationTimestamp!! < 200)
                         ) {
-                            trySend(LoginResponse.NewUser)
+                            continuation.resume(LoginResponse.NewUser)
                         } else {
-                            trySend(LoginResponse.LoginSuccess)
+                            continuation.resume(LoginResponse.LoginSuccess)
                         }
                     } else {
-                        trySend(LoginResponse.LoginFail(""))
+                        continuation.resume(LoginResponse.LoginFail(""))
                     }
                 }
                 .addOnFailureListener {
-                    trySend(LoginResponse.LoginFail(message = it.message.orEmpty()))
-                    close(null)
+                    continuation.resume(LoginResponse.LoginFail(message = it.message.orEmpty()))
                 }
-            awaitClose()
         }
     }
 
-    override suspend fun saveUser(saveUserDetailsRequest: SaveUserDetailsRequest): Flow<SaveUserDetailsResponse> {
-        return callbackFlow {
+    override suspend fun saveUser(saveUserDetailsRequest: SaveUserDetailsRequest): SaveUserDetailsResponse {
+        return suspendCancellableCoroutine { continuation: CancellableContinuation<SaveUserDetailsResponse> ->
             firestoreDB.collection(ApiConstants.USER_DETAILS_COLLECTION)
                 .document(saveUserDetailsRequest.phoneNumber)
                 .update(
@@ -151,13 +150,11 @@ class FirebaseApiImpl @Inject constructor() : FirebaseApi {
                     saveUserDetailsRequest.phoneNumber
                 )
                 .addOnSuccessListener {
-                    trySend(SaveUserDetailsResponse.SaveSuccess)
+                    continuation.resume(SaveUserDetailsResponse.SaveSuccess)
                 }
                 .addOnFailureListener {
-                    trySend(SaveUserDetailsResponse.SaveFail(message = it.message.orEmpty()))
-                    close(null)
+                    continuation.resume(SaveUserDetailsResponse.SaveFail(message = it.message.orEmpty()))
                 }
-            awaitClose()
         }
     }
 

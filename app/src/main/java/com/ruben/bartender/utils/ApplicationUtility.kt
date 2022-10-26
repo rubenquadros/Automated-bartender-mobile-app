@@ -61,7 +61,7 @@ object ApplicationUtility {
       }
       ApplicationConstants.PHONE_PE_INSTALL -> {
         label.text = context.resources.getString(R.string.all_phone_pe_install)
-        image.setImageResource(R.drawable.phone_pe_button)
+        //image.setImageResource(R.drawable.phone_pe_button)
       }
     }
     okButton.setOnClickListener {

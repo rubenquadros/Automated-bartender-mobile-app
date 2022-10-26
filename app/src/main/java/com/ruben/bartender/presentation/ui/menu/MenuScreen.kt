@@ -18,6 +18,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -41,8 +42,25 @@ import com.ruben.bartender.presentation.ui.common.LoadingView
 @Composable
 fun MenuScreen(
     menuViewModel: MenuViewModel = hiltViewModel(),
-    navigateToDetails: (drinkId: String) -> Unit
+    navigateToDetails: (drinkId: String) -> Unit,
+    navigateToLogin: () -> Unit,
+    navigateToPayment: (drinkName: String, price: String) -> Unit
 ) {
+
+    //handle side effects
+    LaunchedEffect(menuViewModel.uiSideEffect()) {
+        menuViewModel.uiSideEffect().collect { uiSideEffect ->
+            when (uiSideEffect) {
+                is MenuSideEffect.NavigateToLogin -> {
+                    navigateToLogin()
+                }
+                is MenuSideEffect.NavigateToPayment -> {
+                    navigateToPayment(uiSideEffect.name, uiSideEffect.price)
+                }
+            }
+        }
+    }
+
     val menuState by menuViewModel.uiState().collectAsState()
 
     when (menuState) {
@@ -51,7 +69,11 @@ fun MenuScreen(
         }
         is MenuState.MainMenuState -> {
             (menuState as? MenuState.MainMenuState)?.let {
-                MenuContent(mainMenuRecord = it.mainMenu, onItemClick = navigateToDetails)
+                MenuContent(
+                    mainMenuRecord = it.mainMenu,
+                    onItemClick = navigateToDetails,
+                    onGetDrinkClick = menuViewModel::onGetDrink
+                )
             }
         }
         else -> {
@@ -64,20 +86,25 @@ fun MenuScreen(
 private fun MenuContent(
     modifier: Modifier = Modifier,
     mainMenuRecord: MainMenuRecord,
-    onItemClick: (drinkId: String) -> Unit
+    onItemClick: (drinkId: String) -> Unit,
+    onGetDrinkClick: (drinkName: String, price: String) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier.fillMaxSize(),
         columns = GridCells.Fixed(count = 2)
     ) {
         items(items = mainMenuRecord.menuRecord, key = { item: MenuItem -> item.id }) {
-            MenuItemUI(menuItem = it, onItemClick = onItemClick)
+            MenuItemUI(menuItem = it, onItemClick = onItemClick, onGetDrinkClick = onGetDrinkClick)
         }
     }
 }
 
 @Composable
-private fun MenuItemUI(menuItem: MenuItem, onItemClick: (drinkId: String) -> Unit) {
+private fun MenuItemUI(
+    menuItem: MenuItem,
+    onItemClick: (drinkId: String) -> Unit,
+    onGetDrinkClick: (drinkName: String, price: String) -> Unit
+) {
     Card(
         modifier = menuItemModifier.clickable {
             onItemClick(menuItem.id)
@@ -124,7 +151,7 @@ private fun MenuItemUI(menuItem: MenuItem, onItemClick: (drinkId: String) -> Uni
                         )
                         .padding(horizontal = 16.dp, vertical = 2.dp)
                         .clickable {
-
+                            onGetDrinkClick(menuItem.name, menuItem.price)
                         },
                     text = stringResource(id = R.string.all_get_drink),
                     style = ElBarmanTheme.typography.bodyMedium,
@@ -154,6 +181,7 @@ private val menuItemPriceRowModifier = Modifier
 private fun PreviewMenuItem() {
     MenuItemUI(
         menuItem = MenuItem(name = "ScrewDriver", image = "", price = "400", id = "abc"),
-        onItemClick = {}
+        onItemClick = {},
+        onGetDrinkClick = {_, _ ->}
     )
 }

@@ -44,7 +44,10 @@ import com.ruben.bartender.presentation.ui.menu.MenuScreen
     ExperimentalMaterialNavigationApi::class
 )
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navigateToLogin: () -> Unit,
+    navigateToPayment: (drinkName: String, price: String) -> Unit
+) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberAnimatedNavController(bottomSheetNavigator)
     val homeNavGraph = remember(navController) { HomeNavGraph(navController) }
@@ -87,7 +90,9 @@ fun HomeScreen() {
             ) {
                 composable(route = NavigationItem.MENU_ROUTE) {
                     MenuScreen(
-                        navigateToDetails = homeNavGraph.openDrinkDetails
+                        navigateToDetails = homeNavGraph.openDrinkDetails,
+                        navigateToLogin = navigateToLogin,
+                        navigateToPayment = navigateToPayment
                     )
                 }
 
@@ -114,5 +119,8 @@ fun HomeScreen() {
 @Preview(showBackground = true)
 @Composable
 private fun PreviewHomeScreen() {
-    HomeScreen()
+    HomeScreen(
+        navigateToLogin = {},
+        navigateToPayment = {_,_ ->}
+    )
 }

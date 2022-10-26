@@ -24,7 +24,6 @@
     <string name="nav_drawer_history">History</string>
     <string name="nav_drawer_logout">Logout</string>
     <string name="nav_header_title">Hello,</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="all_boarding">SIGN IN / SIGN UP</string>
     <string name="all_digits">0123456789</string>
     <string name="all_alphabets">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
@@ -53,6 +52,7 @@
     <string name="payment_total">Total:</string>
     <string name="payment_gpay">Google Pay</string>
     <string name="payment_phone_pe">PhonePe</string>
+    <string name="payment_desc">Please complete your payment &#127865;</string>
     <string name="content_desc_sign_in">Sign in</string>
     <string name="content_desc_sign_up">Sign up</string>
     <string name="content_desc_back_button">Go back</string>

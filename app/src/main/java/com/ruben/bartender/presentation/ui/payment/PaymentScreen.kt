@@ -7,7 +7,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,6 +17,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,6 +45,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.ruben.bartender.R
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
 import com.ruben.bartender.presentation.ui.common.AppBar
+import com.ruben.bartender.presentation.ui.common.DividerView
 
 /**
  * Created by Ruben Quadros on 26/10/22
@@ -131,7 +136,9 @@ private fun PaymentContent(
             containerColor = ElBarmanTheme.colors.onPrimary
         )
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier
+            .wrapContentSize()
+            .padding(bottom = 16.dp)) {
             Image(
                 modifier = Modifier
                     .padding(16.dp)
@@ -140,6 +147,8 @@ private fun PaymentContent(
                 painter = rememberAsyncImagePainter(model = R.drawable.ic_currency_rupee),
                 contentDescription = stringResource(id = R.string.content_desc_rupee)
             )
+
+            DividerView(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
 
             Text(
                 modifier = Modifier
@@ -168,46 +177,67 @@ private fun PaymentContent(
                     }
 
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Normal)) {
-                        append(" ${drinkPrice()}")
+                        append(" ${stringResource(R.string.menu_price, drinkPrice())}")
                     }
                 },
                 style = ElBarmanTheme.typography.bodyLarge,
                 color = ElBarmanTheme.colors.primaryVariant
             )
 
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .fillMaxWidth(),
+                text = stringResource(id = R.string.payment_desc),
+                style = ElBarmanTheme.typography.bodyLarge,
+                color = ElBarmanTheme.colors.primaryVariant
+            )
+            
+            DividerView(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+
             paymentItems().forEach { paymentItem: PaymentItem ->
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                        .fillMaxWidth()
-                        .clickable {
-                            onPaymentOptionClicked(paymentItem.id)
-                        }
+                Box(modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .fillMaxWidth()
+                    .border(
+                        width = 2.dp,
+                        color = ElBarmanTheme.colors.surface,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .clickable {
+                        onPaymentOptionClicked(paymentItem.id)
+                    }
                 ) {
-                    Image(
+                    Row(
                         modifier = Modifier
-                            .size(40.dp)
-                            .align(Alignment.CenterVertically),
-                        contentScale = ContentScale.Crop,
-                        painter = rememberAsyncImagePainter(model = paymentItem.icon),
-                        contentDescription = stringResource(id = paymentItem.contentDescription)
-                    )
+                            .padding(horizontal = 8.dp, vertical = 10.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .align(Alignment.CenterVertically),
+                            contentScale = ContentScale.Crop,
+                            painter = rememberAsyncImagePainter(model = paymentItem.icon),
+                            contentDescription = stringResource(id = paymentItem.contentDescription)
+                        )
 
-                    Text(
-                        modifier = Modifier
-                            .padding(horizontal = 4.dp)
-                            .weight(1f, fill = true)
-                            .align(Alignment.CenterVertically),
-                        text = stringResource(id = paymentItem.name)
-                    )
+                        Text(
+                            modifier = Modifier
+                                .padding(horizontal = 4.dp)
+                                .weight(1f, fill = true)
+                                .align(Alignment.CenterVertically),
+                            text = stringResource(id = paymentItem.name)
+                        )
 
-                    Image(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .align(Alignment.CenterVertically),
-                        painter = rememberAsyncImagePainter(model = R.drawable.ic_arrow_right),
-                        contentDescription = stringResource(id = R.string.content_desc_right_arrow)
-                    )
+                        Image(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .align(Alignment.CenterVertically),
+                            painter = rememberAsyncImagePainter(model = R.drawable.ic_arrow_right),
+                            contentDescription = stringResource(id = R.string.content_desc_right_arrow)
+                        )
+                    }
                 }
             }
         }

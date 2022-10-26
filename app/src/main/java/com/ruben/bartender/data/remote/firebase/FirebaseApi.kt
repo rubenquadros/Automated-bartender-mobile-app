@@ -1,15 +1,17 @@
 package com.ruben.bartender.data.remote.firebase
 
+import com.ruben.bartender.data.remote.model.request.GetDrinkDetailsRequest
 import com.ruben.bartender.data.remote.model.request.GetUserDataRequest
 import com.ruben.bartender.data.remote.model.request.SendOtpRequest
 import com.ruben.bartender.data.remote.model.request.SignInRequest
 import com.ruben.bartender.data.remote.model.request.SaveUserDetailsRequest
-import com.ruben.bartender.data.remote.model.response.basicMenuResponse.MainMenuResponse
+import com.ruben.bartender.data.remote.model.response.GetDrinkDetailsResponse
+import com.ruben.bartender.data.remote.model.response.MainMenuResponse
 import com.ruben.bartender.data.remote.model.response.menuCategoryResponse.CategoryResponse
 import com.ruben.bartender.data.remote.model.response.onBoardingResponse.CheckUserResponse
-import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
-import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SendOtpResponse
-import com.ruben.bartender.data.remote.model.response.onBoardingResponse.LoginResponse
+import com.ruben.bartender.data.remote.model.response.SaveUserDetailsResponse
+import com.ruben.bartender.data.remote.model.response.SendOtpResponse
+import com.ruben.bartender.data.remote.model.response.LoginResponse
 import com.ruben.bartender.data.remote.model.response.signoutResponse.SignoutResponse
 import com.ruben.bartender.data.remote.model.response.userDataResponse.UserDataResponse
 import kotlinx.coroutines.flow.Flow
@@ -26,4 +28,5 @@ interface FirebaseApi {
   suspend fun getMainMenu(): MainMenuResponse
   fun getMenuCategories(): Flow<CategoryResponse?>
   fun logout(): Flow<SignoutResponse?>
+  suspend fun getDrinkDetails(getDrinkDetailsRequest: GetDrinkDetailsRequest): GetDrinkDetailsResponse
 }

@@ -9,7 +9,7 @@
 
     <style name="Theme.ElBarman.SplashTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/colorWhite</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/app_logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/app_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.ElBarman</item>
     </style>
 </resources>

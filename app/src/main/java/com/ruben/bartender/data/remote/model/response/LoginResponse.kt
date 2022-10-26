@@ -1,4 +1,4 @@
-package com.ruben.bartender.data.remote.model.response.onBoardingResponse
+package com.ruben.bartender.data.remote.model.response
 
 /**
  * Created by ruben.quadros on 10/03/20.

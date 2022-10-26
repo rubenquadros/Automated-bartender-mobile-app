@@ -1,6 +1,6 @@
 package com.ruben.bartender.data.repository.mapper
 
-import com.ruben.bartender.data.remote.model.response.basicMenuResponse.MainMenuResponse
+import com.ruben.bartender.data.remote.model.response.MainMenuResponse
 import com.ruben.bartender.data.remote.model.response.menuCategoryResponse.CategoryResponse
 import com.ruben.bartender.domain.BaseRecord
 import com.ruben.bartender.domain.record.CategoryName

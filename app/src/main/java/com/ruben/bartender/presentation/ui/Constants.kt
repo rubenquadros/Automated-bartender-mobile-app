@@ -13,4 +13,6 @@ object Constants {
     const val OTP_TIME = 60 * 1000L //60 sec
     const val OTP_TIMER_INTERVAL = 1000L //1 sec
     const val OTP_TIMER_FORMAT = "%02d:%02d"
+    const val GPAY_ID = "gpay"
+    const val PHONE_PE_ID = "phonepe"
 }

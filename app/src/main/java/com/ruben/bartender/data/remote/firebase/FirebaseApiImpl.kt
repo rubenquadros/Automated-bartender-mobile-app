@@ -1,6 +1,5 @@
 package com.ruben.bartender.data.remote.firebase
 
-import android.content.Context
 import android.util.Log
 import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
@@ -8,21 +7,23 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.ruben.bartender.data.remote.model.request.GetDrinkDetailsRequest
 import com.ruben.bartender.data.remote.model.request.GetUserDataRequest
 import com.ruben.bartender.data.remote.model.request.SaveUserDetailsRequest
 import com.ruben.bartender.data.remote.model.request.SendOtpRequest
 import com.ruben.bartender.data.remote.model.request.SignInRequest
-import com.ruben.bartender.data.remote.model.response.basicMenuResponse.MainMenuItem
-import com.ruben.bartender.data.remote.model.response.basicMenuResponse.MainMenuResponse
+import com.ruben.bartender.data.remote.model.response.DrinkDetails
+import com.ruben.bartender.data.remote.model.response.GetDrinkDetailsResponse
+import com.ruben.bartender.data.remote.model.response.LoginResponse
+import com.ruben.bartender.data.remote.model.response.MainMenuItem
+import com.ruben.bartender.data.remote.model.response.MainMenuResponse
+import com.ruben.bartender.data.remote.model.response.SaveUserDetailsResponse
+import com.ruben.bartender.data.remote.model.response.SendOtpResponse
 import com.ruben.bartender.data.remote.model.response.menuCategoryResponse.CategoryResponse
 import com.ruben.bartender.data.remote.model.response.onBoardingResponse.CheckUserResponse
-import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
-import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SendOtpResponse
-import com.ruben.bartender.data.remote.model.response.onBoardingResponse.LoginResponse
 import com.ruben.bartender.data.remote.model.response.signoutResponse.SignoutResponse
 import com.ruben.bartender.data.remote.model.response.userDataResponse.UserDataResponse
 import com.ruben.bartender.data.remote.utils.ApiConstants
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -36,7 +37,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 /**
  * Created by ruben.quadros on 01/03/20.
  **/
-class FirebaseApiImpl @Inject constructor(@ApplicationContext private val context: Context) : FirebaseApi {
+class FirebaseApiImpl @Inject constructor() : FirebaseApi {
 
     companion object {
         private const val TAG = "FirebaseApiImpl"
@@ -206,6 +207,30 @@ class FirebaseApiImpl @Inject constructor(@ApplicationContext private val contex
             signoutResponse.status = ApiConstants.HTTP_OK
             channel.trySend(signoutResponse)
             awaitClose()
+        }
+    }
+
+    override suspend fun getDrinkDetails(getDrinkDetailsRequest: GetDrinkDetailsRequest): GetDrinkDetailsResponse {
+        return suspendCancellableCoroutine { continuation: CancellableContinuation<GetDrinkDetailsResponse> ->
+            firestoreDB.collection(ApiConstants.DRINK_DETAILS_COLLECTION)
+                .document(getDrinkDetailsRequest.drinkId)
+                .get()
+                .addOnSuccessListener {
+                    continuation.resume(
+                        GetDrinkDetailsResponse.GetDrinkDetailsSuccess(
+                            drinkDetails = DrinkDetails(
+                                name = (it.data?.get(ApiConstants.MENU_ITEM_NAME_KEY) as? String).orEmpty(),
+                                image = (it.data?.get(ApiConstants.MENU_ITEM_IMAGE_KEY) as? String).orEmpty(),
+                                price = (it.data?.get(ApiConstants.MENU_ITEM_PRICE_KEY) as? String).orEmpty(),
+                                description = (it.data?.get(ApiConstants.MENU_ITEM_DESCRIPTION_KEY) as? String).orEmpty(),
+                                ingredients = (it.data?.get(ApiConstants.MENU_ITEM_INGREDIENTS_KEY) as? String).orEmpty()
+                            )
+                        )
+                    )
+                }
+                .addOnFailureListener {
+                    continuation.resume(GetDrinkDetailsResponse.GetDrinkDetailsFail(message = it.message.orEmpty()))
+                }
         }
     }
 }

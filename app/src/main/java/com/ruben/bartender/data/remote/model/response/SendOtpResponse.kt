@@ -1,4 +1,4 @@
-package com.ruben.bartender.data.remote.model.response.onBoardingResponse
+package com.ruben.bartender.data.remote.model.response
 
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider

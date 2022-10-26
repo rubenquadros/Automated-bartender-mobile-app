@@ -8,6 +8,7 @@ import com.ruben.bartender.domain.repository.MenuRepository
 import com.ruben.bartender.data.repository.mapper.MenuMapper
 import com.ruben.bartender.data.repository.mapper.toMainMenuBaseRecord
 import com.ruben.bartender.domain.BaseRecord
+import com.ruben.bartender.domain.record.DrinkDetailsRecord
 import com.ruben.bartender.domain.record.ErrorRecord
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -30,6 +31,10 @@ class MenuRepositoryImpl @Inject constructor(
         return withContext(dispatcherProvider.default) {
             result.toMainMenuBaseRecord()
         }
+    }
+
+    override suspend fun getDrinkDetails(drinkId: String): BaseRecord<DrinkDetailsRecord, ErrorRecord> {
+        TODO("Not yet implemented")
     }
 
     override fun getMenuCategories(): Flow<CategoryRecord?> {

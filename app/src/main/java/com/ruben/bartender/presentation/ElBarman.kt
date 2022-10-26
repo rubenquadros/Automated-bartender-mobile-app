@@ -15,6 +15,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
 import com.ruben.bartender.presentation.ui.home.HomeScreen
 import com.ruben.bartender.presentation.ui.login.LoginScreen
+import com.ruben.bartender.presentation.ui.payment.PaymentScreen
 import com.ruben.bartender.presentation.ui.signup.SignUpScreen
 
 /**
@@ -22,13 +23,12 @@ import com.ruben.bartender.presentation.ui.signup.SignUpScreen
  **/
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
 @Composable
-fun ElBarman(isLoggedIn: Boolean) {
+fun ElBarman() {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberAnimatedNavController(bottomSheetNavigator)
     val navGraph = remember(navController) { NavGraph(navController) }
-    val home = if (isLoggedIn) Destination.Home.Route else Destination.Login.Route
 
-    AnimatedNavHost(navController = navController, startDestination = home) {
+    AnimatedNavHost(navController = navController, startDestination = Destination.Home.Route) {
         composable(route = Destination.Login.Route) {
             StatusBarColor()
             LoginScreen(
@@ -52,6 +52,17 @@ fun ElBarman(isLoggedIn: Boolean) {
         composable(route = Destination.Home.Route) {
             StatusBarColor()
             HomeScreen()
+        }
+
+        composable(
+            route = Destination.Payment.Route,
+            arguments = listOf(
+                navArgument(name = Destination.Payment.PriceArg) { type = NavType.StringType },
+                navArgument(name = Destination.Payment.DrinkNameArg) { type = NavType.StringType }
+            )
+        ) {
+            StatusBarColor()
+            PaymentScreen(navigateUp = navGraph.navigateBack)
         }
     }
 }

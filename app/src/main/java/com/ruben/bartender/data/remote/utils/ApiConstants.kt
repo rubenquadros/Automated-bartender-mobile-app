@@ -29,6 +29,9 @@ object ApiConstants {
   const val MENU_ITEM_NAME_KEY = "name"
   const val MENU_ITEM_PRICE_KEY = "price"
   const val MENU_ITEM_UNIQUE_ID_KEY = "unique_name"
+  const val MENU_ITEM_DESCRIPTION_KEY = "description"
+  const val MENU_ITEM_INGREDIENTS_KEY = "ingredients"
   const val IS_LOGGED_IN = "is_logged_in"
   const val IS_REGISTERED = "is_registered"
+  const val DRINK_DETAILS_COLLECTION = "drink_details"
 }

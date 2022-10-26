@@ -4,7 +4,7 @@
 object Versions {
     const val compileSdk = 33
     const val targetSdk = 33
-    const val minSdk = 21
+    const val minSdk = 23
     const val versionCode = 1
     const val versionName = "1.0"
     const val compose = "1.3.0-rc01"
@@ -85,10 +85,6 @@ object Dependencies {
     object Test {
         const val junit = "junit:junit:4.13.2"
         const val mockk = "io.mockk:mockk:1.13.2"
-    }
-
-    object GooglePay {
-
     }
 
     object Firebase {

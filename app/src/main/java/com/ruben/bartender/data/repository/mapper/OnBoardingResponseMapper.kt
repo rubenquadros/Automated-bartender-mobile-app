@@ -1,8 +1,8 @@
 package com.ruben.bartender.data.repository.mapper
 
-import com.ruben.bartender.data.remote.model.response.onBoardingResponse.LoginResponse
-import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SaveUserDetailsResponse
-import com.ruben.bartender.data.remote.model.response.onBoardingResponse.SendOtpResponse
+import com.ruben.bartender.data.remote.model.response.LoginResponse
+import com.ruben.bartender.data.remote.model.response.SaveUserDetailsResponse
+import com.ruben.bartender.data.remote.model.response.SendOtpResponse
 import com.ruben.bartender.domain.BaseRecord
 import com.ruben.bartender.domain.record.ErrorRecord
 import com.ruben.bartender.domain.record.LoginRecord

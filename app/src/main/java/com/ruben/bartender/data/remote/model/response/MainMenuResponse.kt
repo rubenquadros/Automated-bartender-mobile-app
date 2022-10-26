@@ -1,4 +1,4 @@
-package com.ruben.bartender.data.remote.model.response.basicMenuResponse
+package com.ruben.bartender.data.remote.model.response
 
 sealed class MainMenuResponse {
     data class MainMenuSuccess(val mainMenu: List<MainMenuItem>) : MainMenuResponse()

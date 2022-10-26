@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -54,10 +57,26 @@ android {
             }
         }
 
+        val file = rootProject.file("local.properties")
+        val localProperties = Properties()
+        localProperties.load(FileInputStream(file))
+        
         buildConfigField(
             "String",
             "BASE_URL",
             "\"http://192.168.1.108:5000/\""
+        )
+
+        buildConfigField(
+            "String",
+            "UPI_ID",
+            "\"" + localProperties["upi.id"] + "\""
+        )
+
+        buildConfigField(
+            "String",
+            "MERCHANT_NAME",
+            "\"" + localProperties["merchant.name"] + "\""
         )
     }
 

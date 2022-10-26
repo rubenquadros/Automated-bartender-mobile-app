@@ -3,6 +3,10 @@ package com.ruben.bartender.presentation.ui.payment
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import com.ruben.bartender.BuildConfig
+import com.ruben.bartender.domain.BaseRecord
+import com.ruben.bartender.domain.interactor.drink.MakeDrinkUseCase
+import com.ruben.bartender.domain.record.ErrorRecord
+import com.ruben.bartender.domain.record.MakeDrinkRecord
 import com.ruben.bartender.presentation.Destination
 import com.ruben.bartender.presentation.base.BaseViewModel
 import com.ruben.bartender.presentation.ui.Constants
@@ -10,13 +14,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
 
 /**
  * Created by Ruben Quadros on 26/10/22
  **/
 @HiltViewModel
-class PaymentViewModel @Inject constructor(savedStateHandle: SavedStateHandle) :
-    BaseViewModel<PaymentState, PaymentSideEffect>(savedStateHandle) {
+class PaymentViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val makeDrinkUseCase: MakeDrinkUseCase
+) : BaseViewModel<PaymentState, PaymentSideEffect>(savedStateHandle) {
 
     override fun createInitialState(): PaymentState = PaymentState(
         drinkName = savedStateHandle.get<String>(Destination.Payment.DrinkNameArg).orEmpty(),
@@ -48,7 +55,31 @@ class PaymentViewModel @Inject constructor(savedStateHandle: SavedStateHandle) :
         )
     }
 
-    fun onPaymentFailed() {
+    fun onPaymentFailed() = intent {
+        reduce { state.copy(isPaymentFail = true) }
+    }
 
+    fun onPaymentSuccess() = intent {
+        makeDrinkUseCase(
+            MakeDrinkUseCase.Params(drinkName = state.drinkName)
+        ).collect { baseRecord: BaseRecord<MakeDrinkRecord, ErrorRecord> ->
+            reduce {
+                when(baseRecord) {
+                    is BaseRecord.Loading -> {
+                        state.copy(isLoading = true)
+                    }
+                    is BaseRecord.Success -> {
+                        state.copy(isLoading = false, isDrinkReady = true)
+                    }
+                    else -> {
+                        state.copy(isLoading = false, isMakeDrinkError = true)
+                    }
+                }
+            }
+        }
+    }
+
+    fun resetFailState() = intent {
+        reduce { state.copy(isPaymentFail = false) }
     }
 }

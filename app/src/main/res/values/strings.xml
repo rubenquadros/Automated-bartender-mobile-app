@@ -36,6 +36,7 @@
     <string name="all_unexpected_crash">OOPS! I crashed! Don\'t worry the developers have been notified</string>
     <string name="all_home">Home</string>
     <string name="all_ok">OK</string>
+    <string name="all_okay">Okay</string>
     <string name="all_continue">Continue</string>
     <string name="all_generic_err">OOPS! Something went wrong, please try again later</string>
     <string name="all_drink_success">Your drink is prepared\n Please collect your drink</string>
@@ -53,6 +54,7 @@
     <string name="payment_gpay">Google Pay</string>
     <string name="payment_phone_pe">PhonePe</string>
     <string name="payment_desc">Please complete your payment &#127865;</string>
+    <string name="payment_fail">The payment could not be completed. Please try again.</string>
     <string name="content_desc_sign_in">Sign in</string>
     <string name="content_desc_sign_up">Sign up</string>
     <string name="content_desc_back_button">Go back</string>
@@ -62,4 +64,5 @@
     <string name="content_desc_gpay">Google Pay payment</string>
     <string name="content_desc_phone_pe">Phone Pe payment</string>
     <string name="content_desc_right_arrow">Right arrow</string>
+    <string name="content_desc_error">Error</string>
 </resources>

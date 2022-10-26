@@ -1,6 +1,5 @@
 package com.ruben.bartender.presentation.ui.payment
 
-import android.net.Uri
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -16,8 +15,10 @@ data class PaymentState(
     val drinkName: String,
     val price: String,
     val paymentItems: List<PaymentItem> = getPaymentItems(),
-    val isSuccess: Boolean = false,
-    val isFail: Boolean = false
+    val isPaymentFail: Boolean = false,
+    val isLoading: Boolean = false,
+    val isDrinkReady: Boolean = false,
+    val isMakeDrinkError: Boolean = false
 ) : Parcelable
 
 
@@ -57,10 +58,10 @@ object PaymentConstants {
     const val TRANSACTION_NOTE = "tn"
     const val CURRENCY_KEY = "cu"
     const val CURRENCY = "INR"
-    const val GOOGLE_PAY_STATUS = "Status"
+    const val TRANSACTION_STATUS = "Status"
     const val GOOGLE_PAY_TXN_REF = "txnRef"
     const val GOOGLE_PAY_TXN_ID = "txnId"
-    const val GOOGLE_PAY_SUCCESS = "SUCCESS"
+    const val TRANSACTION_SUCCESS = "SUCCESS"
 }
 
 fun getPaymentItems() = listOf(PaymentItem.GooglePay, PaymentItem.PhonePe)

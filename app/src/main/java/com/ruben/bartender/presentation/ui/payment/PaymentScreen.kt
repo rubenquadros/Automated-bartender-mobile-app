@@ -4,9 +4,11 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -40,12 +42,15 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.ruben.bartender.R
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
 import com.ruben.bartender.presentation.ui.common.AppBar
 import com.ruben.bartender.presentation.ui.common.DividerView
+import com.ruben.bartender.presentation.ui.common.ErrorView
 
 /**
  * Created by Ruben Quadros on 26/10/22
@@ -61,9 +66,15 @@ fun PaymentScreen(
 
     val paymentLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
-        onResult = {
-            if (it.resultCode == Activity.RESULT_OK) {
-                //TODO:check for success
+        onResult = { activityResult: ActivityResult ->
+            if (activityResult.resultCode == Activity.RESULT_OK && activityResult.data != null) {
+                val intent = activityResult.data
+                val status = intent?.getStringExtra(PaymentConstants.TRANSACTION_STATUS)
+                if (status == PaymentConstants.TRANSACTION_SUCCESS) {
+                    //TODO: handle success
+                } else {
+                    paymentViewModel.onPaymentFailed()
+                }
             } else {
                 paymentViewModel.onPaymentFailed()
             }
@@ -113,13 +124,61 @@ fun PaymentScreen(
             drinkName = { paymentState.drinkName },
             drinkPrice = { paymentState.price },
             paymentItems = { paymentState.paymentItems },
-            onPaymentOptionClicked = paymentViewModel::onPaymentClick
+            isPaymentFailed = { paymentState.isPaymentFail },
+            isSuccess = { paymentState.isDrinkReady },
+            onPaymentOptionClicked = paymentViewModel::onPaymentClick,
+            dismissPaymentFailDialog = paymentViewModel::resetFailState,
+            dismissSuccessDialog = {}
         )
     }
 }
 
 @Composable
 private fun PaymentContent(
+    modifier: Modifier = Modifier,
+    topPaddingValue: Dp,
+    drinkName: () -> String,
+    drinkPrice: () -> String,
+    paymentItems: () -> List<PaymentItem>,
+    onPaymentOptionClicked: (id: String) -> Unit,
+    isSuccess: () -> Boolean,
+    isPaymentFailed: () -> Boolean,
+    dismissPaymentFailDialog: () -> Unit,
+    dismissSuccessDialog: () -> Unit
+) {
+    Box(modifier = modifier) {
+        PaymentUI(
+            topPaddingValue = topPaddingValue,
+            drinkName = drinkName,
+            drinkPrice = drinkPrice,
+            paymentItems = paymentItems,
+            onPaymentOptionClicked = onPaymentOptionClicked
+        )
+
+        if (isSuccess()) {
+            //TODO: show success UI
+        }
+
+        if (isPaymentFailed()) {
+            Dialog(
+                properties = DialogProperties(
+                    dismissOnClickOutside = false
+                ),
+                onDismissRequest = dismissPaymentFailDialog
+            ) {
+                ErrorView(
+                    modifier = Modifier.wrapContentSize().background(color = ElBarmanTheme.colors.onPrimary, shape = RoundedCornerShape(16.dp)),
+                    errorMessage = stringResource(id = R.string.payment_fail),
+                    onRetry = dismissPaymentFailDialog,
+                    buttonText = stringResource(id = R.string.all_okay)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun PaymentUI(
     modifier: Modifier = Modifier,
     topPaddingValue: Dp,
     drinkName: () -> String,
@@ -192,7 +251,7 @@ private fun PaymentContent(
                 style = ElBarmanTheme.typography.bodyLarge,
                 color = ElBarmanTheme.colors.primaryVariant
             )
-            
+
             DividerView(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
 
             paymentItems().forEach { paymentItem: PaymentItem ->
@@ -252,6 +311,10 @@ private fun PreviewPaymentContent() {
         drinkName = { "Rum & Coke" },
         drinkPrice = { "290" },
         paymentItems = { getPaymentItems() },
-        onPaymentOptionClicked = {}
+        onPaymentOptionClicked = {},
+        isSuccess = { false },
+        isPaymentFailed = { false },
+        dismissPaymentFailDialog = {},
+        dismissSuccessDialog = {}
     )
 }

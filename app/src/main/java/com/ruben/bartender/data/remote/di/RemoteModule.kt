@@ -9,6 +9,7 @@ import com.ruben.bartender.data.remote.NetworkManagerImpl
 import com.ruben.bartender.data.remote.RetrofitApi
 import com.ruben.bartender.data.remote.firebase.FirebaseApi
 import com.ruben.bartender.data.remote.firebase.FirebaseApiImpl
+import com.ruben.bartender.data.remote.rest.ApiResponseAdapterFactory
 import com.ruben.bartender.data.remote.rest.RestApi
 import com.ruben.bartender.data.remote.rest.RestApiImpl
 import com.ruben.bartender.data.remote.utils.ApiConstants
@@ -55,9 +56,10 @@ internal object RetrofitModule {
     }
 
     @[Provides Singleton]
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient, apiResponseAdapterFactory: ApiResponseAdapterFactory): Retrofit {
         return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
+            .addCallAdapterFactory(apiResponseAdapterFactory)
             .client(okHttpClient)
             .build()
     }

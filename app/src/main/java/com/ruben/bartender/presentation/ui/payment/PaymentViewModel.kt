@@ -31,28 +31,29 @@ class PaymentViewModel @Inject constructor(
     )
 
     fun onPaymentClick(paymentId: String) = intent {
-        val uri = Uri.Builder()
-            .scheme(PaymentConstants.SCHEME)
-            .authority(PaymentConstants.AUTHORITY)
-            .appendQueryParameter(PaymentConstants.UPI_ID, BuildConfig.UPI_ID)
-            .appendQueryParameter(PaymentConstants.MERCHANT_NAME, BuildConfig.MERCHANT_NAME)
-            .appendQueryParameter(PaymentConstants.CURRENCY_KEY, PaymentConstants.CURRENCY)
-            .appendQueryParameter(PaymentConstants.PAY_AMOUNT, state.price)
-            .appendQueryParameter(PaymentConstants.TRANSACTION_NOTE, state.drinkName)
-            .build()
-
-        val packageName = if (paymentId == Constants.GPAY_ID) {
-            PaymentConstants.GOOGLE_PAY_PACKAGE_NAME
-        } else {
-            PaymentConstants.PHONE_PAY_PACKAGE_NAME
-        }
-
-        postSideEffect(
-            PaymentSideEffect.StartPayment(
-                uri = uri,
-                packageName = packageName
-            )
-        )
+        onPaymentSuccess()
+//        val uri = Uri.Builder()
+//            .scheme(PaymentConstants.SCHEME)
+//            .authority(PaymentConstants.AUTHORITY)
+//            .appendQueryParameter(PaymentConstants.UPI_ID, BuildConfig.UPI_ID)
+//            .appendQueryParameter(PaymentConstants.MERCHANT_NAME, BuildConfig.MERCHANT_NAME)
+//            .appendQueryParameter(PaymentConstants.CURRENCY_KEY, PaymentConstants.CURRENCY)
+//            .appendQueryParameter(PaymentConstants.PAY_AMOUNT, state.price)
+//            .appendQueryParameter(PaymentConstants.TRANSACTION_NOTE, state.drinkName)
+//            .build()
+//
+//        val packageName = if (paymentId == Constants.GPAY_ID) {
+//            PaymentConstants.GOOGLE_PAY_PACKAGE_NAME
+//        } else {
+//            PaymentConstants.PHONE_PAY_PACKAGE_NAME
+//        }
+//
+//        postSideEffect(
+//            PaymentSideEffect.StartPayment(
+//                uri = uri,
+//                packageName = packageName
+//            )
+//        )
     }
 
     fun onPaymentFailed() = intent {

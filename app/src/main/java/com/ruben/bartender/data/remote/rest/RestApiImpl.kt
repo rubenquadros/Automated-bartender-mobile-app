@@ -10,7 +10,7 @@ import kotlinx.coroutines.Deferred
  * Created by ruben.quadros on 01/03/20.
  **/
 class RestApiImpl @Inject constructor(private val retrofitApi: RetrofitApi) : RestApi {
-    override suspend fun makeDrink(makeDrinkRequest: MakeDrinkRequest): ApiResponse<MakeDrinkResponse, Nothing> {
+    override suspend fun makeDrink(makeDrinkRequest: MakeDrinkRequest): ApiResponse<MakeDrinkResponse, Void> {
         return retrofitApi.makeDrink(makeDrinkRequest)
     }
 }

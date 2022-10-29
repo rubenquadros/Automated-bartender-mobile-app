@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -29,7 +31,6 @@ import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.bottomSheet
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.ruben.bartender.R
-import com.ruben.bartender.presentation.Destination
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
 import com.ruben.bartender.presentation.ui.common.AppBar
 import com.ruben.bartender.presentation.ui.drinkDetails.DrinkDetailsScreen
@@ -99,7 +100,13 @@ fun HomeScreen(
                 composable(route = NavigationItem.PROFILE_ROUTE) {
                     Box(modifier = Modifier
                         .fillMaxSize()
-                        .background(ElBarmanTheme.colors.onPrimaryVariant))
+                        .background(ElBarmanTheme.colors.onPrimaryVariant)) {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center),
+                            text = "Coming soon",
+                            color = ElBarmanTheme.colors.onPrimary
+                        )
+                    }
                 }
 
                 //bottom sheets

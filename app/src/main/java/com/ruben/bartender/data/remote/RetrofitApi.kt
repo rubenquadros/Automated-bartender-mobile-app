@@ -12,6 +12,6 @@ import retrofit2.http.POST
 interface RetrofitApi {
 
   @POST("/make_drink")
-  suspend fun makeDrink(@Body makeDrinkRequest: MakeDrinkRequest): ApiResponse<MakeDrinkResponse, Nothing>
+  suspend fun makeDrink(@Body makeDrinkRequest: MakeDrinkRequest): ApiResponse<MakeDrinkResponse, Void>
 
 }

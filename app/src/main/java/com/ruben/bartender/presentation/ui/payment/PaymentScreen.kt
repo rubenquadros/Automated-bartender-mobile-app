@@ -71,7 +71,7 @@ fun PaymentScreen(
                 val intent = activityResult.data
                 val status = intent?.getStringExtra(PaymentConstants.TRANSACTION_STATUS)
                 if (status == PaymentConstants.TRANSACTION_SUCCESS) {
-                    //TODO: handle success
+                    paymentViewModel.onPaymentSuccess()
                 } else {
                     paymentViewModel.onPaymentFailed()
                 }

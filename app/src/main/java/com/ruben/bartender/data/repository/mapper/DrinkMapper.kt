@@ -9,7 +9,7 @@ import com.ruben.bartender.domain.record.MakeDrinkRecord
 /**
  * Created by ruben.quadros on 10/03/20.
  **/
-fun ApiResponse<MakeDrinkResponse, Nothing>.toMakeDrinkBaseRecord(): BaseRecord<MakeDrinkRecord, ErrorRecord> {
+fun ApiResponse<MakeDrinkResponse, Void>.toMakeDrinkBaseRecord(): BaseRecord<MakeDrinkRecord, ErrorRecord> {
     return if (this is ApiResponse.Success) {
         BaseRecord.Success(
             body =

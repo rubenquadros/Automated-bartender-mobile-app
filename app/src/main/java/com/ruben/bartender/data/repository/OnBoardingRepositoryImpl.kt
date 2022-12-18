@@ -1,53 +1,93 @@
 package com.ruben.bartender.data.repository
 
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
+import com.ruben.bartender.base.DispatcherProvider
 import com.ruben.bartender.data.DataSource
-import com.ruben.bartender.domain.model.CheckUserRecord
-import com.ruben.bartender.domain.model.OtpRecord
-import com.ruben.bartender.domain.model.SignInRecord
-import com.ruben.bartender.domain.repository.OnBoardingRepository
-import com.ruben.bartender.data.mapper.BoardingMapper
+import com.ruben.bartender.data.local.entity.UserEntity
+import com.ruben.bartender.data.remote.model.request.SaveUserDetailsRequest
 import com.ruben.bartender.data.remote.model.request.SendOtpRequest
 import com.ruben.bartender.data.remote.model.request.SignInRequest
-import com.ruben.bartender.data.remote.utils.ApiConstants
+import com.ruben.bartender.data.repository.mapper.toLoginBaseRecord
+import com.ruben.bartender.data.repository.mapper.toSaveUserBaseRecord
+import com.ruben.bartender.data.repository.mapper.toSendOtpBaseRecord
+import com.ruben.bartender.domain.BaseRecord
+import com.ruben.bartender.domain.record.ErrorRecord
+import com.ruben.bartender.domain.record.LoginRecord
+import com.ruben.bartender.domain.record.SendOtpErrorRecord
+import com.ruben.bartender.domain.record.SendOtpRecord
+import com.ruben.bartender.domain.repository.OnBoardingRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import kotlinx.coroutines.withContext
 
 /**
  * Created by ruben.quadros on 09/03/20.
  **/
-class OnBoardingRepositoryImpl @Inject constructor(dataSource: DataSource) : OnBoardingRepository {
+class OnBoardingRepositoryImpl @Inject constructor(
+    dataSource: DataSource,
+    private val dispatcherProvider: DispatcherProvider
+) : OnBoardingRepository {
 
-  private val firebaseApi = dataSource.api().firebaseApiHandler()
-  private val preferences = dataSource.preference()
-  private val boardingMapper = BoardingMapper()
+    private val firebaseApi = dataSource.api().firebaseApiHandler()
+    private val preferences = dataSource.preference()
+    private val db = dataSource.db()
 
-  override fun sendOTP(phoneNumber: String): Flow<OtpRecord?> {
-    return firebaseApi.sendOTP(SendOtpRequest(phoneNumber)).map {
-      boardingMapper.mapOtpResponse(it)
-    }
-  }
-
-  override fun signIn(phoneAuthCredential: PhoneAuthCredential, phoneNumber: String): Flow<SignInRecord?> {
-    return firebaseApi.signIn(SignInRequest(phoneAuthCredential)).map {
-      if(it?.status == ApiConstants.HTTP_OK) {
-        preferences.isLoggedIn = true
-        preferences.phone = phoneNumber
-      }else if(it?.status == ApiConstants.HTTP_NEW_USER) {
-        preferences.phone = phoneNumber
-      }
-      boardingMapper.mapSignInResponse(it)
-    }
-  }
-
-  override fun checkIfUserExists(phoneNumber: String): Flow<CheckUserRecord?> {
-    return firebaseApi.checkIfUserExists().map {users->
-      boardingMapper.mapCheckUserResponse(phoneNumber, users).also {
-        if(it?.status == 200) {
-          preferences.isRegistered = true
+    override suspend fun sendOtp(
+        phoneNumber: String,
+        resendToken: PhoneAuthProvider.ForceResendingToken?
+    ): Flow<BaseRecord<SendOtpRecord, SendOtpErrorRecord>> {
+        return firebaseApi.sendOtp(SendOtpRequest(phoneNumber, resendToken)).map {
+            it.toSendOtpBaseRecord()
         }
-      }
     }
-  }
+
+    override suspend fun login(
+        phoneAuthCredential: PhoneAuthCredential,
+        phoneNumber: String
+    ): BaseRecord<LoginRecord, ErrorRecord> {
+        val result = firebaseApi.login(SignInRequest(phoneAuthCredential))
+        if (result.isSuccess()) {
+            preferences.setUserLoggedIn(isLoggedIn = true)
+            db.insertUser(
+                userEntity = UserEntity(
+                    phoneNumber = phoneNumber,
+                    firstName = "",
+                    lastName = ""
+                )
+            )
+        }
+        return withContext(dispatcherProvider.default) {
+            result.toLoginBaseRecord()
+        }
+    }
+
+    override suspend fun saveUser(
+        phoneNumber: String,
+        firstName: String,
+        lastName: String
+    ): BaseRecord<Nothing, ErrorRecord> {
+        val result = firebaseApi.saveUser(
+            SaveUserDetailsRequest(
+                firstName = firstName,
+                lastName = lastName,
+                phoneNumber = phoneNumber
+            )
+        )
+
+        if (result.isSuccess()) {
+            db.updateUser(
+                userEntity = UserEntity(
+                    firstName = firstName,
+                    lastName = lastName,
+                    phoneNumber = phoneNumber
+                )
+            )
+        }
+
+        return withContext(dispatcherProvider.default) {
+            result.toSaveUserBaseRecord()
+        }
+    }
 }

@@ -1,5 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply("dependencies.gradle")
 buildscript {
     repositories {
         google()
@@ -11,7 +10,8 @@ buildscript {
         classpath(GradlePlugin.kotlin)
         classpath(GradlePlugin.googleServices)
         classpath(GradlePlugin.crashlytics)
-        //classpath(GradlePlugin.daggerHilt)
+        classpath(GradlePlugin.daggerHilt)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

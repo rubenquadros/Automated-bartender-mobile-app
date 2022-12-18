@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.ruben.bartender.R
-import com.ruben.bartender.presentation.home.HomeActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
@@ -62,15 +61,15 @@ object ApplicationUtility {
       }
       ApplicationConstants.PHONE_PE_INSTALL -> {
         label.text = context.resources.getString(R.string.all_phone_pe_install)
-        image.setImageResource(R.drawable.phone_pe_button)
+        //image.setImageResource(R.drawable.phone_pe_button)
       }
     }
     okButton.setOnClickListener {
       when(dialogName) {
         ApplicationConstants.DRINK_SUCCESS -> {
-          val intent = Intent(context, HomeActivity::class.java)
-          intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-          context.startActivity(intent)
+          //val intent = Intent(context, HomeActivity::class.java)
+          //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+          //context.startActivity(intent)
           alertDialog.dismiss()
         }
         ApplicationConstants.GOOGLE_PAY_INSTALL -> {

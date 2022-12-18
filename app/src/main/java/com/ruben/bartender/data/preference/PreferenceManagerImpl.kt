@@ -2,64 +2,38 @@ package com.ruben.bartender.data.preference
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
 import com.ruben.bartender.data.remote.utils.ApiConstants
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 /**
  * Created by ruben.quadros on 11/03/20.
  **/
-class PreferenceManagerImpl(context: Context) : PreferenceManager {
+class PreferenceManagerImpl @Inject constructor(@ApplicationContext context: Context) :
+    PreferenceManager {
 
-  private val sharedPreferences = context.getSharedPreferences("", Context.MODE_PRIVATE)
+    companion object {
+        private const val PREF_NAME = "elbarman.pref"
+        private val IS_USER_LOGGED_IN = booleanPreferencesKey("is_user_logged_in")
+    }
 
-  override var isLoggedIn: Boolean by BooleanPreference(
-    sharedPreferences,
-    ApiConstants.IS_LOGGED_IN,
-    false
-  )
-  override var isRegistered: Boolean by BooleanPreference(
-    sharedPreferences,
-    ApiConstants.IS_REGISTERED,
-    false
-  )
+    private val Context.elBarmanDataStore by preferencesDataStore(PREF_NAME)
 
-  override var phone: String? by StringPreference(
-    sharedPreferences,
-    ApiConstants.PHONE_NUMBER,
-    null
-  )
-}
+    private val _preference = context.elBarmanDataStore
 
-class BooleanPreference(
-  private var preferences: SharedPreferences,
-  private var name: String,
-  private var defaultValue: Boolean
-) : ReadWriteProperty<Any, Boolean> {
-  override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
-    return preferences.getBoolean(name, defaultValue)
-  }
+    override suspend fun isUserLoggedIn(): Boolean {
+        return _preference.data.map { it[IS_USER_LOGGED_IN] ?: false }.first()
+    }
 
-  override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
-    preferences.edit().putBoolean(name, value).apply()
-  }
-}
+    override suspend fun setUserLoggedIn(isLoggedIn: Boolean) {
+        _preference.edit { it[IS_USER_LOGGED_IN] = isLoggedIn }
+    }
 
-class StringPreference(
-  private var preferences: SharedPreferences,
-  private var name: String,
-  private var defaultValue: String?
-) : ReadWriteProperty<Any, String?> {
-
-  override fun getValue(
-    thisRef: Any, property: KProperty<*>
-  ): String? {
-    return preferences.getString(name, defaultValue)
-  }
-
-  override fun setValue(
-    thisRef: Any, property: KProperty<*>, value: String?
-  ) {
-    preferences.edit().putString(name, value).apply()
-  }
 }

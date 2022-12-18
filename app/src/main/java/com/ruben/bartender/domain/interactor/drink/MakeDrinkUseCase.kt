@@ -1,16 +1,28 @@
 package com.ruben.bartender.domain.interactor.drink
 
-import com.ruben.bartender.domain.model.MakeDrinkRecord
+import com.ruben.bartender.domain.BaseFlowUseCase
+import com.ruben.bartender.domain.BaseRecord
+import com.ruben.bartender.domain.record.ErrorRecord
+import com.ruben.bartender.domain.record.MakeDrinkRecord
 import com.ruben.bartender.domain.repository.DrinkRepository
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 /**
  * Created by ruben.quadros on 05/03/20.
  **/
-@Suppress("DeferredIsResult")
-class MakeDrinkUseCase @Inject constructor(private val drinkRepository: DrinkRepository) {
+class MakeDrinkUseCase @Inject constructor(private val drinkRepository: DrinkRepository) :
+    BaseFlowUseCase<MakeDrinkUseCase.Params, MakeDrinkRecord, ErrorRecord>() {
 
-  suspend fun makeDrink(drinkName: String): MakeDrinkRecord? {
-    return drinkRepository.makeDrink(drinkName)
-  }
+    override suspend fun execute(request: Params): Flow<BaseRecord<MakeDrinkRecord, ErrorRecord>> =
+        flow {
+            emit(BaseRecord.Loading)
+            emit(drinkRepository.makeDrink(drinkName = request.drinkName))
+        }
+
+    data class Params(
+        val drinkName: String
+    )
+
 }

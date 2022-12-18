@@ -24,16 +24,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.ruben.bartender.R
 import com.ruben.bartender.domain.record.MainMenuRecord
 import com.ruben.bartender.domain.record.MenuItem
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
+import com.ruben.bartender.presentation.ui.common.ErrorView
+import com.ruben.bartender.presentation.ui.common.GetButton
 import com.ruben.bartender.presentation.ui.common.LoadingView
 
 /**
@@ -51,7 +55,7 @@ fun MenuScreen(
     LaunchedEffect(menuViewModel.uiSideEffect()) {
         menuViewModel.uiSideEffect().collect { uiSideEffect ->
             when (uiSideEffect) {
-                is MenuSideEffect.NavigateToLogin -> {
+                MenuSideEffect.NavigateToLogin -> {
                     navigateToLogin()
                 }
                 is MenuSideEffect.NavigateToPayment -> {
@@ -64,9 +68,14 @@ fun MenuScreen(
     val menuState by menuViewModel.uiState().collectAsState()
 
     when (menuState) {
+        MenuState.InitialState -> {
+            //do nothing
+        }
+
         is MenuState.LoadingState -> {
             LoadingView(modifier = Modifier.fillMaxSize())
         }
+
         is MenuState.MainMenuState -> {
             (menuState as? MenuState.MainMenuState)?.let {
                 MenuContent(
@@ -76,8 +85,14 @@ fun MenuScreen(
                 )
             }
         }
-        else -> {
 
+        MenuState.ErrorState -> {
+            ErrorView(
+                modifier = Modifier.fillMaxSize(),
+                errorMessage = stringResource(id = R.string.menu_error),
+                buttonText = stringResource(id = R.string.all_retry),
+                onRetry = menuViewModel::getBarMenu
+            )
         }
     }
 }
@@ -117,7 +132,10 @@ private fun MenuItemUI(
                 modifier = menuItemImageModifier,
                 contentScale = ContentScale.Crop,
                 painter = rememberAsyncImagePainter(
-                    model = menuItem.image,
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(menuItem.image)
+                        .crossfade(true)
+                        .build(),
                     placeholder = rememberAsyncImagePainter(model = R.drawable.ic_menu_item_placeholder)
                 ),
                 contentDescription = menuItem.name
@@ -143,19 +161,9 @@ private fun MenuItemUI(
                     style = ElBarmanTheme.typography.bodyMedium
                 )
 
-                Text(
-                    modifier = Modifier
-                        .background(
-                            color = ElBarmanTheme.colors.primary,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .padding(horizontal = 16.dp, vertical = 2.dp)
-                        .clickable {
-                            onGetDrinkClick(menuItem.name, menuItem.price)
-                        },
-                    text = stringResource(id = R.string.all_get_drink),
-                    style = ElBarmanTheme.typography.bodyMedium,
-                    color = ElBarmanTheme.colors.onPrimary
+                GetButton(
+                    modifier = Modifier,
+                    onClick = { onGetDrinkClick(menuItem.name, menuItem.price) }
                 )
             }
         }

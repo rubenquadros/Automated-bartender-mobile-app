@@ -20,4 +20,8 @@ class HomeNavGraph(navHostController: NavHostController) {
     val openDrinkDetails: (drinkId: String) -> Unit = { id ->
         navHostController.navigate(route = HomeBottomSheets.DrinkDetails.createRoute(id))
     }
+
+    val navigateBack: () -> Unit = {
+        navHostController.navigateUp()
+    }
 }

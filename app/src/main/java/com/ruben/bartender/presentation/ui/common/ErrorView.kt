@@ -27,7 +27,7 @@ fun ErrorView(
     modifier: Modifier = Modifier,
     errorMessage: String,
     onRetry: (() -> Unit)? = null,
-    buttonText: String = ""
+    buttonText: String
 ) {
     Column(modifier = modifier) {
         Image(

@@ -116,7 +116,11 @@ fun HomeScreen(
                         navArgument(name = HomeBottomSheets.DrinkDetails.DrinkIdArg) { type = NavType.StringType }
                     )
                 ) {
-                    DrinkDetailsScreen()
+                    DrinkDetailsScreen(
+                        navigateBack = homeNavGraph.navigateBack,
+                        navigateToLogin = navigateToLogin,
+                        navigateToPayment = navigateToPayment
+                    )
                 }
             }
         }

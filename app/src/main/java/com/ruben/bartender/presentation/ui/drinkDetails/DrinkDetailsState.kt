@@ -21,7 +21,5 @@ sealed class DrinkDetailsState : Parcelable {
     ) : DrinkDetailsState()
 
     @Parcelize
-    data class ErrorState(
-        val message: String
-    ) : DrinkDetailsState()
+    object ErrorState : DrinkDetailsState()
 }

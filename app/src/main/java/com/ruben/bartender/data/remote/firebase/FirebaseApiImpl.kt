@@ -217,15 +217,19 @@ class FirebaseApiImpl @Inject constructor() : FirebaseApi {
                 .get()
                 .addOnSuccessListener {
                     continuation.resume(
-                        GetDrinkDetailsResponse.GetDrinkDetailsSuccess(
-                            drinkDetails = DrinkDetails(
-                                name = (it.data?.get(ApiConstants.MENU_ITEM_NAME_KEY) as? String).orEmpty(),
-                                image = (it.data?.get(ApiConstants.MENU_ITEM_IMAGE_KEY) as? String).orEmpty(),
-                                price = (it.data?.get(ApiConstants.MENU_ITEM_PRICE_KEY) as? String).orEmpty(),
-                                description = (it.data?.get(ApiConstants.MENU_ITEM_DESCRIPTION_KEY) as? String).orEmpty(),
-                                ingredients = (it.data?.get(ApiConstants.MENU_ITEM_INGREDIENTS_KEY) as? String).orEmpty()
+                        if (it.data != null) {
+                            GetDrinkDetailsResponse.GetDrinkDetailsSuccess(
+                                drinkDetails = DrinkDetails(
+                                    name = (it.data?.get(ApiConstants.MENU_ITEM_NAME_KEY) as? String).orEmpty(),
+                                    image = (it.data?.get(ApiConstants.MENU_ITEM_IMAGE_KEY) as? String).orEmpty(),
+                                    price = (it.data?.get(ApiConstants.MENU_ITEM_PRICE_KEY) as? String).orEmpty(),
+                                    description = (it.data?.get(ApiConstants.MENU_ITEM_DESCRIPTION_KEY) as? String).orEmpty(),
+                                    ingredients = (it.data?.get(ApiConstants.MENU_ITEM_INGREDIENTS_KEY) as? String).orEmpty()
+                                )
                             )
-                        )
+                        } else {
+                            GetDrinkDetailsResponse.GetDrinkDetailsFail(message = "No drink available for this id")
+                        }
                     )
                 }
                 .addOnFailureListener {

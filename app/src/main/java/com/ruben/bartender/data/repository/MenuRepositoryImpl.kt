@@ -2,10 +2,12 @@ package com.ruben.bartender.data.repository
 
 import com.ruben.bartender.base.DispatcherProvider
 import com.ruben.bartender.data.DataSource
+import com.ruben.bartender.data.remote.model.request.GetDrinkDetailsRequest
 import com.ruben.bartender.domain.record.MainMenuRecord
 import com.ruben.bartender.domain.record.CategoryRecord
 import com.ruben.bartender.domain.repository.MenuRepository
 import com.ruben.bartender.data.repository.mapper.MenuMapper
+import com.ruben.bartender.data.repository.mapper.toDrinkDetailsRecord
 import com.ruben.bartender.data.repository.mapper.toMainMenuBaseRecord
 import com.ruben.bartender.domain.BaseRecord
 import com.ruben.bartender.domain.record.DrinkDetailsRecord
@@ -34,7 +36,13 @@ class MenuRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDrinkDetails(drinkId: String): BaseRecord<DrinkDetailsRecord, ErrorRecord> {
-        TODO("Not yet implemented")
+        val result = firebaseApi.getDrinkDetails(
+            getDrinkDetailsRequest = GetDrinkDetailsRequest(drinkId = drinkId)
+        )
+
+        return withContext(dispatcherProvider.default) {
+            result.toDrinkDetailsRecord()
+        }
     }
 
     override fun getMenuCategories(): Flow<CategoryRecord?> {

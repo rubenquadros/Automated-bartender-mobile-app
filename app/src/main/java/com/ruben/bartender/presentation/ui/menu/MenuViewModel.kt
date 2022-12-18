@@ -30,7 +30,7 @@ class MenuViewModel @Inject constructor(
         getBarMenu()
     }
 
-    private fun getBarMenu() = intent {
+    fun getBarMenu() = intent {
         getMainMenuUseCase(Unit).collect { baseRecord: BaseRecord<MainMenuRecord, ErrorRecord> ->
             when(baseRecord) {
                 is BaseRecord.Loading -> {

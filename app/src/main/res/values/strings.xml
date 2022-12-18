@@ -43,11 +43,15 @@
     <string name="all_cannot_make_drink">Sorry, unable to make your drink. Please try again later</string>
     <string name="all_cards_payment">Credit, Debit &amp; ATM Cards</string>
     <string name="all_next">NEXT</string>
+    <string name="all_retry">Retry</string>
     <string name="all_phone_pe_install">You don\'t have PhonePe installed\n Please install the app to continue</string>
     <string name="all_google_pay_install">You don\'t have Google Pay installed\n Please install the app to continue</string>
     <string name="bottom_navigation_title_menu">Menu</string>
     <string name="bottom_navigation_title_profile">Profile</string>
     <string name="menu_price">\u20B9%s</string>
+    <string name="menu_error">There was an error getting the menu. Please try again</string>
+    <string name="drink_details_error">Sorry, couldn\'t get the drink details. Please try again</string>
+    <string name="drink_details_ingredients">Ingredients</string>
     <string name="payment_title">Payment</string>
     <string name="payment_drink">Drink:</string>
     <string name="payment_total">Total:</string>

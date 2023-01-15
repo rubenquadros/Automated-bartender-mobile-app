@@ -1,6 +1,7 @@
 package com.ruben.bartender.domain.record
 
 import android.os.Parcelable
+import com.ruben.bartender.domain.CollectionWrapper
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -8,8 +9,11 @@ import kotlinx.parcelize.Parcelize
  **/
 @Parcelize
 data class MainMenuRecord(
-    val menuRecord: List<MenuItem>
-) : Parcelable
+    val menuRecordWrapper: CollectionWrapper<MenuItem>
+) : Parcelable {
+
+    fun getCollection(): List<MenuItem> = menuRecordWrapper.list as List<MenuItem>
+}
 
 @Parcelize
 data class MenuItem(

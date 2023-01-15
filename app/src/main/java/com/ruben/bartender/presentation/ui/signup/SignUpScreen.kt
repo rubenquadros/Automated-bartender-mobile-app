@@ -40,17 +40,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.ruben.bartender.R
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
 import com.ruben.bartender.presentation.ui.common.AppBar
 import com.ruben.bartender.presentation.ui.common.LoadingView
-import org.orbitmvi.orbit.compose.collectAsState
 
 /**
  * Created by Ruben Quadros on 22/10/22
  **/
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
 @Composable
 fun SignUpScreen(
     signUpViewModel: SignUpViewModel = hiltViewModel(),
@@ -85,7 +86,7 @@ fun SignUpScreen(
         }
     }
 
-    val signUpState by signUpViewModel.collectAsState()
+    val signUpState by signUpViewModel.uiState().collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

@@ -1,6 +1,7 @@
 package com.ruben.bartender.presentation.ui.menu
 
 import android.os.Parcelable
+import com.ruben.bartender.domain.CollectionWrapper
 import com.ruben.bartender.domain.record.MainMenuRecord
 import kotlinx.parcelize.Parcelize
 
@@ -18,7 +19,7 @@ sealed class MenuState : Parcelable {
 
     @Parcelize
     data class MainMenuState(
-        val mainMenu: MainMenuRecord = MainMenuRecord(emptyList()),
+        val mainMenu: MainMenuRecord = MainMenuRecord(CollectionWrapper(emptyList())),
         val shouldShowDetails: Boolean = false
     ) : MenuState()
 

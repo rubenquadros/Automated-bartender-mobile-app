@@ -148,6 +148,7 @@ dependencies {
     implementation(Dependencies.Androidx.splashScreen)
     implementation(Dependencies.Androidx.datastore)
     implementation(Dependencies.Androidx.processLifecycle)
+    implementation(Dependencies.Androidx.lifecycle)
 
     //material design
     implementation(Dependencies.Material.library)

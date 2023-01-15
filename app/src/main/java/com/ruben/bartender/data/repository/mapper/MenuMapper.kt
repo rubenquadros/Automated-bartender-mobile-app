@@ -4,6 +4,7 @@ import com.ruben.bartender.data.remote.model.response.GetDrinkDetailsResponse
 import com.ruben.bartender.data.remote.model.response.MainMenuResponse
 import com.ruben.bartender.data.remote.model.response.menuCategoryResponse.CategoryResponse
 import com.ruben.bartender.domain.BaseRecord
+import com.ruben.bartender.domain.CollectionWrapper
 import com.ruben.bartender.domain.record.CategoryName
 import com.ruben.bartender.domain.record.CategoryRecord
 import com.ruben.bartender.domain.record.DrinkDetailsRecord
@@ -34,17 +35,16 @@ class MenuMapper {
 fun MainMenuResponse.toMainMenuBaseRecord(): BaseRecord<MainMenuRecord, ErrorRecord> {
     return when (this) {
         is MainMenuResponse.MainMenuSuccess -> {
-            BaseRecord.Success(
-                body = MainMenuRecord(
-                    menuRecord = this.mainMenu.map {
-                        MenuItem(
-                            name = it.name,
-                            price = it.price,
-                            image = it.image.orEmpty(),
-                            id = it.uniqueId
-                        )
-                    }
+            val menuItems = this.mainMenu.map {
+                MenuItem(
+                    name = it.name,
+                    price = it.price,
+                    image = it.image.orEmpty(),
+                    id = it.uniqueId
                 )
+            }
+            BaseRecord.Success(
+                body = MainMenuRecord(menuRecordWrapper = CollectionWrapper(list = menuItems))
             )
         }
         is MainMenuResponse.MainMenuFail -> {

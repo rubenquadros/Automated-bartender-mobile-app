@@ -3,6 +3,7 @@ package com.ruben.bartender.presentation.ui.home
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.ruben.bartender.R
+import com.ruben.bartender.domain.CollectionWrapper
 
 /**
  * Created by Ruben Quadros on 23/10/22
@@ -34,7 +35,9 @@ sealed class NavigationItem(
     )
 }
 
-fun getNavigationItems() = listOf(
-    NavigationItem.Menu,
-    NavigationItem.Profile
+fun getNavigationItems() = CollectionWrapper(
+    listOf(
+        NavigationItem.Menu,
+        NavigationItem.Profile
+    )
 )

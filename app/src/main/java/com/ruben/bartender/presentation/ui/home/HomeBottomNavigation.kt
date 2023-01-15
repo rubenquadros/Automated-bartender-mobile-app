@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.rememberAsyncImagePainter
+import com.ruben.bartender.domain.CollectionWrapper
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
 
 /**
@@ -16,14 +17,14 @@ import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
  **/
 @Composable
 fun HomeBottomNavigation(
-    items: List<NavigationItem>,
+    items: CollectionWrapper<NavigationItem>,
     onClick: (route: String) -> Unit,
     getCurrentScreen: () -> String
 ) {
     NavigationBar(
         containerColor = ElBarmanTheme.colors.primary,
     ) {
-        items.forEach { navigationItem: NavigationItem ->
+        items.list.forEach { navigationItem: NavigationItem ->
             NavigationBarItem(
                 selected = navigationItem.route == getCurrentScreen.invoke(),
                 onClick = { onClick(navigationItem.route) },

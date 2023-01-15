@@ -1,7 +1,6 @@
 package com.ruben.bartender.presentation.ui.menu
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,13 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +27,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.ruben.bartender.R
@@ -43,6 +42,7 @@ import com.ruben.bartender.presentation.ui.common.LoadingView
 /**
  * Created by Ruben Quadros on 23/10/22
  **/
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun MenuScreen(
     menuViewModel: MenuViewModel = hiltViewModel(),
@@ -65,7 +65,7 @@ fun MenuScreen(
         }
     }
 
-    val menuState by menuViewModel.uiState().collectAsState()
+    val menuState by menuViewModel.uiState().collectAsStateWithLifecycle()
 
     when (menuState) {
         MenuState.InitialState -> {
@@ -108,7 +108,9 @@ private fun MenuContent(
         modifier = modifier.fillMaxSize(),
         columns = GridCells.Fixed(count = 2)
     ) {
-        items(items = mainMenuRecord.menuRecord, key = { item: MenuItem -> item.id }) {
+        items(
+            items = mainMenuRecord.getCollection(),
+            key = { item: MenuItem -> item.id }) {
             MenuItemUI(menuItem = it, onItemClick = onItemClick, onGetDrinkClick = onGetDrinkClick)
         }
     }

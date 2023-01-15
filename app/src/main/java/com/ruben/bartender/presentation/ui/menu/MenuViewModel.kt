@@ -38,7 +38,7 @@ class MenuViewModel @Inject constructor(
                 }
                 is BaseRecord.Success -> {
                     reduce {
-                        if (baseRecord.body.menuRecord.isNotEmpty()) {
+                        if (baseRecord.body.menuRecordWrapper.list.isNotEmpty()) {
                             MenuState.MainMenuState(mainMenu = baseRecord.body)
                         } else {
                             MenuState.ErrorState

@@ -28,7 +28,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +44,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.ruben.bartender.R
 import com.ruben.bartender.presentation.base.theme.ElBarmanTheme
@@ -55,7 +56,7 @@ import com.ruben.bartender.presentation.ui.common.ErrorView
 /**
  * Created by Ruben Quadros on 26/10/22
  **/
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
 @Composable
 fun PaymentScreen(
     paymentViewModel: PaymentViewModel = hiltViewModel(),
@@ -108,7 +109,7 @@ fun PaymentScreen(
         }
     }
 
-    val paymentState by paymentViewModel.uiState().collectAsState()
+    val paymentState by paymentViewModel.uiState().collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

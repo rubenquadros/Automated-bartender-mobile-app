@@ -21,7 +21,7 @@ buildscript {
 subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {
-            if (project.findProperty("quickfire.enableComposeCompilerReports") == "true") {
+            if (project.findProperty("elbarman.enableComposeCompilerReports") == "true") {
                 kotlinOptions.freeCompilerArgs += listOf(
                     "-P", "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
                             project.buildDir.absolutePath + "/compose_metrics"
